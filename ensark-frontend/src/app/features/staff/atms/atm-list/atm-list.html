@@ -1,0 +1,114 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">ATM Fleet Management</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Monitor ATM cash reserves, network status, and execute refill operations.</p>
+    </div>
+    <a routerLink="/staff/atms/new" class="app-btn app-btn-primary">
+      <svg lucidePlus class="w-4 h-4"></svg>
+      Add New ATM
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <app-stat-card label="Total ATMs" [value]="atms.length" color="brand" [loading]="isLoading">
+      <svg icon lucideLandmark></svg>
+    </app-stat-card>
+    <app-stat-card label="Active" [value]="activeCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck></svg>
+    </app-stat-card>
+    <app-stat-card label="Maintenance / Offline" [value]="maintenanceOfflineCount" color="warning" [loading]="isLoading">
+      <svg icon lucideTriangleAlert></svg>
+    </app-stat-card>
+    <app-stat-card label="Out of Service" [value]="outOfServiceCount" color="danger" [loading]="isLoading">
+      <svg icon lucideCircleX></svg>
+    </app-stat-card>
+  </div>
+
+  <!-- Filters & Search -->
+  <div class="app-card flex flex-col sm:flex-row items-center justify-between gap-4 p-4">
+    <div class="relative w-full sm:w-80">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg lucideSearch class="h-4 w-4 text-[var(--color-text-muted)]"></svg>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search ATM ID, address, branch..."
+        class="app-input pl-10"
+      />
+    </div>
+    <div class="flex items-center gap-2 w-full sm:w-auto">
+      <svg lucideFunnel class="w-4 h-4 text-[var(--color-text-muted)] shrink-0"></svg>
+      <select [(ngModel)]="selectedStatus" class="app-input">
+        <option value="ALL">All Statuses</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="OFFLINE">OFFLINE</option>
+        <option value="MAINTENANCE">MAINTENANCE</option>
+        <option value="OUT_OF_SERVICE">OUT OF SERVICE</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ATM Cards Grid -->
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let i of [1,2,3]" class="app-card p-6 animate-pulse space-y-4">
+      <div class="h-6 bg-[var(--color-surface-alt)] rounded w-1/2"></div>
+      <div class="h-4 bg-[var(--color-surface-alt)] rounded w-3/4"></div>
+      <div class="h-12 bg-[var(--color-surface-alt)] rounded"></div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let atm of filteredAtms" class="app-card p-6 flex flex-col justify-between space-y-5">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <app-badge [label]="atm.status" [color]="statusColor(atm.status)"></app-badge>
+          <span class="text-xs text-[var(--color-text-muted)] font-mono">ATM #{{ atm.atmId }}</span>
+        </div>
+
+        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-1">{{ atm.address }}</h3>
+        <p class="text-xs text-[var(--color-text-muted)] flex items-center gap-1">
+          <svg lucideMapPin class="w-3.5 h-3.5"></svg>
+          {{ atm.branchName || 'Unassigned Branch' }}
+        </p>
+
+        <!-- Cash Level -->
+        <div class="mt-4 p-4 rounded-[var(--radius-input)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-2">
+          <div class="flex justify-between text-xs font-medium">
+            <span class="text-[var(--color-text-muted)]">Vault Cash Level</span>
+            <span class="text-[var(--color-text-primary)] font-semibold">
+              {{ atm.availableBalance | currency:'BDT':'symbol':'1.0-0' }}
+            </span>
+          </div>
+          <div class="w-full h-2 bg-[var(--color-border)] rounded-full overflow-hidden">
+            <div class="h-full transition-all duration-500 rounded-full"
+                 [ngClass]="{
+                   'bg-[var(--color-success-500)]': cashLevelPercent(atm) > 40,
+                   'bg-[var(--color-warning-500)]': cashLevelPercent(atm) <= 40 && cashLevelPercent(atm) > 15,
+                   'bg-[var(--color-danger-500)]': cashLevelPercent(atm) <= 15
+                 }"
+                 [style.width.%]="atm.limit ? cashLevelPercent(atm) : 50">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2 pt-3 border-t border-[var(--color-border)]">
+        <a [routerLink]="['/staff/atms', atm.atmId]" class="app-btn app-btn-secondary flex-1 text-xs">
+          Details
+        </a>
+        <a [routerLink]="['/staff/atms/refill', atm.atmId]" class="app-btn app-btn-primary flex-1 text-xs">
+          <svg lucideRefreshCw class="w-3.5 h-3.5"></svg>
+          Refill
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="filteredAtms.length === 0" class="col-span-full app-card p-10 text-center text-sm text-[var(--color-text-muted)]">
+      No ATMs found.
+    </div>
+  </div>
+</div>

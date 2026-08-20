@@ -1,0 +1,89 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Cheque Books</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Manage all cheque book requests.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <app-stat-card label="Total Books" [value]="chequeBooks.length" color="brand" [loading]="isLoading">
+      <svg icon lucideScrollText></svg>
+    </app-stat-card>
+    <app-stat-card label="Active" [value]="activeCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck></svg>
+    </app-stat-card>
+    <app-stat-card label="Pending Requests" [value]="requestedCount" color="warning" [loading]="isLoading">
+      <svg icon lucideClock></svg>
+    </app-stat-card>
+    <app-stat-card label="Blocked" [value]="blockedCount" color="danger" [loading]="isLoading">
+      <svg icon lucideBan></svg>
+    </app-stat-card>
+  </div>
+
+  <div class="app-table-shell">
+    <div class="p-6 border-b border-[var(--color-border)]">
+      <div class="relative w-full md:w-96">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg lucideSearch class="h-4 w-4 text-[var(--color-text-muted)]"></svg>
+        </div>
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" class="app-input pl-10" placeholder="Search by serial number, account...">
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+          <tr>
+            <th scope="col" class="px-6 py-3 font-semibold">Serial No</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Account</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Leaves</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Range</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Status</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Applied</th>
+            <th scope="col" class="px-6 py-3 font-semibold text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isLoading">
+          <tr *ngFor="let cb of filteredChequeBooks" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+            <td class="px-6 py-4 font-mono text-xs font-medium text-[var(--color-text-primary)]">{{ cb.bookSerialNumber }}</td>
+            <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-secondary)]">{{ cb.accountNumber }}</td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ cb.numberOfLeaves }}</td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ cb.startLeafNumber }} - {{ cb.endLeafNumber }}</td>
+            <td class="px-6 py-4">
+              <app-badge [label]="cb.status" [color]="statusColor(cb.status)"></app-badge>
+            </td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ cb.applicationDate | date:'mediumDate' }}</td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <div *ngIf="cb.status === 'REQUESTED'" class="flex gap-1.5">
+                  <button (click)="approve(cb.chequeBookId)" [disabled]="updatingId === cb.chequeBookId"
+                    class="px-2.5 py-1 bg-[var(--color-success-50)] text-[var(--color-success-700)] border border-[var(--color-success-500)]/30 rounded-md text-[11px] font-semibold hover:bg-green-100 transition-all disabled:opacity-50">
+                    Approve
+                  </button>
+                  <button (click)="reject(cb.chequeBookId)" [disabled]="updatingId === cb.chequeBookId"
+                    class="px-2.5 py-1 bg-[var(--color-danger-50)] text-[var(--color-danger-700)] border border-[var(--color-danger-500)]/30 rounded-md text-[11px] font-semibold hover:bg-red-100 transition-all disabled:opacity-50">
+                    Reject
+                  </button>
+                </div>
+                <a [routerLink]="['/staff/cheques', cb.chequeBookId]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-xs font-semibold hover:underline transition-colors">View</a>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredChequeBooks.length === 0">
+            <td colspan="7" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No cheque books found.</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="isLoading">
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td colspan="7" class="px-6 py-4">
+              <div class="h-8 bg-[var(--color-surface-alt)] rounded animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

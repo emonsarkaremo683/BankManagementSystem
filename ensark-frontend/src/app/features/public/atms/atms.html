@@ -1,0 +1,128 @@
+<div class="flex-1 bg-slate-950 relative">
+
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div class="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-500/8 blur-[120px]"></div>
+    <div class="absolute bottom-[-10%] left-[-5%] w-[35%] h-[35%] rounded-full bg-teal-500/8 blur-[100px]"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="relative z-10 pt-20 pb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-100 mb-6 animate-fade-in-up">
+        Our <span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-300">ATMs</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 100ms;">
+        Find your nearest Ensark Bank ATM. Access your funds 24/7 at any of our convenient locations.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="relative z-10 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-2xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Police Station Filter -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Filter by Police Station</label>
+            <select
+              [(ngModel)]="selectedPoliceStation"
+              (change)="onPoliceStationFilter()"
+              class="w-full bg-slate-900/50 border border-slate-600/50 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all">
+              <option value="">All Police Stations</option>
+              <option *ngFor="let ps of policeStationNames" [value]="ps">{{ ps }}</option>
+            </select>
+          </div>
+
+          <!-- Search Input -->
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Search</label>
+            <div class="relative">
+              <input
+                type="text"
+                [(ngModel)]="searchTerm"
+                (input)="onSearch()"
+                placeholder="Search by address, branch, routing number, or police station..."
+                class="w-full bg-slate-900/50 border border-slate-600/50 rounded-xl px-4 py-3 pl-10 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATM List -->
+  <section class="relative z-10 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let i of [1,2,3,4,5,6]" class="h-48 bg-slate-800 rounded-2xl animate-pulse"></div>
+      </div>
+
+      <!-- ATMs -->
+      <div *ngIf="!isLoading && filteredAtms.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let atm of filteredAtms" class="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-2xl p-6 hover:border-emerald-500/30 transition-all duration-300">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-100">{{ atm.branchName || 'ATM Location' }}</h3>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-1"
+                    [class]="atm.status === 'ACTIVE' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'">
+                {{ atm.status === 'ACTIVE' ? 'Active' : atm.status === 'MAINTENANCE' ? 'Maintenance' : atm.status === 'OFFLINE' ? 'Offline' : 'Out of Service' }}
+              </span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm text-slate-400">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              <span>{{ atm.address || 'No address available' }}</span>
+            </div>
+            <div *ngIf="atm.policeStationName" class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+              <span>{{ atm.policeStationName }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+              <span>Routing: {{ atm.routingNumber || 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading && filteredAtms.length === 0 && !hasError" class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl p-12 text-center">
+        <svg class="w-16 h-16 text-slate-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+        <h3 class="text-lg font-medium text-slate-300 mb-2">No ATMs Found</h3>
+        <p class="text-slate-500 text-sm">No ATMs match your current filters. Try adjusting your search criteria.</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="!isLoading && hasError" class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-xl p-12 text-center">
+        <svg class="w-16 h-16 text-slate-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+        <h3 class="text-lg font-medium text-slate-300 mb-2">Unable to Load ATMs</h3>
+        <p class="text-slate-400 text-sm mb-6">We couldn't load the ATM directory. Please try again later.</p>
+        <button (click)="loadAtms()" class="inline-flex items-center px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-bold text-sm hover:bg-emerald-400 shadow-lg shadow-emerald-500/25 transition-all">
+          Try Again
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative z-10 py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-3xl p-12">
+        <h2 class="text-3xl font-bold text-slate-100 mb-4">Need to visit a branch?</h2>
+        <p class="text-slate-400 mb-8 max-w-xl mx-auto">Find your nearest branch for personalized service and expert financial guidance.</p>
+        <a routerLink="/branches" class="inline-flex items-center px-8 py-4 rounded-xl text-slate-900 font-bold text-lg bg-emerald-400 hover:bg-emerald-300 shadow-[0_0_20px_rgba(52,211,153,0.4)] hover:shadow-[0_0_25px_rgba(52,211,153,0.6)] transform transition-all hover:-translate-y-1 duration-200">
+          Find a Branch
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>

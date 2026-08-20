@@ -1,0 +1,78 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <div class="flex items-center gap-4">
+      <a routerLink="/staff/transactions" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+        <svg lucideArrowLeft class="w-4 h-4"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Transaction Details</h1>
+        <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View transaction information.</p>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="h-60 app-card animate-pulse"></div>
+
+    <div *ngIf="!isLoading && transaction" class="space-y-6">
+      <div class="app-card p-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Reference Number</div>
+            <div class="text-xl font-bold text-[var(--color-text-primary)] font-mono">{{ transaction.response?.referenceNo }}</div>
+          </div>
+          <app-badge [label]="transaction.response?.status || ''" [color]="statusColor(transaction.response?.status)"></app-badge>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Sender</div>
+            <div class="text-sm text-[var(--color-text-primary)] font-mono">{{ transaction.senderAccountNumber }}</div>
+            <div class="text-xs text-[var(--color-text-muted)]">{{ transaction.senderName }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Receiver</div>
+            <div class="text-sm text-[var(--color-text-primary)] font-mono">{{ transaction.receiverAccountNumber }}</div>
+            <div class="text-xs text-[var(--color-text-muted)]">{{ transaction.receiverName }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Amount</div>
+            <div class="text-2xl font-bold text-[var(--color-brand-600)]">{{ transaction.response?.amount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Type</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ transaction.response?.transactionType }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Channel</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ transaction.response?.channel }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Date</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ transaction.response?.createdAt | date:'medium' }}</div>
+          </div>
+          <div *ngIf="transaction.response?.chargeAmount">
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Charge</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ transaction.response?.chargeAmount | number:'1.2-2' }}</div>
+          </div>
+          <div *ngIf="transaction.response?.vatAmount">
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">VAT</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ transaction.response?.vatAmount | number:'1.2-2' }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="transaction.response?.remarks" class="mt-6 pt-6 border-t border-[var(--color-border)]">
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Remarks</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ transaction.response?.remarks }}</div>
+        </div>
+      </div>
+
+      <div *ngIf="transaction.response?.status === 'SUCCESS'" class="flex justify-end">
+        <button (click)="reverseTransaction()" [disabled]="isReversing" class="app-btn app-btn-danger">
+          <svg lucideRefreshCw class="w-4 h-4" [class.animate-spin]="isReversing"></svg>
+          Reverse Transaction
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

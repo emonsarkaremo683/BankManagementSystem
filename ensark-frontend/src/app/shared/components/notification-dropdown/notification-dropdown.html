@@ -1,0 +1,44 @@
+<div class="w-80 sm:w-96 app-card overflow-hidden z-50">
+  <div class="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h3 class="text-sm font-bold text-[var(--color-text-primary)]">Notifications</h3>
+      <span *ngIf="unreadCount > 0" class="text-xs px-2 py-0.5 rounded-full bg-[var(--color-brand-50)] text-[var(--color-brand-700)] font-semibold">
+        {{ unreadCount }} new
+      </span>
+    </div>
+    <button (click)="markAllRead()" class="text-xs text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] font-semibold transition-colors">
+      Mark all read
+    </button>
+  </div>
+
+  <div class="max-h-80 overflow-y-auto divide-y divide-[var(--color-border)]">
+    <div *ngIf="notifications.length === 0" class="p-6 text-center text-[var(--color-text-muted)] text-xs">
+      No notifications yet
+    </div>
+
+    <div *ngFor="let item of notifications"
+         (click)="onItemClick(item)"
+         class="p-4 hover:bg-[var(--color-surface-alt)] transition-colors cursor-pointer flex gap-3"
+         [ngClass]="{ 'bg-[var(--color-brand-50)]/40': !item.read }">
+      <span class="p-2 rounded-xl h-fit shrink-0"
+            [ngClass]="{
+              'bg-[var(--color-danger-50)] text-[var(--color-danger-600)]': notificationColor(item.type) === 'danger',
+              'bg-[var(--color-info-50)] text-[var(--color-info-600)]': notificationColor(item.type) === 'info',
+              'bg-[var(--color-success-50)] text-[var(--color-success-600)]': notificationColor(item.type) === 'success'
+            }">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </span>
+
+      <div class="flex-1 space-y-1 min-w-0">
+        <div class="flex items-center justify-between gap-2">
+          <h4 class="text-xs font-semibold text-[var(--color-text-primary)] leading-snug truncate">{{ item.title }}</h4>
+          <span class="w-2 h-2 rounded-full bg-[var(--color-brand-500)] shrink-0" *ngIf="!item.read"></span>
+        </div>
+        <p class="text-xs text-[var(--color-text-secondary)] leading-normal line-clamp-2">{{ item.message }}</p>
+        <span class="text-[10px] text-[var(--color-text-muted)] block">{{ item.createdAt | date:'shortTime' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

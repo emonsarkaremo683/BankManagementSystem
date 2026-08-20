@@ -1,0 +1,87 @@
+<div class="w-full px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Standing Orders</h1>
+        <p class="text-sm text-[var(--color-text-muted)] mt-1">Manage all recurring transfer instructions.</p>
+      </div>
+      <a routerLink="/staff/standing-orders/new" class="app-btn app-btn-primary">
+        <svg lucidePlus class="w-4 h-4"></svg>
+        New Standing Order
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <app-stat-card label="Total Orders" [value]="totalCount" color="brand" [loading]="isLoading">
+        <svg icon lucideRepeat></svg>
+      </app-stat-card>
+      <app-stat-card label="Active" [value]="activeCount" color="success" [loading]="isLoading">
+        <svg icon lucideCircleCheck></svg>
+      </app-stat-card>
+      <app-stat-card label="Paused" [value]="pausedCount" color="warning" [loading]="isLoading">
+        <svg icon lucideClock></svg>
+      </app-stat-card>
+      <app-stat-card label="Cancelled / Failed" [value]="cancelledCount" color="danger" [loading]="isLoading">
+        <svg icon lucideBan></svg>
+      </app-stat-card>
+    </div>
+
+    <div class="app-table-shell">
+      <div class="p-5 border-b border-[var(--color-border)]">
+        <div class="relative w-full md:w-96">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <svg lucideSearch class="w-4 h-4 text-[var(--color-text-muted)]"></svg>
+          </div>
+          <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" class="app-input pl-10" placeholder="Search by account, description...">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0 z-10">
+            <tr>
+              <th class="px-6 py-3.5 font-semibold">ID</th>
+              <th class="px-6 py-3.5 font-semibold">Source Account</th>
+              <th class="px-6 py-3.5 font-semibold">Target Account</th>
+              <th class="px-6 py-3.5 font-semibold">Amount</th>
+              <th class="px-6 py-3.5 font-semibold">Frequency</th>
+              <th class="px-6 py-3.5 font-semibold">Status</th>
+              <th class="px-6 py-3.5 font-semibold">Next Exec</th>
+              <th class="px-6 py-3.5 font-semibold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="!isLoading" class="divide-y divide-[var(--color-border)]">
+            <tr *ngFor="let order of filteredOrders" class="hover:bg-[var(--color-surface-alt)] transition-colors">
+              <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-secondary)]">#{{ order.id }}</td>
+              <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-secondary)]">{{ order.sourceAccountNumber }}</td>
+              <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-secondary)]">{{ order.targetAccountNumber }}</td>
+              <td class="px-6 py-4 font-semibold text-[var(--color-text-primary)]">{{ order.amount | number:'1.2-2' }}</td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ order.frequency }}</td>
+              <td class="px-6 py-4">
+                <app-badge [label]="order.status" [color]="getBadgeColor(order.status)"></app-badge>
+              </td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ order.nextExecutionDate | date:'mediumDate' }}</td>
+              <td class="px-6 py-4 text-right space-x-3">
+                <button *ngIf="order.status === 'ACTIVE'" (click)="pause(order.id)" class="text-[var(--color-warning-600)] hover:underline text-xs font-semibold transition-colors">Pause</button>
+                <button *ngIf="order.status === 'PAUSED'" (click)="resume(order.id)" class="text-[var(--color-success-600)] hover:underline text-xs font-semibold transition-colors">Resume</button>
+                <button *ngIf="order.status !== 'CANCELLED' && order.status !== 'COMPLETED'" (click)="cancel(order.id)" class="text-[var(--color-danger-600)] hover:underline text-xs font-semibold transition-colors">Cancel</button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredOrders.length === 0">
+              <td colspan="8" class="px-6 py-12 text-center text-sm text-[var(--color-text-muted)]">No standing orders found.</td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="isLoading">
+            <tr *ngFor="let i of [1,2,3,4,5]">
+              <td colspan="8" class="px-6 py-4">
+                <div class="h-8 bg-[var(--color-border)] rounded animate-pulse"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

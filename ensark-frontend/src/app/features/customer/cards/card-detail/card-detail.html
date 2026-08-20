@@ -1,0 +1,94 @@
+<div class="p-6 space-y-6 max-w-4xl mx-auto">
+
+  <div class="flex items-center gap-4">
+    <a routerLink="/customer/cards" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+      <svg lucideArrowLeft class="w-4 h-4"></svg>
+    </a>
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Card Details</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View your card information.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="space-y-4">
+    <div class="h-48 app-card animate-pulse"></div>
+    <div class="h-64 app-card animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading && card" class="space-y-6">
+    <!-- Card Visual -->
+    <div class="app-card p-8 bg-[var(--color-brand-700)] relative overflow-hidden">
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-8">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-[var(--radius-pill)] text-xs font-semibold bg-white/15 text-white">{{ card.cardNetwork }}</span>
+            <app-badge [label]="card.status" [color]="statusColor(card.status)"></app-badge>
+          </div>
+          <span class="text-sm text-white/80">{{ card.cardType }}</span>
+        </div>
+        <div class="mb-6">
+          <div class="text-xl font-mono text-white tracking-widest">{{ card.cardNumber }}</div>
+        </div>
+        <div class="flex justify-between items-end">
+          <div>
+            <div class="text-xs text-white/60 uppercase tracking-wide">Card Holder</div>
+            <div class="text-sm text-white font-medium">{{ card.cardHolderName }}</div>
+          </div>
+          <div>
+            <div class="text-xs text-white/60 uppercase tracking-wide">Expires</div>
+            <div class="text-sm text-white font-medium">{{ card.expiryDate | date:'MM/yy' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Details -->
+    <div class="app-card p-6">
+      <h2 class="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Card Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Account Number</div>
+          <div class="text-sm text-[var(--color-text-primary)] font-mono">{{ card.accountNumber }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Card ID</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.cardId }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Daily Limit</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.dailyLimit | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Monthly Limit</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.monthlyLimit | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">International Enabled</div>
+          <div class="text-sm" [ngClass]="card.isInternationalEnabled ? 'text-[var(--color-success-600)]' : 'text-[var(--color-text-muted)]'">
+            {{ card.isInternationalEnabled ? 'Yes' : 'No' }}
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Online Transactions</div>
+          <div class="text-sm" [ngClass]="card.isOnlineTransactionEnabled ? 'text-[var(--color-success-600)]' : 'text-[var(--color-text-muted)]'">
+            {{ card.isOnlineTransactionEnabled ? 'Enabled' : 'Disabled' }}
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Applied On</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.createdAt | date:'medium' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Note -->
+    <div class="app-card p-4 bg-[var(--color-surface-alt)] border-[var(--color-border)]">
+      <p class="text-[var(--color-text-secondary)] text-sm">
+        <span class="font-medium text-[var(--color-text-primary)]">Note:</span> Your card is currently <span class="font-medium">{{ card.status }}</span>.
+        <span *ngIf="card.status === 'PENDING'"> A bank representative will review and activate your card shortly.</span>
+        <span *ngIf="card.status === 'ACTIVE'"> You can use this card for transactions.</span>
+      </p>
+    </div>
+  </div>
+
+</div>

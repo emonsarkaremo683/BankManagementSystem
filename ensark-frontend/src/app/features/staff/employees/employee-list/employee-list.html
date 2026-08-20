@@ -1,0 +1,108 @@
+<div class="p-4 sm:p-6 lg:p-8 space-y-6">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Employee Directory</h1>
+      <p class="text-[var(--color-text-secondary)] mt-1 text-sm">Manage staff access, roles, and profiles.</p>
+    </div>
+    <a routerLink="/staff/employees/new" class="app-btn app-btn-primary">
+      <svg lucideUserPlus class="w-4 h-4"></svg>
+      Add Employee
+    </a>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <app-stat-card label="Total Employees" [value]="employees.length" color="brand" [loading]="isLoading">
+      <svg icon lucideUsers class="w-5 h-5"></svg>
+    </app-stat-card>
+    <app-stat-card label="Active" [value]="activeCount" color="success" [loading]="isLoading">
+      <svg icon lucideUserCheck class="w-5 h-5"></svg>
+    </app-stat-card>
+    <app-stat-card label="On Leave" [value]="onLeaveCount" color="warning" [loading]="isLoading">
+      <svg icon lucideUserCog class="w-5 h-5"></svg>
+    </app-stat-card>
+    <app-stat-card label="Inactive / Suspended" [value]="inactiveCount" color="danger" [loading]="isLoading">
+      <svg icon lucideUserCog class="w-5 h-5"></svg>
+    </app-stat-card>
+  </div>
+
+  <!-- Data Table -->
+  <div class="app-table-shell overflow-hidden">
+    <div class="p-4 border-b border-[var(--color-border)]">
+      <div class="relative w-full md:w-96">
+        <svg lucideSearch class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"></svg>
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()"
+               class="app-input pl-10"
+               placeholder="Search employees by name, email, phone...">
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-xs text-[var(--color-text-muted)] uppercase tracking-wide bg-[var(--color-surface-alt)] sticky top-0">
+          <tr>
+            <th scope="col" class="px-6 py-3 font-medium">Employee</th>
+            <th scope="col" class="px-6 py-3 font-medium">Role &amp; Branch</th>
+            <th scope="col" class="px-6 py-3 font-medium">Contact</th>
+            <th scope="col" class="px-6 py-3 font-medium">Status</th>
+            <th scope="col" class="px-6 py-3 font-medium text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isLoading" class="divide-y divide-[var(--color-border)]">
+          <tr *ngFor="let emp of filteredEmployees" class="hover:bg-[var(--color-surface-alt)] transition-colors">
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <div class="h-10 w-10 flex-shrink-0 rounded-full bg-[var(--color-brand-50)] border border-[var(--color-border)] flex items-center justify-center overflow-hidden text-[var(--color-brand-600)] font-semibold">
+                  <img *ngIf="emp.profile" [src]="uploadsUrl + emp.profile" class="h-full w-full object-cover" alt="">
+                  <span *ngIf="!emp.profile">{{ emp.name ? emp.name.charAt(0) : '?' }}</span>
+                </div>
+                <div class="ml-3 min-w-0">
+                  <div class="font-medium text-[var(--color-text-primary)] truncate">{{ emp.name }}</div>
+                  <div class="text-xs text-[var(--color-text-muted)] mt-0.5 truncate">{{ designationLabel(emp.designation) }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-[var(--color-text-primary)]">{{ emp.role }}</div>
+              <div class="text-xs text-[var(--color-text-muted)] mt-0.5">{{ emp.branchName || ('Branch #' + emp.branchId) }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-[var(--color-text-primary)]">{{ emp.email }}</div>
+              <div class="text-xs text-[var(--color-text-muted)] mt-0.5">{{ emp.phone }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <app-badge [label]="emp.status" [color]="statusBadgeColor(emp.status)"></app-badge>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end gap-4">
+                <button (click)="toggleStatus(emp)" class="text-xs font-medium hover:underline transition-colors"
+                        [ngClass]="emp.status === 'ACTIVE' ? 'text-[var(--color-danger-600)]' : 'text-[var(--color-success-600)]'">
+                  {{ emp.status === 'ACTIVE' ? 'Deactivate' : 'Activate' }}
+                </button>
+                <a [routerLink]="['/staff/employees/edit', emp.id]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] flex items-center gap-1 text-xs font-medium">
+                  <svg lucidePencil class="w-3.5 h-3.5"></svg>
+                  Edit
+                </a>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredEmployees.length === 0">
+            <td colspan="5" class="px-6 py-12 text-center text-[var(--color-text-muted)] text-sm">
+              No employees found.
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="isLoading">
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td colspan="5" class="px-6 py-4">
+              <div class="h-10 bg-[var(--color-border)] rounded animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

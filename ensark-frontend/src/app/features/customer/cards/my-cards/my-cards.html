@@ -1,0 +1,105 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">My Cards</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View and manage your bank cards.</p>
+    </div>
+    <a routerLink="/customer/cards/apply" class="app-btn app-btn-primary">
+      <svg lucidePlus class="w-4 h-4"></svg>
+      Apply for Card
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <app-stat-card label="Total Cards" [value]="cards.length" color="brand" [loading]="isLoading">
+      <svg icon lucideCreditCard></svg>
+    </app-stat-card>
+    <app-stat-card label="Active" [value]="activeCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck></svg>
+    </app-stat-card>
+    <app-stat-card label="Blocked / Disabled" [value]="inactiveCount" color="danger" [loading]="isLoading">
+      <svg icon lucideBan></svg>
+    </app-stat-card>
+    <app-stat-card label="Pending" [value]="pendingCount" color="warning" [loading]="isLoading">
+      <svg icon lucideClock></svg>
+    </app-stat-card>
+  </div>
+
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let i of [1,2,3]" class="h-56 rounded-2xl animate-pulse bg-gradient-to-br from-gray-200 to-gray-300"></div>
+  </div>
+
+  <div *ngIf="!isLoading && cards.length === 0" class="app-card p-12 text-center">
+    <svg lucideCreditCard class="w-12 h-12 text-[var(--color-text-muted)] mx-auto mb-4"></svg>
+    <h3 class="text-lg font-medium text-[var(--color-text-primary)] mb-2">No Cards Found</h3>
+    <p class="text-[var(--color-text-muted)] text-sm">You don't have any cards yet.</p>
+  </div>
+
+  <div *ngIf="!isLoading && cards.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let card of cards" class="bank-card" [ngClass]="cardBgClass(card)">
+      <!-- Holographic shimmer overlay -->
+      <div class="card-shimmer"></div>
+
+      <!-- Top row: chip + contactless + network logo -->
+      <div class="card-top-row">
+        <!-- EMV Chip -->
+        <div class="emv-chip">
+          <div class="emv-chip-lines">
+            <div class="emv-line emv-line-1"></div>
+            <div class="emv-line emv-line-2"></div>
+            <div class="emv-line emv-line-3"></div>
+          </div>
+        </div>
+
+        <!-- Contactless icon -->
+        <svg class="contactless-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8.5 16.5a5 5 0 0 1 0-9" opacity="0.4"/>
+          <path d="M12 19a9 9 0 0 1 0-14" opacity="0.7"/>
+          <path d="M15.5 21.5a13 13 0 0 1 0-19"/>
+        </svg>
+
+        <!-- Network logo -->
+        <div *ngIf="card.cardNetwork === 'VISA'" class="network-logo">
+          <span class="visa-text">VISA</span>
+        </div>
+        <div *ngIf="card.cardNetwork === 'MASTERCARD'" class="network-logo mc-logo">
+          <div class="mc-circle mc-circle-red"></div>
+          <div class="mc-circle mc-circle-yellow"></div>
+        </div>
+      </div>
+
+      <!-- Card number + eye toggle -->
+      <div class="card-number-row">
+        <div class="card-number">{{ isCardVisible(card.cardId) ? formatCardNumber(card.cardNumber) : maskedCardNumber(card.cardNumber) }}</div>
+        <button class="eye-toggle" (click)="toggleCardVisibility(card.cardId); $event.stopPropagation()" [title]="isCardVisible(card.cardId) ? 'Hide number' : 'Show number'">
+          <svg *ngIf="!isCardVisible(card.cardId)" lucideEye class="w-4 h-4"></svg>
+          <svg *ngIf="isCardVisible(card.cardId)" lucideEyeOff class="w-4 h-4"></svg>
+        </button>
+      </div>
+
+      <!-- Bottom row: holder, expiry, type -->
+      <div class="card-bottom-row">
+        <div class="card-field">
+          <span class="card-field-label">CARD HOLDER</span>
+          <span class="card-field-value">{{ card.cardHolderName }}</span>
+        </div>
+        <div class="card-field">
+          <span class="card-field-label">EXPIRES</span>
+          <span class="card-field-value">{{ card.expiryDate | date:'MM/yy' }}</span>
+        </div>
+        <div class="card-field">
+          <span class="card-field-label">TYPE</span>
+          <span class="card-field-value">{{ card.cardType }}</span>
+        </div>
+      </div>
+
+      <!-- Status badge + details link -->
+      <div class="card-footer">
+        <app-badge [label]="card.status" [color]="statusColor(card.status)"></app-badge>
+        <a [routerLink]="['/customer/cards', card.cardId]" class="card-details-link">Details →</a>
+      </div>
+    </div>
+  </div>
+
+</div>

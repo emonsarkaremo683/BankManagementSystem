@@ -1,0 +1,117 @@
+<div class="p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+        <span class="p-2 rounded-[var(--radius-input)] bg-[var(--color-info-50)] text-[var(--color-info-600)]">
+          <svg lucideLandmark class="w-5 h-5"></svg>
+        </span>
+        Balance Sheet Statement
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Financial position summary: Assets = Liabilities + Shareholders' Equity</p>
+    </div>
+    <button (click)="exportToPdf()" class="app-btn app-btn-secondary">
+      <svg lucideDownload class="w-4 h-4"></svg>
+      Export PDF
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="app-card p-12 flex justify-center items-center">
+    <div class="w-8 h-8 border-2 border-[var(--color-brand-500)] border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Report -->
+  <div *ngIf="!isLoading && report" class="space-y-6">
+    <div class="app-card p-8 text-center">
+      <span class="text-xs font-semibold text-[var(--color-info-600)] uppercase tracking-widest">EnsarK Bank Management System</span>
+      <h2 class="text-2xl font-extrabold text-[var(--color-text-primary)] mt-1">Statement of Financial Position</h2>
+      <p class="text-xs text-[var(--color-text-muted)] mt-1">Generated {{ today | date:'longDate' }}<span *ngIf="report.branchName"> &middot; {{ report.branchName }}</span></p>
+    </div>
+
+    <!-- Composition chart -->
+    <div class="app-card p-8">
+      <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Composition</h3>
+      <div class="h-64">
+        <canvas #chartCanvas></canvas>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- ASSETS COLUMN -->
+      <div class="app-card p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
+          <h3 class="text-sm font-bold text-[var(--color-success-700)] uppercase tracking-wider">I. Assets</h3>
+          <span class="text-xs text-[var(--color-text-muted)] font-mono">ENSR-BS-01</span>
+        </div>
+
+        <div *ngIf="report.assets" class="space-y-2">
+          <h4 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] pt-2">{{ report.assets.title }}</h4>
+          <div *ngFor="let item of report.assets.lines" class="flex justify-between text-sm py-1.5 text-[var(--color-text-secondary)] border-b border-[var(--color-border)]">
+            <span>{{ item.accountName }} <span *ngIf="item.glCode" class="text-xs text-[var(--color-text-muted)] font-mono">({{ item.glCode }})</span></span>
+            <span class="font-mono text-[var(--color-text-primary)]">{{ item.amount | currency:'BDT':'symbol':'1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between text-xs font-semibold py-1.5 px-2 rounded bg-[var(--color-success-50)] text-[var(--color-success-700)]">
+            <span>Subtotal {{ report.assets.title }}</span>
+            <span class="font-mono">{{ report.assets.total | currency:'BDT':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t-2 border-[var(--color-border-strong)] flex justify-between text-base font-bold text-[var(--color-text-primary)] bg-[var(--color-surface-alt)] p-4 rounded-[var(--radius-input)]">
+          <span>Total Assets</span>
+          <span class="text-[var(--color-success-700)] font-mono">{{ report.totalAssets | currency:'BDT':'symbol':'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <!-- LIABILITIES & EQUITY COLUMN -->
+      <div class="app-card p-6 space-y-6">
+        <!-- LIABILITIES -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
+            <h3 class="text-sm font-bold text-[var(--color-danger-600)] uppercase tracking-wider">II. Liabilities</h3>
+            <span class="text-xs text-[var(--color-text-muted)] font-mono">ENSR-BS-02</span>
+          </div>
+
+          <div *ngIf="report.liabilities" class="space-y-2">
+            <h4 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] pt-2">{{ report.liabilities.title }}</h4>
+            <div *ngFor="let item of report.liabilities.lines" class="flex justify-between text-sm py-1.5 text-[var(--color-text-secondary)] border-b border-[var(--color-border)]">
+              <span>{{ item.accountName }} <span *ngIf="item.glCode" class="text-xs text-[var(--color-text-muted)] font-mono">({{ item.glCode }})</span></span>
+              <span class="font-mono text-[var(--color-text-primary)]">{{ item.amount | currency:'BDT':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="flex justify-between text-xs font-semibold py-1.5 px-2 rounded bg-[var(--color-danger-50)] text-[var(--color-danger-700)]">
+              <span>Subtotal {{ report.liabilities.title }}</span>
+              <span class="font-mono">{{ report.liabilities.total | currency:'BDT':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- EQUITY -->
+        <div class="space-y-4 pt-4 border-t border-[var(--color-border)]">
+          <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
+            <h3 class="text-sm font-bold text-[var(--color-info-600)] uppercase tracking-wider">III. Shareholders' Equity</h3>
+            <span class="text-xs text-[var(--color-text-muted)] font-mono">ENSR-BS-03</span>
+          </div>
+
+          <div *ngIf="report.equity" class="space-y-2">
+            <h4 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] pt-2">{{ report.equity.title }}</h4>
+            <div *ngFor="let item of report.equity.lines" class="flex justify-between text-sm py-1.5 text-[var(--color-text-secondary)] border-b border-[var(--color-border)]">
+              <span>{{ item.accountName }} <span *ngIf="item.glCode" class="text-xs text-[var(--color-text-muted)] font-mono">({{ item.glCode }})</span></span>
+              <span class="font-mono text-[var(--color-text-primary)]">{{ item.amount | currency:'BDT':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="flex justify-between text-xs font-semibold py-1.5 px-2 rounded bg-[var(--color-info-50)] text-[var(--color-info-700)]">
+              <span>Subtotal {{ report.equity.title }}</span>
+              <span class="font-mono">{{ report.equity.total | currency:'BDT':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t-2 border-[var(--color-border-strong)] flex justify-between text-base font-bold text-[var(--color-text-primary)] bg-[var(--color-surface-alt)] p-4 rounded-[var(--radius-input)]">
+          <span>Total Liabilities & Equity</span>
+          <span class="text-[var(--color-success-700)] font-mono">{{ report.totalLiabilitiesAndEquity | currency:'BDT':'symbol':'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,246 @@
+/* ── Bank Card ─────────────────────────────────────────────── */
+
+.bank-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.586 / 1;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.bank-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ── VISA ──────────────────────────────────────────────────── */
+
+.card-visa {
+  background: linear-gradient(135deg, #1a1f71 0%, #2d3bb5 40%, #4a6cf7 100%);
+}
+
+/* ── MASTERCARD ────────────────────────────────────────────── */
+
+.card-mc {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+}
+
+/* ── Holographic shimmer ───────────────────────────────────── */
+
+.card-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bank-card:hover .card-shimmer {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 38%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 62%,
+    transparent 70%
+  );
+}
+
+/* ── Top row: chip + contactless + network ─────────────────── */
+
+.card-top-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* EMV Chip */
+.emv-chip {
+  width: 40px;
+  height: 30px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e8d5a3 0%, #f5e6b8 40%, #d4b96a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.emv-chip-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 20px;
+}
+
+.emv-line {
+  height: 1px;
+  background: #b8984a;
+  border-radius: 1px;
+}
+
+.emv-line-1 { width: 100%; }
+.emv-line-2 { width: 70%; margin: 0 auto; }
+.emv-line-3 { width: 100%; }
+
+/* Contactless icon */
+.contactless-icon {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  transform: rotate(90deg);
+}
+
+/* Network logo */
+.network-logo {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.visa-text {
+  font-size: 26px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.mc-logo {
+  position: relative;
+  width: 48px;
+  height: 30px;
+}
+
+.mc-circle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  top: 0;
+}
+
+.mc-circle-red {
+  background: #eb001b;
+  left: 0;
+}
+
+.mc-circle-yellow {
+  background: #f79e1b;
+  left: 16px;
+}
+
+/* ── Card number ───────────────────────────────────────────── */
+
+.card-number-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.card-number {
+  font-size: 20px;
+  font-family: 'Courier New', 'SF Mono', 'Consolas', monospace;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.eye-toggle {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.eye-toggle:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+/* ── Bottom row ────────────────────────────────────────────── */
+
+.card-bottom-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.card-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-field-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.card-field-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+
+.card-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card-details-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.card-details-link:hover {
+  color: #fff;
+}

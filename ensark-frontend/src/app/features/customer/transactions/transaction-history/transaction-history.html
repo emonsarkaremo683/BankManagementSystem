@@ -1,0 +1,70 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Transaction History</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View all your recent transactions.</p>
+    </div>
+    <button (click)="exportToPdf()" class="app-btn app-btn-secondary">
+      <svg lucideDownload class="w-4 h-4"></svg>
+      Download PDF
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <app-stat-card label="Total Transactions" [value]="transactions.length" color="brand" [loading]="isLoading">
+      <svg icon lucideArrowLeftRight></svg>
+    </app-stat-card>
+    <app-stat-card label="Money In" [value]="(moneyIn | number:'1.2-2') ?? '0.00'" color="success" [loading]="isLoading">
+      <svg icon lucideArrowUpRight></svg>
+    </app-stat-card>
+    <app-stat-card label="Money Out" [value]="(moneyOut | number:'1.2-2') ?? '0.00'" color="danger" [loading]="isLoading">
+      <svg icon lucideArrowDownRight></svg>
+    </app-stat-card>
+  </div>
+
+  <div class="app-table-shell">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+          <tr>
+            <th class="px-6 py-3 font-semibold">Reference</th>
+            <th class="px-6 py-3 font-semibold">Type</th>
+            <th class="px-6 py-3 font-semibold">From / To</th>
+            <th class="px-6 py-3 font-semibold">Amount</th>
+            <th class="px-6 py-3 font-semibold">Status</th>
+            <th class="px-6 py-3 font-semibold">Date</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isLoading">
+          <tr *ngFor="let txn of transactions" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+            <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-primary)]">{{ txn.transactionId }}</td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ txn.transactionType }}</td>
+            <td class="px-6 py-4">
+              <div class="text-xs text-[var(--color-text-primary)]">{{ txn.counterpartyAccountNumber || '-' }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ txn.counterpartyName || txn.particulars }}</div>
+            </td>
+            <td class="px-6 py-4 font-medium" [ngClass]="txn.entryType === 'CREDIT' ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+              {{ txn.entryType === 'CREDIT' ? '+' : '-' }}{{ txn.amount | number:'1.2-2' }}
+            </td>
+            <td class="px-6 py-4">
+              <app-badge [label]="txn.status || ''" [color]="statusColor(txn.status)"></app-badge>
+            </td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ txn.date | date:'medium' }}</td>
+          </tr>
+          <tr *ngIf="transactions.length === 0">
+            <td colspan="6" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No transactions found.</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="isLoading">
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td colspan="6" class="px-6 py-4">
+              <div class="h-8 bg-[var(--color-surface-alt)] rounded animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

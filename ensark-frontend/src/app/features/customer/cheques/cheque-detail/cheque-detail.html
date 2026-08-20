@@ -1,0 +1,103 @@
+<div class="p-6 space-y-6 max-w-6xl mx-auto">
+
+  <button (click)="goBack()" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] text-sm flex items-center transition-colors">
+    <svg lucideArrowLeft class="w-4 h-4 mr-1"></svg>
+    Back to My Cheque Books
+  </button>
+
+  <div *ngIf="isLoading" class="space-y-4">
+    <div class="h-40 bg-[var(--color-surface-alt)] rounded-[var(--radius-card)] animate-pulse"></div>
+    <div class="h-64 bg-[var(--color-surface-alt)] rounded-[var(--radius-card)] animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="app-card p-8 text-center">
+    <div class="text-[var(--color-danger-600)] text-sm font-medium mb-2">Something went wrong</div>
+    <p class="text-[var(--color-text-muted)] text-sm mb-4">{{ errorMessage }}</p>
+    <button (click)="loadChequeBook(chequeBookId)" class="app-btn app-btn-primary">Retry</button>
+  </div>
+
+  <ng-container *ngIf="!isLoading && chequeBook">
+    <!-- Cheque Book Summary -->
+    <div class="app-card p-6">
+      <div class="flex flex-col md:flex-row justify-between items-start mb-6 gap-3">
+        <div>
+          <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Cheque Book #{{ chequeBook.bookSerialNumber }}</h1>
+          <p class="text-sm text-[var(--color-text-muted)] mt-1">Account: {{ chequeBook.accountNumber }}</p>
+        </div>
+        <app-badge [label]="chequeBook.status" [color]="bookStatusColor(chequeBook.status)"></app-badge>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Total Leaves</div>
+          <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ chequeBook.numberOfLeaves }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Leaf Range</div>
+          <div class="text-sm text-[var(--color-text-secondary)]">{{ chequeBook.startLeafNumber }} - {{ chequeBook.endLeafNumber }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Applied On</div>
+          <div class="text-sm text-[var(--color-text-secondary)]">{{ chequeBook.applicationDate ? (chequeBook.applicationDate | date:'mediumDate') : 'N/A' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Approved On</div>
+          <div class="text-sm text-[var(--color-text-secondary)]">{{ chequeBook.approvalDate ? (chequeBook.approvalDate | date:'mediumDate') : 'N/A' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Delivered On</div>
+          <div class="text-sm text-[var(--color-text-secondary)]">{{ chequeBook.deliveryDate ? (chequeBook.deliveryDate | date:'mediumDate') : 'N/A' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Activated On</div>
+          <div class="text-sm text-[var(--color-text-secondary)]">{{ chequeBook.activationDate ? (chequeBook.activationDate | date:'mediumDate') : 'N/A' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Expires On</div>
+          <div class="text-sm text-[var(--color-text-secondary)]">{{ chequeBook.expiryDate ? (chequeBook.expiryDate | date:'mediumDate') : 'N/A' }}</div>
+        </div>
+        <div *ngIf="chequeBook.rejectionReason">
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rejection Reason</div>
+          <div class="text-sm text-[var(--color-danger-600)]">{{ chequeBook.rejectionReason }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cheque Leaves -->
+    <div class="app-table-shell">
+      <div class="p-6 border-b border-[var(--color-border)]">
+        <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Cheque Leaves</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+            <tr>
+              <th scope="col" class="px-6 py-3 font-semibold">Leaf #</th>
+              <th scope="col" class="px-6 py-3 font-semibold">Cheque No</th>
+              <th scope="col" class="px-6 py-3 font-semibold">Payee</th>
+              <th scope="col" class="px-6 py-3 font-semibold">Amount</th>
+              <th scope="col" class="px-6 py-3 font-semibold">Status</th>
+              <th scope="col" class="px-6 py-3 font-semibold">Issued</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let leaf of chequeBook.leaves" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ leaf.leafNumber }}</td>
+              <td class="px-6 py-4 font-mono text-xs font-medium text-[var(--color-text-primary)]">{{ leaf.chequeNumber }}</td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ leaf.payeeName || '-' }}</td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ leaf.amount ? (leaf.amount | number:'1.2-2') : '-' }}</td>
+              <td class="px-6 py-4">
+                <app-badge [label]="leaf.status" [color]="leafStatusColor(leaf.status)"></app-badge>
+              </td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ leaf.issueDate ? (leaf.issueDate | date:'mediumDate') : '-' }}</td>
+            </tr>
+            <tr *ngIf="!chequeBook.leaves || chequeBook.leaves.length === 0">
+              <td colspan="6" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No leaves found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

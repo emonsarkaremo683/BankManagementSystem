@@ -1,0 +1,155 @@
+<div class="p-6 space-y-6">
+
+  <div *ngIf="isLoading" class="space-y-4">
+    <div class="h-32 app-card animate-pulse"></div>
+    <div class="h-64 app-card animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading && notFound" class="app-card p-10 text-center space-y-3">
+    <svg lucideTriangleAlert class="w-8 h-8 text-[var(--color-warning-600)] mx-auto"></svg>
+    <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">ATM not found</h2>
+    <p class="text-sm text-[var(--color-text-muted)]">This ATM may have been removed or the link is incorrect.</p>
+    <a routerLink="/staff/atms" class="app-btn app-btn-secondary inline-flex mt-2">
+      <svg lucideArrowLeft class="w-4 h-4"></svg>
+      Back to ATM List
+    </a>
+  </div>
+
+  <div *ngIf="!isLoading && atm" class="space-y-6">
+    <!-- Header -->
+    <div class="app-card flex flex-col md:flex-row md:items-center justify-between gap-4 p-6">
+      <div class="flex items-center gap-4">
+        <span class="p-3 rounded-[var(--radius-input)] bg-[var(--color-brand-50)] text-[var(--color-brand-600)]">
+          <svg lucideLandmark class="w-7 h-7"></svg>
+        </span>
+        <div>
+          <div class="flex items-center gap-3">
+            <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">ATM Terminal #{{ atm.atmId }}</h1>
+            <app-badge [label]="atm.status" [color]="atmStatusColor(atm.status)"></app-badge>
+          </div>
+          <p class="text-sm text-[var(--color-text-muted)] mt-0.5 flex items-center gap-1">
+            <svg lucideMapPin class="w-3.5 h-3.5"></svg>
+            {{ atm.address }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a [routerLink]="['/staff/atms/refill', atm.atmId]" class="app-btn app-btn-primary">
+          <svg lucideRefreshCw class="w-4 h-4"></svg>
+          Refill Cash Vault
+        </a>
+        <a routerLink="/staff/atms" class="app-btn app-btn-secondary">
+          Back to List
+        </a>
+      </div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="app-card p-6 space-y-4">
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Vault & Cash Info</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Available Balance</span>
+            <span class="text-[var(--color-success-600)] font-semibold">{{ atm.availableBalance | currency:'BDT':'symbol':'1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Vault Capacity Limit</span>
+            <span class="text-[var(--color-text-primary)] font-medium">{{ atm.limit | currency:'BDT':'symbol':'1.0-0' }}</span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-[var(--color-text-muted)]">Cash Percentage</span>
+            <span class="text-[var(--color-brand-600)] font-semibold">{{ cashPercent() }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-card p-6 space-y-4">
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Hardware & Network</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Routing Number</span>
+            <span class="text-[var(--color-text-primary)] font-mono">{{ atm.routingNumber }}</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Vault Account Number</span>
+            <span class="text-[var(--color-text-primary)] font-mono">{{ atm.accNumber }}</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Parent Branch</span>
+            <span class="text-[var(--color-text-secondary)] font-medium">{{ atm.branchName || 'Main Branch' }}</span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-[var(--color-text-muted)]">Police Station Jurisdiction</span>
+            <span class="text-[var(--color-text-secondary)]">{{ atm.policeStationName || 'Central' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-card p-6 flex flex-col justify-between space-y-4">
+        <div>
+          <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Quick Status Toggle</h3>
+          <p class="text-xs text-[var(--color-text-muted)]">Change operational status for maintenance or security lockout.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button (click)="setStatus('ACTIVE')" [disabled]="atm.status === 'ACTIVE'"
+            class="py-2.5 px-3 rounded-[var(--radius-btn)] border border-[var(--color-success-500)]/30 bg-[var(--color-success-50)] hover:opacity-80 text-[var(--color-success-700)] text-xs font-medium transition-all disabled:opacity-40">
+            Set Active
+          </button>
+          <button (click)="setStatus('MAINTENANCE')" [disabled]="atm.status === 'MAINTENANCE'"
+            class="py-2.5 px-3 rounded-[var(--radius-btn)] border border-[var(--color-warning-500)]/30 bg-[var(--color-warning-50)] hover:opacity-80 text-[var(--color-warning-700)] text-xs font-medium transition-all disabled:opacity-40">
+            Maintenance
+          </button>
+          <button (click)="setStatus('OFFLINE')" [disabled]="atm.status === 'OFFLINE'"
+            class="col-span-2 py-2.5 px-3 rounded-[var(--radius-btn)] border border-[var(--color-danger-500)]/30 bg-[var(--color-danger-50)] hover:opacity-80 text-[var(--color-danger-700)] text-xs font-medium transition-all disabled:opacity-40">
+            Take Offline
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction Logs Table -->
+    <div class="app-table-shell">
+      <div class="p-6 border-b border-[var(--color-border)]">
+        <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Recent ATM Terminal Logs</h2>
+      </div>
+
+      <div *ngIf="transactionsError" class="px-6 py-3 bg-[var(--color-warning-50)] text-[var(--color-warning-700)] text-xs flex items-center gap-2">
+        <svg lucideTriangleAlert class="w-3.5 h-3.5 shrink-0"></svg>
+        Unable to load transaction logs right now.
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+            <tr>
+              <th class="px-6 py-3 font-semibold">Ref #</th>
+              <th class="px-6 py-3 font-semibold">Timestamp</th>
+              <th class="px-6 py-3 font-semibold">Card Used</th>
+              <th class="px-6 py-3 font-semibold">Type</th>
+              <th class="px-6 py-3 font-semibold">Amount</th>
+              <th class="px-6 py-3 font-semibold">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let txn of transactions" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+              <td class="px-6 py-3.5 font-mono text-[var(--color-brand-600)] text-xs">{{ txn.transactionResponse?.referenceNo }}</td>
+              <td class="px-6 py-3.5 text-xs text-[var(--color-text-muted)]">{{ txn.transactionResponse?.createdAt | date:'medium' }}</td>
+              <td class="px-6 py-3.5 font-mono text-xs text-[var(--color-text-secondary)]">{{ txn.cardNumber }}</td>
+              <td class="px-6 py-3.5 text-xs font-medium text-[var(--color-text-secondary)]">{{ txn.transactionType }}</td>
+              <td class="px-6 py-3.5 font-semibold text-[var(--color-text-primary)]">{{ txn.transactionResponse?.amount | currency:'BDT':'symbol':'1.0-0' }}</td>
+              <td class="px-6 py-3.5">
+                <app-badge [label]="txn.transactionResponse?.status || 'UNKNOWN'" [color]="txnStatusColor(txn.transactionResponse?.status)"></app-badge>
+              </td>
+            </tr>
+            <tr *ngIf="transactions.length === 0 && !transactionsError">
+              <td colspan="6" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No transactions recorded for this ATM.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

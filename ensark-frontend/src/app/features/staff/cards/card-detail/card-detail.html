@@ -1,0 +1,157 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex items-center gap-4">
+    <button (click)="goBack()" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+      <svg lucideArrowLeft class="w-4 h-4"></svg>
+    </button>
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Card Details</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View card information, usage and manage status.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="space-y-4">
+    <div class="h-48 app-card animate-pulse"></div>
+    <div class="h-40 app-card animate-pulse"></div>
+    <div class="h-40 app-card animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading && card" class="space-y-6">
+    <!-- Card Visual -->
+    <div class="app-card p-8 bg-[var(--color-brand-700)] relative overflow-hidden">
+      <div class="relative z-10">
+        <div class="flex justify-between items-start mb-8">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-[var(--radius-pill)] text-xs font-semibold bg-white/15 text-white">{{ card.cardNetwork }}</span>
+            <app-badge [label]="card.status" [color]="statusColor(card.status)"></app-badge>
+          </div>
+          <span class="text-sm text-white/80">{{ card.cardType }}</span>
+        </div>
+        <div class="mb-6">
+          <div class="text-xl font-mono text-white tracking-widest">{{ card.cardNumber }}</div>
+        </div>
+        <div class="flex justify-between items-end">
+          <div>
+            <div class="text-xs text-white/60 uppercase tracking-wide">Card Holder</div>
+            <div class="text-sm text-white font-medium">{{ card.cardHolderName }}</div>
+          </div>
+          <div>
+            <div class="text-xs text-white/60 uppercase tracking-wide">Expires</div>
+            <div class="text-sm text-white font-medium">{{ card.expiryDate | date:'MM/yy' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage Panel -->
+    <div class="app-card p-6">
+      <h2 class="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Usage</h2>
+
+      <div *ngIf="isUsageLoading" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="h-20 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] animate-pulse"></div>
+        <div class="h-20 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] animate-pulse"></div>
+      </div>
+
+      <div *ngIf="!isUsageLoading && usage" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="flex items-baseline justify-between mb-2">
+            <span class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Daily Usage</span>
+            <span class="text-sm font-medium text-[var(--color-text-primary)]">{{ usage.currentDailyUsage | number:'1.2-2' }} / {{ usage.dailyLimit | number:'1.2-2' }}</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
+            <div class="h-full rounded-full transition-all"
+                 [style.width.%]="usagePercent(usage.currentDailyUsage, usage.dailyLimit)"
+                 [style.background-color]="usageBarColor(usagePercent(usage.currentDailyUsage, usage.dailyLimit))"></div>
+          </div>
+          <div class="text-xs text-[var(--color-text-muted)] mt-1">Remaining: {{ usage.dailyRemaining | number:'1.2-2' }}</div>
+        </div>
+
+        <div>
+          <div class="flex items-baseline justify-between mb-2">
+            <span class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Monthly Usage</span>
+            <span class="text-sm font-medium text-[var(--color-text-primary)]">{{ usage.currentMonthlyUsage | number:'1.2-2' }} / {{ usage.monthlyLimit | number:'1.2-2' }}</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
+            <div class="h-full rounded-full transition-all"
+                 [style.width.%]="usagePercent(usage.currentMonthlyUsage, usage.monthlyLimit)"
+                 [style.background-color]="usageBarColor(usagePercent(usage.currentMonthlyUsage, usage.monthlyLimit))"></div>
+          </div>
+          <div class="text-xs text-[var(--color-text-muted)] mt-1">Remaining: {{ usage.monthlyRemaining | number:'1.2-2' }}</div>
+        </div>
+      </div>
+
+      <div *ngIf="!isUsageLoading && !usage" class="text-sm text-[var(--color-text-muted)]">Usage data unavailable.</div>
+    </div>
+
+    <!-- Card Details -->
+    <div class="app-card p-6">
+      <h2 class="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Card Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Account Number</div>
+          <div class="text-sm text-[var(--color-text-primary)] font-mono">{{ card.accountNumber }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Card ID</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.cardId }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Daily Limit</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.dailyLimit | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Monthly Limit</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.monthlyLimit | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">International Enabled</div>
+          <div class="text-sm" [ngClass]="card.isInternationalEnabled ? 'text-[var(--color-success-600)]' : 'text-[var(--color-text-muted)]'">
+            {{ card.isInternationalEnabled ? 'Yes' : 'No' }}
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Online Transactions</div>
+          <div class="text-sm" [ngClass]="card.isOnlineTransactionEnabled ? 'text-[var(--color-success-600)]' : 'text-[var(--color-text-muted)]'">
+            {{ card.isOnlineTransactionEnabled ? 'Enabled' : 'Disabled' }}
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Created At</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ card.createdAt | date:'medium' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="app-card p-6">
+      <h2 class="text-sm font-semibold text-[var(--color-text-primary)] mb-4">Actions</h2>
+      <div class="flex flex-wrap gap-3">
+        <button *ngIf="card.status !== 'ACTIVE'" (click)="updateStatus(CardStatus.ACTIVE)" [disabled]="isActionLoading"
+          class="app-btn app-btn-primary !bg-[var(--color-success-600)] hover:!bg-[var(--color-success-700)] text-sm">
+          <svg lucideLockOpen class="w-4 h-4"></svg>
+          Activate
+        </button>
+        <button *ngIf="card.status !== 'BLOCKED'" (click)="updateStatus(CardStatus.BLOCKED)" [disabled]="isActionLoading"
+          class="app-btn app-btn-danger text-sm">
+          <svg lucideBan class="w-4 h-4"></svg>
+          Block
+        </button>
+        <button *ngIf="card.status !== 'CLOSED'" (click)="updateStatus(CardStatus.CLOSED)" [disabled]="isActionLoading"
+          class="app-btn app-btn-secondary text-sm">
+          Close
+        </button>
+        <button (click)="renewCard()" [disabled]="isActionLoading"
+          class="app-btn app-btn-secondary text-sm">
+          <svg lucideRefreshCw class="w-4 h-4"></svg>
+          Renew
+        </button>
+        <button *ngIf="card.status !== 'BLOCKED'" (click)="reportLostOrStolen()" [disabled]="isActionLoading"
+          class="app-btn app-btn-secondary !text-[var(--color-danger-600)] text-sm">
+          <svg lucideShieldAlert class="w-4 h-4"></svg>
+          Report Lost / Stolen
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

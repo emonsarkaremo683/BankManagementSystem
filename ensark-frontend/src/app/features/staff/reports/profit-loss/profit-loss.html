@@ -1,0 +1,92 @@
+<div class="p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+        <span class="p-2 rounded-[var(--radius-input)] bg-[var(--color-success-50)] text-[var(--color-success-600)]">
+          <svg lucideChartColumn class="w-5 h-5"></svg>
+        </span>
+        Profit & Loss Statement
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Financial performance summary: income minus expenses</p>
+    </div>
+    <button (click)="exportToPdf()" class="app-btn app-btn-secondary" [disabled]="!report">
+      <svg lucideDownload class="w-4 h-4"></svg>
+      Export PDF
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="app-card p-12 flex justify-center items-center">
+    <div class="w-8 h-8 border-2 border-[var(--color-brand-500)] border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && !report" class="app-card p-10 max-w-3xl">
+    <div class="flex flex-col items-center text-center gap-4">
+      <span class="p-3 rounded-full bg-[var(--color-warning-50)] text-[var(--color-warning-600)]">
+        <svg lucideCircleAlert class="w-7 h-7"></svg>
+      </span>
+      <div>
+        <h2 class="text-lg font-bold text-[var(--color-text-primary)]">No data available</h2>
+        <p class="text-sm text-[var(--color-text-secondary)] mt-2 max-w-md">
+          No income or expense accounts found. Create transactions to generate P&L data.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report content -->
+  <div *ngIf="!isLoading && report" class="space-y-6">
+
+    <!-- INCOME -->
+    <div class="app-card p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-2">
+        <h3 class="text-sm font-bold text-[var(--color-success-700)] uppercase tracking-wider">Income</h3>
+      </div>
+
+      <div *ngIf="report.income.lines.length === 0" class="text-sm text-[var(--color-text-muted)] py-2">No income accounts found.</div>
+
+      <div *ngFor="let line of report.income.lines" class="flex justify-between text-sm py-2 border-b border-[var(--color-border)] text-[var(--color-text-secondary)]">
+        <span>{{ line.accountName }}</span>
+        <span class="font-mono text-[var(--color-text-primary)] font-medium">{{ line.amount | currency:'BDT':'symbol':'1.0-2' }}</span>
+      </div>
+
+      <div class="flex justify-between text-sm font-bold text-[var(--color-success-700)] bg-[var(--color-success-50)] p-3.5 rounded-[var(--radius-input)]">
+        <span>Total Income</span>
+        <span class="font-mono text-base">{{ report.income.total | currency:'BDT':'symbol':'1.0-2' }}</span>
+      </div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div class="app-card p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-2">
+        <h3 class="text-sm font-bold text-[var(--color-danger-600)] uppercase tracking-wider">Expenses</h3>
+      </div>
+
+      <div *ngIf="report.expenses.lines.length === 0" class="text-sm text-[var(--color-text-muted)] py-2">No expense accounts found.</div>
+
+      <div *ngFor="let line of report.expenses.lines" class="flex justify-between text-sm py-2 border-b border-[var(--color-border)] text-[var(--color-text-secondary)]">
+        <span>{{ line.accountName }}</span>
+        <span class="font-mono text-[var(--color-text-primary)] font-medium">{{ line.amount | currency:'BDT':'symbol':'1.0-2' }}</span>
+      </div>
+
+      <div class="flex justify-between text-sm font-bold text-[var(--color-danger-700)] bg-[var(--color-danger-50)] p-3.5 rounded-[var(--radius-input)]">
+        <span>Total Expenses</span>
+        <span class="font-mono text-base">{{ report.expenses.total | currency:'BDT':'symbol':'1.0-2' }}</span>
+      </div>
+    </div>
+
+    <!-- NET PROFIT -->
+    <div class="app-card p-6">
+      <div class="flex justify-between items-center text-lg font-extrabold text-[var(--color-text-primary)]">
+        <span class="uppercase tracking-wider">Net Profit</span>
+        <span class="font-mono text-2xl" [ngClass]="report.netProfit >= 0 ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+          {{ report.netProfit | currency:'BDT':'symbol':'1.0-2' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>EnsarkBank</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <!--
+    sockjs-client (used by websocket.service.ts) references the Node global
+    `global` at module load time. Angular's dev-server pre-bundles it with
+    Vite's own esbuild pass, which isn't reachable via angular.json's
+    "define"/"polyfills" options — but a plain synchronous inline script
+    always runs before any deferred `type="module"` script, regardless of
+    bundler internals, so this is the one place guaranteed to run first.
+  -->
+  <script>window.global = window;</script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

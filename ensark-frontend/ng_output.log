@@ -1,0 +1,1639 @@
+> Building...
+√ Building...
+Initial chunk files | Names               |  Raw size
+main.js             | main                | 635.35 kB | 
+styles.css          | styles              | 114.60 kB | 
+chunk-TKJU4JPR.js   | -                   |   4.26 kB | 
+chunk-IHRCTTTF.js   | -                   |   4.03 kB | 
+chunk-PYZV4VDZ.js   | -                   |   1.79 kB | 
+chunk-DGSMMRY5.js   | -                   |   1.68 kB | 
+chunk-XYFN4IMG.js   | -                   |   1.53 kB | 
+chunk-QW6JWL7N.js   | -                   |   1.45 kB | 
+
+                    | Initial total       | 764.68 kB
+
+Lazy chunk files    | Names               |  Raw size
+chunk-TBPX7YCK.js   | transfer-money      |  51.11 kB | 
+chunk-CXFH5GI7.js   | employee-form       |  49.48 kB | 
+chunk-G6S3SNW2.js   | my-profile          |  38.68 kB | 
+chunk-HRJ5R4SP.js   | loan-detail         |  35.14 kB | 
+chunk-YMCFFIKF.js   | kyc                 |  34.82 kB | 
+chunk-62FZKZWL.js   | account-create      |  31.52 kB | 
+chunk-34OQLWZQ.js   | kyc-review          |  28.98 kB | 
+chunk-Z3S7MSPU.js   | branch-form         |  28.21 kB | 
+chunk-C4PYFZIR.js   | cheque-detail       |  26.95 kB | 
+chunk-T4HH7KRL.js   | atm-detail          |  25.55 kB | 
+chunk-KJSJBM3B.js   | account-detail      |  25.36 kB | 
+chunk-KPZPQC34.js   | my-standing-orders  |  25.12 kB | 
+chunk-AOC6OIX4.js   | standing-order-form |  24.19 kB | 
+chunk-4BDK6TK3.js   | apply-card          |  24.12 kB | 
+chunk-EBGJLHD3.js   | balance-sheet       |  24.07 kB | 
+...and 47 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [6.517 seconds] - 2026-08-09T09:44:42.256Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 635.52 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-ICEUY2JO.js   | cashier-transaction-form |  24.52 kB | 
+
+Application bundle generation complete. [4.526 seconds] - 2026-08-09T10:07:43.419Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 635.75 kB | 
+
+Application bundle generation complete. [0.632 seconds] - 2026-08-09T10:07:46.119Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.46 kB | 
+
+Application bundle generation complete. [1.178 seconds] - 2026-08-09T10:08:00.956Z
+
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names            |  Raw size
+main.js             | main             | 636.46 kB | 
+styles.css          | styles           | 115.31 kB | 
+
+Lazy chunk files    | Names            |  Raw size
+chunk-EXII5YIH.js   | transaction-list |  21.75 kB | 
+
+Application bundle generation complete. [1.002 seconds] - 2026-08-09T10:08:16.709Z
+
+Stylesheet update sent to client(s).
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names           |  Raw size
+main.js             | main            | 636.46 kB | 
+
+Lazy chunk files    | Names           |  Raw size
+chunk-7JDXKRW6.js   | kyc             |  34.82 kB | 
+chunk-D57F2QNQ.js   | kyc-review      |  28.98 kB | 
+chunk-AE6ALH7V.js   | customer-detail |  22.70 kB | 
+chunk-YEETWGFQ.js   | -               |   2.28 kB | 
+
+Application bundle generation complete. [1.291 seconds] - 2026-08-09T10:19:37.714Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.772 seconds] - 2026-08-09T10:19:43.031Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2740: Type 'KycResponse' is missing the following properties from type 'any[]': length, pop, push, concat, and 29 more.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:66:8:
+[37m      66 │         [32mthis.kycDocuments[37m = docs;
+         ╵         [32m~~~~~~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.952 seconds] - 2026-08-09T10:19:58.974Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2740: Type 'KycResponse' is missing the following properties from type 'any[]': length, pop, push, concat, and 29 more.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:66:8:
+[37m      66 │         [32mthis.kycDocuments[37m = docs;
+         ╵         [32m~~~~~~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [1.010 seconds] - 2026-08-09T10:20:03.963Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2740: Type 'KycResponse' is missing the following properties from type 'KycDocumentInfo[]': length, pop, push, concat, and 29 more.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:66:8:
+[37m      66 │         [32mthis.kycDocuments[37m = docs;
+         ╵         [32m~~~~~~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.46 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-TKJU4JPR.js   | -                        |   4.26 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-PYZV4VDZ.js   | -                        |   1.79 kB | 
+chunk-DGSMMRY5.js   | -                        |   1.68 kB | 
+chunk-XYFN4IMG.js   | -                        |   1.53 kB | 
+chunk-QW6JWL7N.js   | -                        |   1.45 kB | 
+
+                    | Initial total            | 766.50 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-TBPX7YCK.js   | transfer-money           |  51.11 kB | 
+chunk-CXFH5GI7.js   | employee-form            |  49.48 kB | 
+chunk-G6S3SNW2.js   | my-profile               |  38.68 kB | 
+chunk-HRJ5R4SP.js   | loan-detail              |  35.14 kB | 
+chunk-HA4TGJS6.js   | kyc                      |  34.82 kB | 
+chunk-62FZKZWL.js   | account-create           |  31.52 kB | 
+chunk-XBKYWYMV.js   | kyc-review               |  29.09 kB | 
+chunk-Z3S7MSPU.js   | branch-form              |  28.21 kB | 
+chunk-C4PYFZIR.js   | cheque-detail            |  26.95 kB | 
+chunk-T4HH7KRL.js   | atm-detail               |  25.55 kB | 
+chunk-KJSJBM3B.js   | account-detail           |  25.36 kB | 
+chunk-KPZPQC34.js   | my-standing-orders       |  25.12 kB | 
+chunk-ICEUY2JO.js   | cashier-transaction-form |  24.52 kB | 
+chunk-AOC6OIX4.js   | standing-order-form      |  24.19 kB | 
+chunk-4BDK6TK3.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.856 seconds] - 2026-08-09T10:20:10.572Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.635 seconds] - 2026-08-09T10:21:33.691Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'KycService'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/customer-detail/customer-detail.ts:20:30:
+[37m      20 │   private kycService = inject([32mKycService[37m);
+         ╵                               [32m~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.46 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-TKJU4JPR.js   | -                        |   4.26 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-PYZV4VDZ.js   | -                        |   1.79 kB | 
+chunk-DGSMMRY5.js   | -                        |   1.68 kB | 
+chunk-XYFN4IMG.js   | -                        |   1.53 kB | 
+chunk-QW6JWL7N.js   | -                        |   1.45 kB | 
+
+                    | Initial total            | 766.50 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-TBPX7YCK.js   | transfer-money           |  51.11 kB | 
+chunk-CXFH5GI7.js   | employee-form            |  49.48 kB | 
+chunk-G6S3SNW2.js   | my-profile               |  38.68 kB | 
+chunk-HRJ5R4SP.js   | loan-detail              |  35.14 kB | 
+chunk-HA4TGJS6.js   | kyc                      |  34.82 kB | 
+chunk-62FZKZWL.js   | account-create           |  31.52 kB | 
+chunk-XBKYWYMV.js   | kyc-review               |  29.09 kB | 
+chunk-Z3S7MSPU.js   | branch-form              |  28.21 kB | 
+chunk-C4PYFZIR.js   | cheque-detail            |  26.95 kB | 
+chunk-T4HH7KRL.js   | atm-detail               |  25.55 kB | 
+chunk-KJSJBM3B.js   | account-detail           |  25.36 kB | 
+chunk-KPZPQC34.js   | my-standing-orders       |  25.12 kB | 
+chunk-ICEUY2JO.js   | cashier-transaction-form |  24.52 kB | 
+chunk-AOC6OIX4.js   | standing-order-form      |  24.19 kB | 
+chunk-4BDK6TK3.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.898 seconds] - 2026-08-09T10:21:39.731Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.46 kB | 
+chunk-SSRVZZ6K.js   | -                        |   4.26 kB | 
+chunk-OGHGGQEI.js   | -                        |   1.79 kB | 
+chunk-O64YYLHN.js   | -                        |   1.68 kB | 
+chunk-GT33ROJP.js   | -                        |   1.45 kB | 
+chunk-HOM4IODU.js   | -                        |   1.12 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-YZLRJNFS.js   | transfer-money           |  51.11 kB | 
+chunk-YGCPW5S6.js   | employee-form            |  49.48 kB | 
+chunk-ACXQZ4SL.js   | my-profile               |  38.68 kB | 
+chunk-B445ZCBS.js   | loan-detail              |  35.14 kB | 
+chunk-CEZ6YQTJ.js   | kyc                      |  34.82 kB | 
+chunk-Z2OCRWCV.js   | account-create           |  31.52 kB | 
+chunk-UODDTPWY.js   | kyc-review               |  29.09 kB | 
+chunk-LW25ZTES.js   | branch-form              |  28.21 kB | 
+chunk-ELSSM22H.js   | cheque-detail            |  26.95 kB | 
+chunk-ILFNPOD5.js   | atm-detail               |  25.55 kB | 
+chunk-D4WVA3AA.js   | account-detail           |  25.36 kB | 
+chunk-A5FGCKGX.js   | my-standing-orders       |  25.12 kB | 
+chunk-GU3VAH5G.js   | cashier-transaction-form |  24.52 kB | 
+chunk-A5CPWAAH.js   | standing-order-form      |  24.19 kB | 
+chunk-VCC676EX.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.761 seconds] - 2026-08-09T10:34:32.380Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.46 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-SSRVZZ6K.js   | -                        |   4.26 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-OGHGGQEI.js   | -                        |   1.79 kB | 
+chunk-O64YYLHN.js   | -                        |   1.68 kB | 
+chunk-GT33ROJP.js   | -                        |   1.45 kB | 
+chunk-HOM4IODU.js   | -                        |   1.12 kB | 
+
+                    | Initial total            | 766.09 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-YZLRJNFS.js   | transfer-money           |  51.11 kB | 
+chunk-YGCPW5S6.js   | employee-form            |  49.48 kB | 
+chunk-ACXQZ4SL.js   | my-profile               |  38.68 kB | 
+chunk-B445ZCBS.js   | loan-detail              |  35.14 kB | 
+chunk-CEZ6YQTJ.js   | kyc                      |  34.82 kB | 
+chunk-Z2OCRWCV.js   | account-create           |  31.52 kB | 
+chunk-UODDTPWY.js   | kyc-review               |  29.09 kB | 
+chunk-LW25ZTES.js   | branch-form              |  28.21 kB | 
+chunk-ELSSM22H.js   | cheque-detail            |  26.95 kB | 
+chunk-ILFNPOD5.js   | atm-detail               |  25.55 kB | 
+chunk-D4WVA3AA.js   | account-detail           |  25.36 kB | 
+chunk-A5FGCKGX.js   | my-standing-orders       |  25.12 kB | 
+chunk-GU3VAH5G.js   | cashier-transaction-form |  24.52 kB | 
+chunk-A5CPWAAH.js   | standing-order-form      |  24.19 kB | 
+chunk-VCC676EX.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [6.549 seconds] - 2026-08-09T10:34:40.846Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.46 kB | 
+chunk-IXGDWQD6.js   | -                        |   4.38 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-CZ3MM5EJ.js   | transfer-money           |  51.11 kB | 
+chunk-UDFWXDXL.js   | my-profile               |  38.68 kB | 
+chunk-4SI3LTBM.js   | my-standing-orders       |  25.12 kB | 
+chunk-IYT3EU4H.js   | cashier-transaction-form |  24.52 kB | 
+chunk-54AZSX46.js   | apply-card               |  24.12 kB | 
+chunk-S7G47DDD.js   | fraud-review             |  23.32 kB | 
+chunk-L6RCU4QP.js   | loan-apply               |  23.28 kB | 
+chunk-MOXTMJBT.js   | beneficiary-list         |  23.19 kB | 
+chunk-DR55HWXN.js   | standing-order-form      |  22.67 kB | 
+chunk-SYBRLFEM.js   | fraud-list               |  20.30 kB | 
+chunk-YEVDP5HJ.js   | beneficiary-form         |  18.71 kB | 
+chunk-AFXS3AMD.js   | my-loans                 |  16.82 kB | 
+chunk-C74FB6KU.js   | my-cards                 |  16.46 kB | 
+chunk-ALUKXSRJ.js   | my-cheques               |  15.90 kB | 
+chunk-XMX3SJAY.js   | transaction-history      |  14.78 kB | 
+...and 3 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.635 seconds] - 2026-08-09T10:34:41.492Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.49 kB | 
+
+Application bundle generation complete. [0.505 seconds] - 2026-08-09T10:34:45.742Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.49 kB | 
+chunk-3J3WZ2UY.js   | -                        |   4.38 kB | 
+chunk-CUKKG7T2.js   | -                        |   1.79 kB | 
+chunk-VWRE6KQ3.js   | -                        |   1.68 kB | 
+chunk-5AAB5RJL.js   | -                        |   1.45 kB | 
+chunk-74XYF5OX.js   | -                        |   1.12 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-4FOQTOCJ.js   | transfer-money           |  51.11 kB | 
+chunk-SQCJ4HNU.js   | employee-form            |  49.48 kB | 
+chunk-IREODU2L.js   | my-profile               |  38.68 kB | 
+chunk-KVMI72VU.js   | loan-detail              |  35.14 kB | 
+chunk-QCI33FCD.js   | kyc                      |  34.82 kB | 
+chunk-NCQ6OKPT.js   | account-create           |  31.52 kB | 
+chunk-PQ3UMCN3.js   | kyc-review               |  29.09 kB | 
+chunk-GPXV676T.js   | branch-form              |  28.21 kB | 
+chunk-YJH27737.js   | cheque-detail            |  26.95 kB | 
+chunk-NG2E422U.js   | atm-detail               |  25.55 kB | 
+chunk-XJO2JRUS.js   | account-detail           |  25.36 kB | 
+chunk-7PSOVRZI.js   | my-standing-orders       |  25.12 kB | 
+chunk-WCOMDADO.js   | cashier-transaction-form |  24.52 kB | 
+chunk-3VJVJFSW.js   | standing-order-form      |  24.19 kB | 
+chunk-JKNE3JY7.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.479 seconds] - 2026-08-09T10:34:46.224Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.50 kB | 
+
+Application bundle generation complete. [1.099 seconds] - 2026-08-09T10:34:52.629Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.66 kB | 
+
+Application bundle generation complete. [0.589 seconds] - 2026-08-09T10:34:55.846Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names      |  Raw size
+main.js             | main       | 636.66 kB | 
+
+Lazy chunk files    | Names      |  Raw size
+chunk-UVB7AGJE.js   | kyc        |  34.82 kB | 
+chunk-SK4DVD5X.js   | kyc-review |  29.09 kB | 
+chunk-EWXGHOLO.js   | -          |   2.29 kB | 
+
+Application bundle generation complete. [0.487 seconds] - 2026-08-09T10:35:00.170Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.66 kB | 
+
+Application bundle generation complete. [0.712 seconds] - 2026-08-09T10:35:06.177Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.66 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-3J3WZ2UY.js   | -                        |   4.38 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-CUKKG7T2.js   | -                        |   1.79 kB | 
+chunk-VWRE6KQ3.js   | -                        |   1.68 kB | 
+chunk-5AAB5RJL.js   | -                        |   1.45 kB | 
+chunk-74XYF5OX.js   | -                        |   1.12 kB | 
+
+                    | Initial total            | 766.41 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-4FOQTOCJ.js   | transfer-money           |  51.11 kB | 
+chunk-SQCJ4HNU.js   | employee-form            |  49.48 kB | 
+chunk-IREODU2L.js   | my-profile               |  38.68 kB | 
+chunk-KVMI72VU.js   | loan-detail              |  35.14 kB | 
+chunk-UVB7AGJE.js   | kyc                      |  34.82 kB | 
+chunk-NCQ6OKPT.js   | account-create           |  31.52 kB | 
+chunk-SK4DVD5X.js   | kyc-review               |  29.09 kB | 
+chunk-GPXV676T.js   | branch-form              |  28.21 kB | 
+chunk-YJH27737.js   | cheque-detail            |  26.95 kB | 
+chunk-NG2E422U.js   | atm-detail               |  25.55 kB | 
+chunk-XJO2JRUS.js   | account-detail           |  25.36 kB | 
+chunk-7PSOVRZI.js   | my-standing-orders       |  25.12 kB | 
+chunk-WCOMDADO.js   | cashier-transaction-form |  24.52 kB | 
+chunk-3VJVJFSW.js   | standing-order-form      |  24.19 kB | 
+chunk-JKNE3JY7.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.741 seconds] - 2026-08-09T10:35:11.765Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.66 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-OZ7NGNDG.js   | cashier-transaction-form |  24.61 kB | 
+
+Application bundle generation complete. [0.569 seconds] - 2026-08-09T10:35:17.250Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.76 kB | 
+
+Application bundle generation complete. [0.527 seconds] - 2026-08-09T10:35:24.840Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.90 kB | 
+
+Application bundle generation complete. [0.643 seconds] - 2026-08-09T10:35:30.922Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names        |  Raw size
+main.js             | main         | 636.90 kB | 
+
+Lazy chunk files    | Names        |  Raw size
+chunk-IHYTA3IF.js   | fraud-review |  23.32 kB | 
+chunk-5DZZMGFE.js   | fraud-list   |  20.30 kB | 
+chunk-D2MHMOVL.js   | -            |   1.78 kB | 
+
+Application bundle generation complete. [1.065 seconds] - 2026-08-09T10:35:37.267Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 636.91 kB | 
+
+Application bundle generation complete. [1.214 seconds] - 2026-08-09T10:35:42.499Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 636.91 kB | 
+chunk-W222ZLBJ.js   | -                        |   4.38 kB | 
+chunk-ZRQ3ODYA.js   | -                        |   1.79 kB | 
+chunk-5R6OTZPY.js   | -                        |   1.68 kB | 
+chunk-X5F2QUJ2.js   | -                        |   1.45 kB | 
+chunk-RLICCGGA.js   | -                        |   1.17 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-TM4P7FQH.js   | transfer-money           |  51.11 kB | 
+chunk-VNU4VNVJ.js   | employee-form            |  49.48 kB | 
+chunk-BXNY4RZ3.js   | my-profile               |  38.68 kB | 
+chunk-ZNGDA22Y.js   | loan-detail              |  35.14 kB | 
+chunk-2WWW45RF.js   | kyc                      |  34.82 kB | 
+chunk-ALRYLXV7.js   | account-create           |  31.52 kB | 
+chunk-RHX6ML5O.js   | kyc-review               |  29.09 kB | 
+chunk-MUNFWXCJ.js   | branch-form              |  28.21 kB | 
+chunk-WIH7CV5O.js   | cheque-detail            |  26.95 kB | 
+chunk-Q3SKCWV5.js   | atm-detail               |  25.55 kB | 
+chunk-UHZCTXW3.js   | account-detail           |  25.36 kB | 
+chunk-5ICZRSFT.js   | my-standing-orders       |  25.12 kB | 
+chunk-5OCIT3PF.js   | cashier-transaction-form |  24.61 kB | 
+chunk-HTDWINYI.js   | standing-order-form      |  24.19 kB | 
+chunk-5SH2CFRU.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.875 seconds] - 2026-08-09T10:35:43.377Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 637.10 kB | 
+
+Application bundle generation complete. [0.716 seconds] - 2026-08-09T10:35:48.112Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 637.10 kB | 
+
+Application bundle generation complete. [0.973 seconds] - 2026-08-09T10:35:52.959Z
+
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 637.23 kB | 
+
+Application bundle generation complete. [0.619 seconds] - 2026-08-09T10:35:58.156Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.23 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-W222ZLBJ.js   | -                        |   4.38 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-ZRQ3ODYA.js   | -                        |   1.79 kB | 
+chunk-5R6OTZPY.js   | -                        |   1.68 kB | 
+chunk-X5F2QUJ2.js   | -                        |   1.45 kB | 
+chunk-RLICCGGA.js   | -                        |   1.17 kB | 
+
+                    | Initial total            | 767.03 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-TM4P7FQH.js   | transfer-money           |  51.11 kB | 
+chunk-VNU4VNVJ.js   | employee-form            |  49.48 kB | 
+chunk-BXNY4RZ3.js   | my-profile               |  38.68 kB | 
+chunk-ZNGDA22Y.js   | loan-detail              |  35.14 kB | 
+chunk-2WWW45RF.js   | kyc                      |  34.82 kB | 
+chunk-ALRYLXV7.js   | account-create           |  31.52 kB | 
+chunk-RHX6ML5O.js   | kyc-review               |  29.09 kB | 
+chunk-MUNFWXCJ.js   | branch-form              |  28.21 kB | 
+chunk-WIH7CV5O.js   | cheque-detail            |  26.95 kB | 
+chunk-Q3SKCWV5.js   | atm-detail               |  25.55 kB | 
+chunk-UHZCTXW3.js   | account-detail           |  25.36 kB | 
+chunk-5ICZRSFT.js   | my-standing-orders       |  25.12 kB | 
+chunk-5OCIT3PF.js   | cashier-transaction-form |  24.61 kB | 
+chunk-HTDWINYI.js   | standing-order-form      |  24.19 kB | 
+chunk-5SH2CFRU.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.480 seconds] - 2026-08-09T10:38:44.015Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.23 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-W222ZLBJ.js   | -                        |   4.38 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-ZRQ3ODYA.js   | -                        |   1.79 kB | 
+chunk-5R6OTZPY.js   | -                        |   1.68 kB | 
+chunk-X5F2QUJ2.js   | -                        |   1.45 kB | 
+chunk-RLICCGGA.js   | -                        |   1.17 kB | 
+
+                    | Initial total            | 767.03 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-TM4P7FQH.js   | transfer-money           |  51.11 kB | 
+chunk-VNU4VNVJ.js   | employee-form            |  49.48 kB | 
+chunk-BXNY4RZ3.js   | my-profile               |  38.68 kB | 
+chunk-ZNGDA22Y.js   | loan-detail              |  35.14 kB | 
+chunk-2WWW45RF.js   | kyc                      |  34.82 kB | 
+chunk-ALRYLXV7.js   | account-create           |  31.52 kB | 
+chunk-RHX6ML5O.js   | kyc-review               |  29.09 kB | 
+chunk-MUNFWXCJ.js   | branch-form              |  28.21 kB | 
+chunk-WIH7CV5O.js   | cheque-detail            |  26.95 kB | 
+chunk-Q3SKCWV5.js   | atm-detail               |  25.55 kB | 
+chunk-UHZCTXW3.js   | account-detail           |  25.36 kB | 
+chunk-5ICZRSFT.js   | my-standing-orders       |  25.12 kB | 
+chunk-5OCIT3PF.js   | cashier-transaction-form |  24.61 kB | 
+chunk-HTDWINYI.js   | standing-order-form      |  24.19 kB | 
+chunk-5SH2CFRU.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.474 seconds] - 2026-08-09T10:38:44.492Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.23 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-W222ZLBJ.js   | -                        |   4.38 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-ZRQ3ODYA.js   | -                        |   1.79 kB | 
+chunk-5R6OTZPY.js   | -                        |   1.68 kB | 
+chunk-X5F2QUJ2.js   | -                        |   1.45 kB | 
+chunk-RLICCGGA.js   | -                        |   1.17 kB | 
+
+                    | Initial total            | 767.03 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-TM4P7FQH.js   | transfer-money           |  51.11 kB | 
+chunk-VNU4VNVJ.js   | employee-form            |  49.48 kB | 
+chunk-BXNY4RZ3.js   | my-profile               |  38.68 kB | 
+chunk-ZNGDA22Y.js   | loan-detail              |  35.14 kB | 
+chunk-2WWW45RF.js   | kyc                      |  34.82 kB | 
+chunk-ALRYLXV7.js   | account-create           |  31.52 kB | 
+chunk-RHX6ML5O.js   | kyc-review               |  29.09 kB | 
+chunk-MUNFWXCJ.js   | branch-form              |  28.21 kB | 
+chunk-WIH7CV5O.js   | cheque-detail            |  26.95 kB | 
+chunk-Q3SKCWV5.js   | atm-detail               |  25.55 kB | 
+chunk-UHZCTXW3.js   | account-detail           |  25.36 kB | 
+chunk-5ICZRSFT.js   | my-standing-orders       |  25.12 kB | 
+chunk-5OCIT3PF.js   | cashier-transaction-form |  24.61 kB | 
+chunk-HTDWINYI.js   | standing-order-form      |  24.19 kB | 
+chunk-5SH2CFRU.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.771 seconds] - 2026-08-09T10:38:52.257Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.23 kB | 
+chunk-BWTVOSKX.js   | -                        |   4.38 kB | 
+chunk-G5LY2O7S.js   | -                        |   1.79 kB | 
+chunk-GLY2ZIYK.js   | -                        |   1.68 kB | 
+chunk-O7QB2ASV.js   | -                        |   1.45 kB | 
+chunk-B4G2JAZJ.js   | -                        |   1.20 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-YIJ4NFTU.js   | transfer-money           |  51.11 kB | 
+chunk-ODIHF7YI.js   | employee-form            |  49.48 kB | 
+chunk-NPFJ3S4U.js   | my-profile               |  38.68 kB | 
+chunk-M3GBM7LN.js   | loan-detail              |  35.14 kB | 
+chunk-2IMX2NJT.js   | kyc                      |  34.82 kB | 
+chunk-YJTUMCNV.js   | account-create           |  31.52 kB | 
+chunk-YDKZXJIR.js   | kyc-review               |  29.09 kB | 
+chunk-U7T42CVE.js   | branch-form              |  28.21 kB | 
+chunk-PQY4LHAY.js   | cheque-detail            |  26.95 kB | 
+chunk-JJYH2TNB.js   | atm-detail               |  25.55 kB | 
+chunk-Z3BXV2XD.js   | account-detail           |  25.36 kB | 
+chunk-AAM6M7T4.js   | my-standing-orders       |  25.12 kB | 
+chunk-WI4CDJ6Z.js   | cashier-transaction-form |  24.61 kB | 
+chunk-3FLOGN5X.js   | standing-order-form      |  24.19 kB | 
+chunk-DBGWLDTH.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.828 seconds] - 2026-08-09T10:39:04.760Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.23 kB | 
+chunk-BAJFAMV4.js   | -                        |   5.74 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-IQ7EIJZX.js   | transfer-money           |  51.11 kB | 
+chunk-B7VFVT6O.js   | my-profile               |  38.68 kB | 
+chunk-XZH5VPFH.js   | my-standing-orders       |  25.12 kB | 
+chunk-6JJ2AEYV.js   | cashier-transaction-form |  24.61 kB | 
+chunk-S66PR6AL.js   | apply-card               |  24.12 kB | 
+chunk-7DCXZYWK.js   | fraud-review             |  23.32 kB | 
+chunk-TDPZKDGO.js   | loan-apply               |  23.28 kB | 
+chunk-VEBVADCS.js   | beneficiary-list         |  23.19 kB | 
+chunk-XEX2CSGL.js   | standing-order-form      |  22.67 kB | 
+chunk-7IMELOOS.js   | fraud-list               |  20.30 kB | 
+chunk-VYR5VNID.js   | beneficiary-form         |  18.71 kB | 
+chunk-HNAXIVJQ.js   | my-loans                 |  16.82 kB | 
+chunk-JPOZAWIH.js   | my-cards                 |  16.46 kB | 
+chunk-CDP3Z6F6.js   | my-cheques               |  15.90 kB | 
+chunk-6C43I2EL.js   | transaction-history      |  14.78 kB | 
+...and 3 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.737 seconds] - 2026-08-09T10:40:44.395Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+
+No output file changes.
+
+Application bundle generation complete. [1.353 seconds] - 2026-08-09T10:51:51.052Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 637.44 kB | 
+
+Application bundle generation complete. [0.468 seconds] - 2026-08-09T10:52:07.916Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.44 kB | 
+chunk-WIBCSSND.js   | -                        |   5.65 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-ZWV3G53P.js   | transfer-money           |  51.11 kB | 
+chunk-MQSZXXFJ.js   | my-profile               |  38.68 kB | 
+chunk-FOITQ7RT.js   | my-standing-orders       |  25.12 kB | 
+chunk-ASJ6OHRZ.js   | cashier-transaction-form |  24.61 kB | 
+chunk-O6HXKBZK.js   | apply-card               |  24.12 kB | 
+chunk-KZ5QW2RO.js   | fraud-review             |  23.32 kB | 
+chunk-MGBCYAFP.js   | loan-apply               |  23.28 kB | 
+chunk-3AYZUJ2C.js   | beneficiary-list         |  23.19 kB | 
+chunk-FLVMDWL7.js   | standing-order-form      |  22.67 kB | 
+chunk-QKEO3UA3.js   | fraud-list               |  20.30 kB | 
+chunk-MZLCUVYO.js   | beneficiary-form         |  18.71 kB | 
+chunk-BUYDRV6O.js   | my-loans                 |  16.82 kB | 
+chunk-N677QRKJ.js   | my-cards                 |  16.46 kB | 
+chunk-RSZQ2DZ3.js   | my-cheques               |  15.90 kB | 
+chunk-36JRXMVW.js   | transaction-history      |  14.78 kB | 
+...and 3 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.186 seconds] - 2026-08-09T10:52:23.453Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 637.62 kB | 
+
+Application bundle generation complete. [0.774 seconds] - 2026-08-09T10:52:33.997Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.62 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-32VM5JIX.js   | cashier-transaction-form |  24.66 kB | 
+
+Application bundle generation complete. [1.137 seconds] - 2026-08-09T10:52:50.147Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.62 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-MJJYON3K.js   | cashier-transaction-form |  25.04 kB | 
+
+Application bundle generation complete. [0.825 seconds] - 2026-08-09T10:53:01.200Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.62 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-LUF3SA3M.js   | cashier-transaction-form |  29.06 kB | 
+
+Application bundle generation complete. [0.839 seconds] - 2026-08-09T10:53:14.699Z
+
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.62 kB | 
+styles.css          | styles                   | 115.31 kB | 
+chunk-WIBCSSND.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-G5LY2O7S.js   | -                        |   1.79 kB | 
+chunk-GLY2ZIYK.js   | -                        |   1.68 kB | 
+chunk-O7QB2ASV.js   | -                        |   1.45 kB | 
+chunk-B4G2JAZJ.js   | -                        |   1.20 kB | 
+
+                    | Initial total            | 768.72 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-ZWV3G53P.js   | transfer-money           |  51.11 kB | 
+chunk-ODIHF7YI.js   | employee-form            |  49.48 kB | 
+chunk-MQSZXXFJ.js   | my-profile               |  38.68 kB | 
+chunk-M3GBM7LN.js   | loan-detail              |  35.14 kB | 
+chunk-2IMX2NJT.js   | kyc                      |  34.82 kB | 
+chunk-YJTUMCNV.js   | account-create           |  31.52 kB | 
+chunk-YDKZXJIR.js   | kyc-review               |  29.09 kB | 
+chunk-LUF3SA3M.js   | cashier-transaction-form |  29.06 kB | 
+chunk-U7T42CVE.js   | branch-form              |  28.21 kB | 
+chunk-PQY4LHAY.js   | cheque-detail            |  26.95 kB | 
+chunk-JJYH2TNB.js   | atm-detail               |  25.55 kB | 
+chunk-Z3BXV2XD.js   | account-detail           |  25.36 kB | 
+chunk-FOITQ7RT.js   | my-standing-orders       |  25.12 kB | 
+chunk-3FLOGN5X.js   | standing-order-form      |  24.19 kB | 
+chunk-O6HXKBZK.js   | apply-card               |  24.12 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.671 seconds] - 2026-08-09T11:01:55.386Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.489 seconds] - 2026-08-09T11:02:01.369Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2322: Type 'LedgerAccountReport[]' is not assignable to type 'LedgerEntry[]'.
+  Type 'LedgerAccountReport' is missing the following properties from type 'LedgerEntry': debit, credit, balance[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:21:22:
+[37m      21 │       next: (data) => [32mthis.entries[37m = data || [],
+         ╵                       [32m~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.529 seconds] - 2026-08-09T11:02:08.569Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2322: Type 'LedgerAccountReport[]' is not assignable to type 'LedgerEntry[]'.
+  Type 'LedgerAccountReport' is missing the following properties from type 'LedgerEntry': debit, credit, balance[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:21:22:
+[37m      21 │       next: (data) => [32mthis.entries[37m = data || [],
+         ╵                       [32m~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.575 seconds] - 2026-08-09T11:02:15.593Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2322: Type 'LedgerAccountReport[]' is not assignable to type 'LedgerEntry[]'.
+  Type 'LedgerAccountReport' is missing the following properties from type 'LedgerEntry': debit, credit, balance[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:21:22:
+[37m      21 │       next: (data) => [32mthis.entries[37m = data || [],
+         ╵                       [32m~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.62 kB | 
+styles.css          | styles                   | 115.43 kB | 
+chunk-WIBCSSND.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-G5LY2O7S.js   | -                        |   1.79 kB | 
+chunk-GLY2ZIYK.js   | -                        |   1.68 kB | 
+chunk-O7QB2ASV.js   | -                        |   1.45 kB | 
+chunk-B4G2JAZJ.js   | -                        |   1.20 kB | 
+
+                    | Initial total            | 768.84 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-ZWV3G53P.js   | transfer-money           |  51.11 kB | 
+chunk-ODIHF7YI.js   | employee-form            |  49.48 kB | 
+chunk-MQSZXXFJ.js   | my-profile               |  38.68 kB | 
+chunk-M3GBM7LN.js   | loan-detail              |  35.14 kB | 
+chunk-2IMX2NJT.js   | kyc                      |  34.82 kB | 
+chunk-YJTUMCNV.js   | account-create           |  31.52 kB | 
+chunk-YDKZXJIR.js   | kyc-review               |  29.09 kB | 
+chunk-LUF3SA3M.js   | cashier-transaction-form |  29.06 kB | 
+chunk-U7T42CVE.js   | branch-form              |  28.21 kB | 
+chunk-PQY4LHAY.js   | cheque-detail            |  26.95 kB | 
+chunk-JJYH2TNB.js   | atm-detail               |  25.55 kB | 
+chunk-Z3BXV2XD.js   | account-detail           |  25.36 kB | 
+chunk-FOITQ7RT.js   | my-standing-orders       |  25.12 kB | 
+chunk-NU3OH3N3.js   | balance-sheet            |  24.78 kB | 
+chunk-3FLOGN5X.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.059 seconds] - 2026-08-09T11:02:23.003Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names      |  Raw size
+main.js             | main       | 637.62 kB | 
+
+Lazy chunk files    | Names      |  Raw size
+chunk-AU66VQYE.js   | kyc        |  34.82 kB | 
+chunk-DGWQ6NIN.js   | kyc-review |  29.09 kB | 
+chunk-KMIWW43I.js   | -          |   2.36 kB | 
+
+Application bundle generation complete. [0.489 seconds] - 2026-08-09T11:02:27.382Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 637.76 kB | 
+
+Application bundle generation complete. [1.704 seconds] - 2026-08-09T12:27:17.696Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+
+No output file changes.
+
+Application bundle generation complete. [1.326 seconds] - 2026-08-09T12:27:22.584Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [1.578 seconds] - 2026-08-09T12:27:34.668Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getKycStatusClass' does not exist on type 'KycReviewComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.html:47:118:
+[37m      47 │ ...-medium border" [ngClass]="[32mgetKycStatusClass[37m(customer.kycStatus)">
+         ╵                               [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component KycReviewComponent.
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:13:15:
+[37m      13 │   templateUrl: [32m'./kyc-review.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getKycStatusClass' does not exist on type 'KycReviewComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.html:75:112:
+[37m      75 │ ...ium border" [ngClass]="[32mgetKycStatusClass[37m(selectedCustomer.kycSt...
+         ╵                           [32m~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component KycReviewComponent.
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:13:15:
+[37m      13 │   templateUrl: [32m'./kyc-review.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getDocumentUrl' does not exist on type 'KycReviewComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.html:91:27:
+[37m      91 │                 <a [href]="[32mgetDocumentUrl[37m(doc.id)" target="_blank"...
+         ╵                            [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component KycReviewComponent.
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:13:15:
+[37m      13 │   templateUrl: [32m'./kyc-review.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'rejectKyc' does not exist on type 'KycReviewComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.html:99:29:
+[37m      99 │             <button (click)="[32mrejectKyc[37m()"
+         ╵                              [32m~~~~~~~~~[0m
+
+  Error occurs in the template of component KycReviewComponent.
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:13:15:
+[37m      13 │   templateUrl: [32m'./kyc-review.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 123.67 kB | 
+chunk-WIBCSSND.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-G5LY2O7S.js   | -                        |   1.79 kB | 
+chunk-GLY2ZIYK.js   | -                        |   1.68 kB | 
+chunk-O7QB2ASV.js   | -                        |   1.45 kB | 
+chunk-B4G2JAZJ.js   | -                        |   1.20 kB | 
+
+                    | Initial total            | 777.22 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-CH75V33J.js   | kyc-review               |  67.85 kB | 
+chunk-ZWV3G53P.js   | transfer-money           |  51.11 kB | 
+chunk-ODIHF7YI.js   | employee-form            |  49.48 kB | 
+chunk-MQSZXXFJ.js   | my-profile               |  38.68 kB | 
+chunk-M3GBM7LN.js   | loan-detail              |  35.14 kB | 
+chunk-AU66VQYE.js   | kyc                      |  34.82 kB | 
+chunk-YJTUMCNV.js   | account-create           |  31.52 kB | 
+chunk-LUF3SA3M.js   | cashier-transaction-form |  29.06 kB | 
+chunk-U7T42CVE.js   | branch-form              |  28.21 kB | 
+chunk-PQY4LHAY.js   | cheque-detail            |  26.95 kB | 
+chunk-JJYH2TNB.js   | atm-detail               |  25.55 kB | 
+chunk-Z3BXV2XD.js   | account-detail           |  25.36 kB | 
+chunk-FOITQ7RT.js   | my-standing-orders       |  25.12 kB | 
+chunk-NU3OH3N3.js   | balance-sheet            |  24.78 kB | 
+chunk-3FLOGN5X.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.105 seconds] - 2026-08-09T12:27:44.661Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [1.359 seconds] - 2026-08-09T12:27:51.413Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getStatusClass' does not exist on type 'CustomerKycComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/customer/kyc/kyc.html:27:105:
+[37m      27 │ ... rounded-full text-sm font-semibold" [ngClass]="[32mgetStatusClass[37m()">
+         ╵                                                    [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component CustomerKycComponent.
+
+    src/app/features/customer/kyc/kyc.ts:18:15:
+[37m      18 │   templateUrl: [32m'./kyc.html'[37m,
+         ╵                [32m~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getDocIcon' does not exist on type 'CustomerKycComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/customer/kyc/kyc.html:60:193:
+[37m      60 │ ...d" stroke-width="1.5" [attr.d]="[32mgetDocIcon[37m(doc.doc_type)" /></svg>
+         ╵                                    [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component CustomerKycComponent.
+
+    src/app/features/customer/kyc/kyc.ts:18:15:
+[37m      18 │   templateUrl: [32m'./kyc.html'[37m,
+         ╵                [32m~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getDocumentUrl' does not exist on type 'CustomerKycComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/customer/kyc/kyc.html:66:25:
+[37m      66 │               <a [href]="[32mgetDocumentUrl[37m(doc.id)" target="_blank" c...
+         ╵                          [32m~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component CustomerKycComponent.
+
+    src/app/features/customer/kyc/kyc.ts:18:15:
+[37m      18 │   templateUrl: [32m'./kyc.html'[37m,
+         ╵                [32m~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'getDocIcon' does not exist on type 'CustomerKycComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/customer/kyc/kyc.html:83:201:
+[37m      83 │ ... stroke-width="1.5" [attr.d]="[32mgetDocIcon[37m(docUpload.type)" /></svg>
+         ╵                                  [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component CustomerKycComponent.
+
+    src/app/features/customer/kyc/kyc.ts:18:15:
+[37m      18 │   templateUrl: [32m'./kyc.html'[37m,
+         ╵                [32m~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 128.49 kB | 
+chunk-WIBCSSND.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-G5LY2O7S.js   | -                        |   1.79 kB | 
+chunk-GLY2ZIYK.js   | -                        |   1.68 kB | 
+chunk-O7QB2ASV.js   | -                        |   1.45 kB | 
+chunk-B4G2JAZJ.js   | -                        |   1.20 kB | 
+
+                    | Initial total            | 782.03 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-CH75V33J.js   | kyc-review               |  67.85 kB | 
+chunk-ZWV3G53P.js   | transfer-money           |  51.11 kB | 
+chunk-ODIHF7YI.js   | employee-form            |  49.48 kB | 
+chunk-Q6ROMJUX.js   | kyc                      |  48.38 kB | 
+chunk-MQSZXXFJ.js   | my-profile               |  38.68 kB | 
+chunk-M3GBM7LN.js   | loan-detail              |  35.14 kB | 
+chunk-YJTUMCNV.js   | account-create           |  31.52 kB | 
+chunk-LUF3SA3M.js   | cashier-transaction-form |  29.06 kB | 
+chunk-U7T42CVE.js   | branch-form              |  28.21 kB | 
+chunk-PQY4LHAY.js   | cheque-detail            |  26.95 kB | 
+chunk-JJYH2TNB.js   | atm-detail               |  25.55 kB | 
+chunk-Z3BXV2XD.js   | account-detail           |  25.36 kB | 
+chunk-FOITQ7RT.js   | my-standing-orders       |  25.12 kB | 
+chunk-NU3OH3N3.js   | balance-sheet            |  24.78 kB | 
+chunk-3FLOGN5X.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.764 seconds] - 2026-08-09T12:27:58.920Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-PD5BEEMW.js   | cashier-transaction-form |  30.67 kB | 
+
+Application bundle generation complete. [0.945 seconds] - 2026-08-09T12:28:05.456Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.713 seconds] - 2026-08-09T12:28:13.931Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'balance' does not exist on type 'AccountResponse'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/transactions/cashier-transaction-form/cashier-transaction-form.html:133:89:
+[37m      133 │ ...merald-400">${{ selectedAccount.[32mbalance[37m | number:'1.2-2' }}</div>
+          ╵                                    [32m~~~~~~~[0m
+
+  Error occurs in the template of component CashierTransactionFormComponent.
+
+    src/app/features/staff/transactions/cashier-transaction-form/cashier-transaction-form.ts:17:15:
+[37m      17 │   templateUrl: [32m'./cashier-transaction-form.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 129.85 kB | 
+chunk-WIBCSSND.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-G5LY2O7S.js   | -                        |   1.79 kB | 
+chunk-GLY2ZIYK.js   | -                        |   1.68 kB | 
+chunk-O7QB2ASV.js   | -                        |   1.45 kB | 
+chunk-B4G2JAZJ.js   | -                        |   1.20 kB | 
+
+                    | Initial total            | 783.39 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-CH75V33J.js   | kyc-review               |  67.85 kB | 
+chunk-7FVWPS3H.js   | cashier-transaction-form |  57.72 kB | 
+chunk-ZWV3G53P.js   | transfer-money           |  51.11 kB | 
+chunk-ODIHF7YI.js   | employee-form            |  49.48 kB | 
+chunk-Q6ROMJUX.js   | kyc                      |  48.38 kB | 
+chunk-MQSZXXFJ.js   | my-profile               |  38.68 kB | 
+chunk-M3GBM7LN.js   | loan-detail              |  35.14 kB | 
+chunk-YJTUMCNV.js   | account-create           |  31.52 kB | 
+chunk-U7T42CVE.js   | branch-form              |  28.21 kB | 
+chunk-PQY4LHAY.js   | cheque-detail            |  26.95 kB | 
+chunk-JJYH2TNB.js   | atm-detail               |  25.55 kB | 
+chunk-Z3BXV2XD.js   | account-detail           |  25.36 kB | 
+chunk-FOITQ7RT.js   | my-standing-orders       |  25.12 kB | 
+chunk-NU3OH3N3.js   | balance-sheet            |  24.78 kB | 
+chunk-3FLOGN5X.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.962 seconds] - 2026-08-09T12:28:44.906Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+chunk-AUCKHVZR.js   | -                        |   5.65 kB | 
+chunk-VTVEDUMG.js   | -                        |   1.79 kB | 
+chunk-ETN6VFW7.js   | -                        |   1.68 kB | 
+chunk-PF3JXSNH.js   | -                        |   1.45 kB | 
+chunk-BMJU2BCF.js   | -                        |   1.25 kB | 
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-EYYVPLCS.js   | kyc-review               |  67.85 kB | 
+chunk-GIAGW4G2.js   | cashier-transaction-form |  57.72 kB | 
+chunk-5TIVIUYS.js   | transfer-money           |  51.11 kB | 
+chunk-JECNF3CW.js   | employee-form            |  49.48 kB | 
+chunk-K6ELJQDR.js   | kyc                      |  48.38 kB | 
+chunk-42U4JKAG.js   | my-profile               |  38.68 kB | 
+chunk-DY3MVYEJ.js   | loan-detail              |  35.14 kB | 
+chunk-2HCIDM3N.js   | account-create           |  31.52 kB | 
+chunk-IKSMOROM.js   | branch-form              |  28.21 kB | 
+chunk-OZXM7ISF.js   | cheque-detail            |  26.95 kB | 
+chunk-UNM3TQWY.js   | atm-detail               |  25.55 kB | 
+chunk-DUUROXZL.js   | account-detail           |  25.36 kB | 
+chunk-GIBRDMFQ.js   | my-standing-orders       |  25.12 kB | 
+chunk-TDROYSEJ.js   | balance-sheet            |  24.78 kB | 
+chunk-YZZBLTKE.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [1.108 seconds] - 2026-08-09T12:34:23.323Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names      |  Raw size
+main.js             | main       | 637.76 kB | 
+
+Lazy chunk files    | Names      |  Raw size
+chunk-LT6QNFLF.js   | kyc-review |  67.85 kB | 
+chunk-H6SMC6L4.js   | kyc        |  48.38 kB | 
+chunk-DIOQACVA.js   | -          |   2.97 kB | 
+
+Application bundle generation complete. [0.593 seconds] - 2026-08-09T12:34:33.303Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names      |  Raw size
+main.js             | main       | 637.76 kB | 
+
+Lazy chunk files    | Names      |  Raw size
+chunk-6GWZADZD.js   | kyc-review |  67.97 kB | 
+
+Application bundle generation complete. [0.703 seconds] - 2026-08-09T12:34:39.181Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names      |  Raw size
+main.js             | main       | 637.76 kB | 
+
+Lazy chunk files    | Names      |  Raw size
+chunk-V62M7FME.js   | kyc-review |  68.09 kB | 
+
+Application bundle generation complete. [0.653 seconds] - 2026-08-09T12:34:50.098Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.587 seconds] - 2026-08-09T12:35:00.626Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'profileUrl' does not exist on type 'CustomerResponse'. Did you mean 'profile'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.html:140:62:
+[37m      140 │ ....profile" [src]="customer.[32mprofileUrl[37m || customer.profile" clas...
+          ╵                              [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component KycReviewComponent.
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:13:15:
+[37m      13 │   templateUrl: [32m'./kyc-review.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2551: Property 'profileUrl' does not exist on type 'CustomerResponse'. Did you mean 'profile'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.html:179:78:
+[37m      179 │ ..." [src]="selectedCustomer.[32mprofileUrl[37m || selectedCustomer.profi...
+          ╵                              [32m~~~~~~~~~~[0m
+
+  Error occurs in the template of component KycReviewComponent.
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:13:15:
+[37m      13 │   templateUrl: [32m'./kyc-review.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 129.85 kB | 
+chunk-AUCKHVZR.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-VTVEDUMG.js   | -                        |   1.79 kB | 
+chunk-ETN6VFW7.js   | -                        |   1.68 kB | 
+chunk-PF3JXSNH.js   | -                        |   1.45 kB | 
+chunk-BMJU2BCF.js   | -                        |   1.25 kB | 
+
+                    | Initial total            | 783.44 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-V77PASOE.js   | kyc-review               |  68.21 kB | 
+chunk-GIAGW4G2.js   | cashier-transaction-form |  57.72 kB | 
+chunk-5TIVIUYS.js   | transfer-money           |  51.11 kB | 
+chunk-JECNF3CW.js   | employee-form            |  49.48 kB | 
+chunk-H6SMC6L4.js   | kyc                      |  48.38 kB | 
+chunk-42U4JKAG.js   | my-profile               |  38.68 kB | 
+chunk-DY3MVYEJ.js   | loan-detail              |  35.14 kB | 
+chunk-2HCIDM3N.js   | account-create           |  31.52 kB | 
+chunk-IKSMOROM.js   | branch-form              |  28.21 kB | 
+chunk-OZXM7ISF.js   | cheque-detail            |  26.95 kB | 
+chunk-UNM3TQWY.js   | atm-detail               |  25.55 kB | 
+chunk-DUUROXZL.js   | account-detail           |  25.36 kB | 
+chunk-GIBRDMFQ.js   | my-standing-orders       |  25.12 kB | 
+chunk-TDROYSEJ.js   | balance-sheet            |  24.78 kB | 
+chunk-YZZBLTKE.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.738 seconds] - 2026-08-09T12:51:57.403Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 129.85 kB | 
+chunk-AUCKHVZR.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-VTVEDUMG.js   | -                        |   1.79 kB | 
+chunk-ETN6VFW7.js   | -                        |   1.68 kB | 
+chunk-PF3JXSNH.js   | -                        |   1.45 kB | 
+chunk-BMJU2BCF.js   | -                        |   1.25 kB | 
+
+                    | Initial total            | 783.44 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-V77PASOE.js   | kyc-review               |  68.21 kB | 
+chunk-GIAGW4G2.js   | cashier-transaction-form |  57.72 kB | 
+chunk-5TIVIUYS.js   | transfer-money           |  51.11 kB | 
+chunk-JECNF3CW.js   | employee-form            |  49.48 kB | 
+chunk-H6SMC6L4.js   | kyc                      |  48.38 kB | 
+chunk-42U4JKAG.js   | my-profile               |  38.68 kB | 
+chunk-DY3MVYEJ.js   | loan-detail              |  35.14 kB | 
+chunk-2HCIDM3N.js   | account-create           |  31.52 kB | 
+chunk-IKSMOROM.js   | branch-form              |  28.21 kB | 
+chunk-OZXM7ISF.js   | cheque-detail            |  26.95 kB | 
+chunk-UNM3TQWY.js   | atm-detail               |  25.55 kB | 
+chunk-DUUROXZL.js   | account-detail           |  25.36 kB | 
+chunk-GIBRDMFQ.js   | my-standing-orders       |  25.12 kB | 
+chunk-TDROYSEJ.js   | balance-sheet            |  24.78 kB | 
+chunk-YZZBLTKE.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.453 seconds] - 2026-08-09T12:52:02.889Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-AFHUETCA.js   | customer-list |  20.81 kB | 
+
+Application bundle generation complete. [0.860 seconds] - 2026-08-09T12:52:14.223Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-37REHC2Y.js   | customer-list |  20.90 kB | 
+
+Application bundle generation complete. [0.585 seconds] - 2026-08-09T12:52:25.767Z
+
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names           |  Raw size
+main.js             | main            | 637.76 kB | 
+
+Lazy chunk files    | Names           |  Raw size
+chunk-XH56B4VP.js   | customer-detail |  22.94 kB | 
+
+Application bundle generation complete. [0.689 seconds] - 2026-08-09T12:52:36.993Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names           |  Raw size
+main.js             | main            | 637.76 kB | 
+
+Lazy chunk files    | Names           |  Raw size
+chunk-PH7E3HZE.js   | customer-detail |  22.98 kB | 
+
+Application bundle generation complete. [0.566 seconds] - 2026-08-09T12:52:49.360Z
+
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.582 seconds] - 2026-08-09T12:55:04.822Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'AuthService'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/core/services/kyc.service.ts:61:31:
+[37m      61 │   private authService = inject([32mAuthService[37m);
+         ╵                                [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2571: Object is of type 'unknown'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/core/services/kyc.service.ts:64:18:
+[37m      64 │     const token = [32mthis.authService[37m.getToken();
+         ╵                   [32m~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2554: Expected 1 arguments, but got 2.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:139:60:
+[37m      139 │           documentUrl: this.kycService.getDocumentUrl(d.id, [32md.path[37m)
+          ╵                                                             [32m~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.459 seconds] - 2026-08-09T12:55:10.113Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2554: Expected 1 arguments, but got 2.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:139:60:
+[37m      139 │           documentUrl: this.kycService.getDocumentUrl(d.id, [32md.path[37m)
+          ╵                                                             [32m~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.694 seconds] - 2026-08-09T12:55:18.832Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2554: Expected 1 arguments, but got 2.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/customers/kyc-review/kyc-review.ts:139:60:
+[37m      139 │           documentUrl: this.kycService.getDocumentUrl(d.id, [32md.path[37m)
+          ╵                                                             [32m~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 130.12 kB | 
+chunk-AUCKHVZR.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-VTVEDUMG.js   | -                        |   1.79 kB | 
+chunk-ETN6VFW7.js   | -                        |   1.68 kB | 
+chunk-PF3JXSNH.js   | -                        |   1.45 kB | 
+chunk-BMJU2BCF.js   | -                        |   1.25 kB | 
+
+                    | Initial total            | 783.72 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-ZOMGN2CJ.js   | kyc-review               |  75.11 kB | 
+chunk-GIAGW4G2.js   | cashier-transaction-form |  57.72 kB | 
+chunk-5TIVIUYS.js   | transfer-money           |  51.11 kB | 
+chunk-JECNF3CW.js   | employee-form            |  49.48 kB | 
+chunk-T5F7SL7D.js   | kyc                      |  48.41 kB | 
+chunk-42U4JKAG.js   | my-profile               |  38.68 kB | 
+chunk-DY3MVYEJ.js   | loan-detail              |  35.14 kB | 
+chunk-2HCIDM3N.js   | account-create           |  31.52 kB | 
+chunk-IKSMOROM.js   | branch-form              |  28.21 kB | 
+chunk-OZXM7ISF.js   | cheque-detail            |  26.95 kB | 
+chunk-UNM3TQWY.js   | atm-detail               |  25.55 kB | 
+chunk-DUUROXZL.js   | account-detail           |  25.36 kB | 
+chunk-GIBRDMFQ.js   | my-standing-orders       |  25.12 kB | 
+chunk-TDROYSEJ.js   | balance-sheet            |  24.78 kB | 
+chunk-YZZBLTKE.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.989 seconds] - 2026-08-09T12:55:41.975Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-TBSWE26P.js   | balance-sheet |  24.78 kB | 
+chunk-Z7QFOVXO.js   | ledger        |  18.25 kB | 
+chunk-XM3X7DJ2.js   | trial-balance |  17.22 kB | 
+chunk-CN4GHTTR.js   | profit-loss   |  16.18 kB | 
+chunk-YYRLFUR3.js   | -             |   3.77 kB | 
+
+Application bundle generation complete. [0.615 seconds] - 2026-08-09T13:00:47.253Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-QBXX6XRX.js   | trial-balance |  18.96 kB | 
+
+Application bundle generation complete. [0.791 seconds] - 2026-08-09T13:00:55.884Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+styles.css          | styles        | 130.19 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-KROFKLQ7.js   | trial-balance |  20.02 kB | 
+
+Application bundle generation complete. [0.526 seconds] - 2026-08-09T13:01:01.372Z
+
+Stylesheet update sent to client(s).
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-HXMQV5XL.js   | balance-sheet |  26.59 kB | 
+
+Application bundle generation complete. [0.698 seconds] - 2026-08-09T13:01:10.156Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+styles.css          | styles        | 130.26 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-5R3LKZGM.js   | balance-sheet |  27.64 kB | 
+
+Application bundle generation complete. [0.613 seconds] - 2026-08-09T13:01:16.176Z
+
+Stylesheet update sent to client(s).
+Component update sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.558 seconds] - 2026-08-09T13:01:23.989Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'particulars' does not exist on type 'LedgerEntry'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:42:46:
+[37m      42 │ ...ption: e.description || e.[32mparticulars[37m || 'General Ledger postin...
+         ╵                              [32m~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.423 seconds] - 2026-08-09T13:01:29.395Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'particulars' does not exist on type 'LedgerEntry'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:42:46:
+[37m      42 │ ...ption: e.description || e.[32mparticulars[37m || 'General Ledger postin...
+         ╵                              [32m~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.821 seconds] - 2026-08-09T13:01:37.358Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'particulars' does not exist on type 'LedgerEntry'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:42:46:
+[37m      42 │ ...ption: e.description || e.[32mparticulars[37m || 'General Ledger postin...
+         ╵                              [32m~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Application bundle generation failed. [0.412 seconds] - 2026-08-09T13:01:43.032Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'particulars' does not exist on type 'LedgerEntry'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/features/staff/reports/ledger/ledger.ts:42:46:
+[37m      42 │ ...ption: e.description || e.[32mparticulars[37m || 'General Ledger postin...
+         ╵                              [32m~~~~~~~~~~~[0m
+
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                    |  Raw size
+main.js             | main                     | 637.76 kB | 
+styles.css          | styles                   | 130.26 kB | 
+chunk-AUCKHVZR.js   | -                        |   5.65 kB | 
+chunk-IHRCTTTF.js   | -                        |   4.03 kB | 
+chunk-VTVEDUMG.js   | -                        |   1.79 kB | 
+chunk-ETN6VFW7.js   | -                        |   1.68 kB | 
+chunk-PF3JXSNH.js   | -                        |   1.45 kB | 
+chunk-BMJU2BCF.js   | -                        |   1.25 kB | 
+
+                    | Initial total            | 783.86 kB
+
+Lazy chunk files    | Names                    |  Raw size
+chunk-ZOMGN2CJ.js   | kyc-review               |  75.11 kB | 
+chunk-GIAGW4G2.js   | cashier-transaction-form |  57.72 kB | 
+chunk-5TIVIUYS.js   | transfer-money           |  51.11 kB | 
+chunk-JECNF3CW.js   | employee-form            |  49.48 kB | 
+chunk-T5F7SL7D.js   | kyc                      |  48.41 kB | 
+chunk-42U4JKAG.js   | my-profile               |  38.68 kB | 
+chunk-DY3MVYEJ.js   | loan-detail              |  35.14 kB | 
+chunk-2HCIDM3N.js   | account-create           |  31.52 kB | 
+chunk-IKSMOROM.js   | branch-form              |  28.21 kB | 
+chunk-5R3LKZGM.js   | balance-sheet            |  27.64 kB | 
+chunk-OZXM7ISF.js   | cheque-detail            |  26.95 kB | 
+chunk-UNM3TQWY.js   | atm-detail               |  25.55 kB | 
+chunk-DUUROXZL.js   | account-detail           |  25.36 kB | 
+chunk-GIBRDMFQ.js   | my-standing-orders       |  25.12 kB | 
+chunk-YZZBLTKE.js   | standing-order-form      |  24.19 kB | 
+...and 48 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [0.769 seconds] - 2026-08-09T13:02:02.791Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-CUG5ZHYI.js   | balance-sheet |  27.64 kB | 
+chunk-A2VTAPIO.js   | ledger        |  21.47 kB | 
+chunk-4VKWMXJG.js   | trial-balance |  20.02 kB | 
+chunk-Y7RCKTHO.js   | profit-loss   |  18.70 kB | 
+chunk-QUGZHHAV.js   | -             |   4.08 kB | 
+
+Application bundle generation complete. [0.784 seconds] - 2026-08-09T13:05:31.634Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-PQ5CF4HE.js   | trial-balance |  18.65 kB | 
+
+Application bundle generation complete. [0.707 seconds] - 2026-08-09T13:05:37.112Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 637.76 kB | 
+
+Lazy chunk files    | Names         |  Raw size
+chunk-KE5AJAMS.js   | balance-sheet |  26.19 kB | 
+
+Application bundle generation complete. [0.657 seconds] - 2026-08-09T13:05:41.938Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names  |  Raw size
+main.js             | main   | 637.76 kB | 
+
+Lazy chunk files    | Names  |  Raw size
+chunk-KRSGWUAB.js   | ledger |  20.19 kB | 
+
+Application bundle generation complete. [0.562 seconds] - 2026-08-09T13:05:47.093Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names       |  Raw size
+main.js             | main        | 637.76 kB | 
+
+Lazy chunk files    | Names       |  Raw size
+chunk-6VFFPSPN.js   | profit-loss |  17.66 kB | 
+
+Application bundle generation complete. [0.544 seconds] - 2026-08-09T13:05:51.487Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names      |  Raw size
+main.js             | main       | 637.76 kB | 
+chunk-GF43U3ZT.js   | -          |   1.79 kB | 
+
+Lazy chunk files    | Names      |  Raw size
+chunk-CLAACO3A.js   | atm-detail |  25.55 kB | 
+chunk-VRD3XWAB.js   | atm-list   |  23.70 kB | 
+chunk-CVXHALU5.js   | atm-form   |  16.34 kB | 
+chunk-S2PKXB4Y.js   | atm-refill |  15.00 kB | 
+
+Application bundle generation complete. [0.670 seconds] - 2026-08-09T13:08:40.418Z
+
+Page reload sent to client(s).
