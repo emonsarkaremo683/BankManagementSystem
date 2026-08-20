@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>General Ledger Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 40pt 30pt 40pt 30pt;
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: 'Helvetica', sans-serif;
+                font-size: 8pt;
+                color: #787878;
+            }
+        }
+        body {
+            font-family: 'Helvetica', sans-serif;
+            color: #0A1628;
+            margin: 0;
+            padding: 0;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10pt;
+        }
+        .logo-text {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #0A1628;
+        }
+        .logo-accent {
+            color: #C9A84C;
+        }
+        .tagline {
+            font-size: 8pt;
+            font-style: italic;
+            color: #787878;
+        }
+        .contact-info {
+            text-align: right;
+            font-size: 8pt;
+            color: #555555;
+        }
+        .divider {
+            height: 3pt;
+            background-color: #C9A84C;
+            margin-bottom: 15pt;
+        }
+        .watermark {
+            position: absolute;
+            top: 35%;
+            left: 20%;
+            font-size: 70pt;
+            color: rgba(201, 168, 76, 0.04);
+            transform: rotate(-40deg);
+            z-index: -1000;
+            font-weight: bold;
+        }
+        .title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #0A1628;
+            margin-bottom: 12pt;
+        }
+        .metadata-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 10pt;
+            margin-bottom: 15pt;
+            background-color: #F8FAFC;
+        }
+        .metadata-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .metadata-label {
+            font-weight: bold;
+            color: #4A5568;
+            width: 25%;
+            padding: 3pt 0;
+        }
+        .metadata-val {
+            color: #1A202C;
+            width: 25%;
+            padding: 3pt 0;
+        }
+        .txn-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25pt;
+        }
+        .txn-table th {
+            background-color: #0A1628;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 8.5pt;
+            padding: 6pt 5pt;
+            border-bottom: 2pt solid #C9A84C;
+            text-align: left;
+        }
+        .txn-table td {
+            padding: 6pt 5pt;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 8.5pt;
+        }
+        .txn-table tr:nth-child(even) td {
+            background-color: #F8FAFC;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="watermark">ENSARK BANK</div>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="logo-text">EnSark<span class="logo-accent">Bank</span></div>
+                <div class="tagline">Secure. Smart. Simple.</div>
+            </td>
+            <td class="contact-info">
+                Head Office: 121/A Gulshan Avenue, Dhaka<br/>
+                Email: support@ensarkbank.com | Web: www.ensarkbank.com<br/>
+                Phone: +880 9612-ENSARK
+            </td>
+        </tr>
+    </table>
+
+    <div class="divider"></div>
+
+    <div class="title">General Ledger Report</div>
+
+    <div class="metadata-card">
+        <table class="metadata-table">
+            <tr>
+                <td class="metadata-label">Branch Name</td>
+                <td class="metadata-val" th:text="${branchName}">N/A</td>
+                <td class="metadata-label">Account Number</td>
+                <td class="metadata-val" th:text="${accountNumber}">N/A</td>
+            </tr>
+            <tr>
+                <td class="metadata-label">Opening Balance</td>
+                <td class="metadata-val" th:text="${openingBalance}">$0.00</td>
+                <td class="metadata-label">Closing Balance</td>
+                <td class="metadata-val" th:text="${closingBalance}">$0.00</td>
+            </tr>
+            <tr>
+                <td class="metadata-label">Period From</td>
+                <td class="metadata-val" th:text="${periodFrom}">Start</td>
+                <td class="metadata-label">Period To</td>
+                <td class="metadata-val" th:text="${periodTo}">Present</td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="txn-table">
+        <thead>
+            <tr>
+                <th style="width: 15%;">Date</th>
+                <th style="width: 30%;">Particulars / Account</th>
+                <th style="width: 15%;" class="text-right">Debit</th>
+                <th style="width: 15%;" class="text-right">Credit</th>
+                <th style="width: 15%;" class="text-right">Balance</th>
+                <th style="width: 10%;">Txn ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="row : ${entries}">
+                <td th:text="${row.date}">13 Aug 2026</td>
+                <td>
+                    <span th:text="${row.particulars}">Salary Payment</span>
+                    <span th:if="${row.accountName != null}" th:text="' / ' + ${row.accountName}"></span>
+                </td>
+                <td class="text-right" th:text="${row.debit}">$0.00</td>
+                <td class="text-right" th:text="${row.credit}">$0.00</td>
+                <td class="text-right" th:text="${row.balance}">$5,000.00</td>
+                <td th:text="${row.transactionId}">-</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(entries)}">
+                <td colspan="6" class="text-center" style="padding: 20pt; color: #718096;">No ledger records found for this period.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

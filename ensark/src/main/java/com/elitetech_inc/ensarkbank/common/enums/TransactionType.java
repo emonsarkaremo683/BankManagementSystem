@@ -1,0 +1,25 @@
+package com.elitetech_inc.ensarkbank.common.enums;
+
+public enum TransactionType {
+    DEPOSIT,
+    WITHDRAW,
+    TRANSFER,
+    PAYMENT,
+    REFUND,
+    REVERSE,
+    ATM_WITHDRAW,
+    ATM_DEPOSIT,
+    LOAN_DISBURSEMENT,
+    LOAN_REPAYMENT,
+    LOAN_FORECLOSURE,
+    CARD_PURCHASE,
+    CARD_REVERSAL,
+    BRANCH_OPENING,
+    INTEREST_POSTING,
+    CHEQUE_ISSUE_CHARGE,
+    CARD_ISSUE_CHARGE,
+    ATM_REFILL,
+    CREDIT_BILLING,
+    CREDIT_PAYMENT,
+    STANDING_ORDER_EXECUTION,
+}
