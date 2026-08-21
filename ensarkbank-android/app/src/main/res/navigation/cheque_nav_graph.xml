@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cheque_nav_graph"
+    app:startDestination="@id/chequeListFragment">
+
+    <fragment
+        android:id="@+id/chequeListFragment"
+        android:name="com.ensark.ensarkbank.ui.cheque.ChequeListFragment"
+        android:label="Cheque Books">
+        <action
+            android:id="@+id/action_chequeList_to_apply"
+            app:destination="@id/chequeApplyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chequeApplyFragment"
+        android:name="com.ensark.ensarkbank.ui.cheque.ChequeApplyFragment"
+        android:label="Apply for Cheque Book" />
+
+</navigation>

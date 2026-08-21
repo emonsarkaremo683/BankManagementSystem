@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/transfer_nav_graph"
+    app:startDestination="@id/transfersFragment">
+
+    <fragment
+        android:id="@+id/transfersFragment"
+        android:name="com.ensark.ensarkbank.ui.transfers.TransfersFragment"
+        android:label="Fund Transfers" >
+        <action
+            android:id="@+id/action_to_make_transfer"
+            app:destination="@id/makeTransferFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/makeTransferFragment"
+        android:name="com.ensark.ensarkbank.ui.transfers.MakeTransferFragment"
+        android:label="Make Transfer" >
+        <action
+            android:id="@+id/action_make_to_otp"
+            app:destination="@id/otpVerificationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/otpVerificationFragment"
+        android:name="com.ensark.ensarkbank.ui.transfers.OtpVerificationFragment"
+        android:label="Verify OTP" >
+        <action
+            android:id="@+id/action_otp_to_success"
+            app:destination="@id/transferSuccessFragment"
+            app:popUpTo="@id/transfersFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/transferSuccessFragment"
+        android:name="com.ensark.ensarkbank.ui.transfers.TransferSuccessFragment"
+        android:label="Success" />
+
+</navigation>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EnSarkBank"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.EnSarkBank">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false" />
+
+        <activity android:name=".activity.AccountActivity" />
+        <activity android:name=".activity.TransferActivity" />
+        <activity android:name=".activity.CardActivity" />
+        <activity android:name=".activity.LoanActivity" />
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.HistoryActivity" />
+        <activity android:name=".activity.KycActivity" />
+        <activity android:name=".activity.BeneficiaryActivity" />
+        <activity android:name=".activity.OtpVerificationActivity" />
+        <activity android:name=".activity.LoanApplicationActivity" />
+        <activity android:name=".activity.ForgetPasswordActivity" />
+        <activity android:name=".activity.ResetPasswordActivity" />
+        <activity android:name=".activity.AccountOpeningActivity" />
+        <activity android:name=".activity.CardApplicationActivity" />
+        <activity android:name=".activity.StandingOrderActivity" />
+        <activity android:name=".activity.StandingOrderFormActivity" />
+        <activity android:name=".activity.ChequeActivity" />
+        <activity android:name=".activity.CurrencyConverterActivity" />
+
+    </application>
+
+</manifest>
