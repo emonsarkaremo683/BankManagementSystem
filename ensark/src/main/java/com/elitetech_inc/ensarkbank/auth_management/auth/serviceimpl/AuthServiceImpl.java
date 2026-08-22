@@ -4,6 +4,7 @@ import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.ForgetPassw
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.LoginRequest;
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.ResetPasswordRequest;
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.response.LoginResponse;
+import com.elitetech_inc.ensarkbank.auth_management.auth.dto.response.TokenValidationResponse;
 import com.elitetech_inc.ensarkbank.auth_management.auth.entity.TokenBlacklist;
 import com.elitetech_inc.ensarkbank.auth_management.auth.repository.TokenBlacklistRepository;
 import com.elitetech_inc.ensarkbank.auth_management.auth.security.EmailConfig;
@@ -166,6 +167,33 @@ public class AuthServiceImpl implements AuthService {
         user.setTotpSecret(null);
         userRepository.save(user);
         log.info("MFA disabled for user: {}", email);
+    }
+
+    @Override
+    public TokenValidationResponse validateToken(String token) {
+        if (token == null || token.isBlank()) {
+            return TokenValidationResponse.invalid("Token is missing");
+        }
+
+        if (tokenBlacklistRepository.existsByToken(token)) {
+            return TokenValidationResponse.invalid("Token has been revoked");
+        }
+
+        if (!jwtUtil.isTokenValid(token)) {
+            return TokenValidationResponse.invalid("Token is invalid or expired");
+        }
+
+        // Single-purpose tokens (REFRESH / PASSWORD_RESET / EMAIL_VERIFICATION)
+        // must not be treated as session credentials.
+        if (jwtUtil.extractPurpose(token) != null) {
+            return TokenValidationResponse.invalid("Token is not an access token");
+        }
+
+        return TokenValidationResponse.valid(
+                jwtUtil.getEmail(token),
+                jwtUtil.getRole(token).name(),
+                jwtUtil.getExpiration(token).getTime()
+        );
     }
 
     @Override

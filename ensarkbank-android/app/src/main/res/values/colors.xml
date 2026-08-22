@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Backgrounds -->
+    <color name="primary_background">#0D1117</color>
+    <color name="surface_background">#161B22</color>
 
-    <!-- Brand -->
-    <color name="brand_primary">#0B2C5C</color>
-    <color name="brand_primary_light">#1E4C8C</color>
-    <color name="brand_accent">#C9A24B</color>
-    <color name="brand_primary_soft">#1A0B2C5C</color>
-
-    <!-- Surfaces -->
-    <color name="surface">#FFFFFF</color>
-    <color name="background">#F4F6FA</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="on_primary_muted">#B9C6DC</color>
-    <color name="divider">#E7EBF3</color>
+    <!-- Electric Accents -->
+    <color name="electric_cyan">#00F2FE</color>
+    <color name="neon_blue">#4FACFE</color>
+    <color name="mint_green">#00FF87</color>
+    <color name="neon_pink">#FF3366</color>
 
     <!-- Text -->
-    <color name="text_primary">#12203D</color>
-    <color name="text_secondary">#5A6B85</color>
-    <color name="text_muted">#9AA6BB</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#8B949E</color>
 
-    <!-- Semantic -->
-    <color name="success">#1E8E5A</color>
-    <color name="danger">#C4362E</color>
-    <color name="warning">#B8842A</color>
-    <color name="info">#2A6FB8</color>
+    <!-- Shadow Physics -->
+    <color name="shadow_dark">#99000000</color>
+    <color name="shadow_light">#0DFFFFFF</color>
+    <color name="shadow_cyan">#6600F2FE</color>
 
-    <!-- Semantic tints (chips, icon circles) -->
-    <color name="success_soft">#331E8E5A</color>
-    <color name="danger_soft">#33C4362E</color>
-    <color name="warning_soft">#33B8842A</color>
-    <color name="info_soft">#332A6FB8</color>
-
+    <!-- Standard Colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>

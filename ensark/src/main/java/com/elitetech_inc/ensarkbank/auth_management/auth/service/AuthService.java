@@ -4,6 +4,7 @@ import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.ForgetPassw
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.LoginRequest;
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.ResetPasswordRequest;
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.response.LoginResponse;
+import com.elitetech_inc.ensarkbank.auth_management.auth.dto.response.TokenValidationResponse;
 
 public interface AuthService {
     LoginResponse<?> login(LoginRequest lr);
@@ -17,4 +18,5 @@ public interface AuthService {
     void verifyEmail(String token);
     void forgotPassword(ForgetPasswordRequest dto);
     void resetPassword(ResetPasswordRequest dto);
+    TokenValidationResponse validateToken(String token);
 }

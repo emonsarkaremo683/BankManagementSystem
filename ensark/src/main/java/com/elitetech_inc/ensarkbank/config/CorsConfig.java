@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -47,7 +48,9 @@ public class CorsConfig {
         if (!DEV_FRONTEND_URL.equals(frontendUrl)) {
             allowedOrigins.add(DEV_FRONTEND_URL);
         }
-        configuration.setAllowedOrigins(allowedOrigins);
+
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8080"));
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

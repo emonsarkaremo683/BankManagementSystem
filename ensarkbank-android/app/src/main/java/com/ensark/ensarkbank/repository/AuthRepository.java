@@ -9,6 +9,7 @@ import com.ensark.ensarkbank.model.dto.ForgetPasswordRequest;
 import com.ensark.ensarkbank.model.dto.LoginRequest;
 import com.ensark.ensarkbank.model.dto.LoginResponse;
 import com.ensark.ensarkbank.model.dto.ResetPasswordRequest;
+import com.ensark.ensarkbank.model.dto.TokenValidationResponse;
 
 import java.util.Map;
 
@@ -51,6 +52,10 @@ public class AuthRepository {
 
     public void refreshToken(Map<String, String> body, Callback<LoginResponse<CustomerResponse>> callback) {
         apiService.refreshToken(body).enqueue(callback);
+    }
+
+    public void validateToken(String authHeader, Map<String, String> body, Callback<TokenValidationResponse> callback) {
+        apiService.validateToken(authHeader, body).enqueue(callback);
     }
 
     public void register(RequestBody data, MultipartBody.Part profile, MultipartBody.Part nid,

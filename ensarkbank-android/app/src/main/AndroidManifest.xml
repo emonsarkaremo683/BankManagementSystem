@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".ui.auth.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.EnSarkBank">
             <intent-filter>
@@ -26,36 +26,19 @@
         </activity>
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name=".ui.auth.RegisterActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.NavHostActivity"
             android:exported="false" />
 
-        <activity android:name=".activity.AccountActivity" />
-        <activity android:name=".activity.TransferActivity" />
-        <activity android:name=".activity.CardActivity" />
-        <activity android:name=".activity.LoanActivity" />
-        <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.HistoryActivity" />
-        <activity android:name=".activity.KycActivity" />
-        <activity android:name=".activity.BeneficiaryActivity" />
-        <activity android:name=".activity.OtpVerificationActivity" />
-        <activity android:name=".activity.LoanApplicationActivity" />
-        <activity android:name=".activity.ForgetPasswordActivity" />
-        <activity android:name=".activity.ResetPasswordActivity" />
-        <activity android:name=".activity.AccountOpeningActivity" />
-        <activity android:name=".activity.CardApplicationActivity" />
-        <activity android:name=".activity.StandingOrderActivity" />
-        <activity android:name=".activity.StandingOrderFormActivity" />
-        <activity android:name=".activity.ChequeActivity" />
-        <activity android:name=".activity.CurrencyConverterActivity" />
+        <!-- Placeholder for other activities if needed, but we use Fragments now -->
 
     </application>
 

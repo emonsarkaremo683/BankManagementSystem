@@ -4,6 +4,7 @@ import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.ForgetPassw
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.LoginRequest;
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.request.ResetPasswordRequest;
 import com.elitetech_inc.ensarkbank.auth_management.auth.dto.response.LoginResponse;
+import com.elitetech_inc.ensarkbank.auth_management.auth.dto.response.TokenValidationResponse;
 import com.elitetech_inc.ensarkbank.auth_management.auth.service.AuthService;
 import com.elitetech_inc.ensarkbank.common.enums.DocumentType;
 import com.elitetech_inc.ensarkbank.config.RateLimitConfig;
@@ -165,6 +166,27 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest dto) {
         authService.resetPassword(dto);
         return ResponseEntity.ok("Password reset successful. You can now log in with your new password.");
+    }
+
+    /**
+     * Checks whether a token is still usable as a session credential.
+     * Accepts the token via the standard Authorization: Bearer header, or as a
+     * JSON body {"token": "..."}. Mirrors the checks performed by JwtAuthFilter:
+     * signature/expiry, blacklist, and that it is an access (non-purpose) token.
+     */
+    @PostMapping("/validate")
+    public ResponseEntity<TokenValidationResponse> validateToken(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            @RequestBody(required = false) Map<String, String> body) {
+
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else if (body != null && body.get("token") != null) {
+            token = body.get("token");
+        }
+
+        return ResponseEntity.ok(authService.validateToken(token));
     }
 
 }

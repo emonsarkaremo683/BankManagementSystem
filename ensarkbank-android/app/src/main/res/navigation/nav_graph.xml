@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.ensark.ensarkbank.ui.dashboard.DashboardFragment"
+        android:label="Dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_transferFragment"
+            app:destination="@id/transferFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_cardFragment"
+            app:destination="@id/cardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/transferFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.TransferFragment"
+        android:label="Transfer" >
+        <action
+            android:id="@+id/action_transferFragment_to_otpFragment"
+            app:destination="@id/otpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.OtpFragment"
+        android:label="OTP Verification" >
+        <argument
+            android:name="referenceId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="com.ensark.ensarkbank.ui.card.CardFragment"
+        android:label="Cards" />
+
+</navigation>

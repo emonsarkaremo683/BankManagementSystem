@@ -5,6 +5,7 @@ import com.ensark.ensarkbank.model.dto.ForgetPasswordRequest;
 import com.ensark.ensarkbank.model.dto.LoginRequest;
 import com.ensark.ensarkbank.model.dto.LoginResponse;
 import com.ensark.ensarkbank.model.dto.ResetPasswordRequest;
+import com.ensark.ensarkbank.model.dto.TokenValidationResponse;
 
 import java.util.Map;
 
@@ -64,4 +65,10 @@ public interface AuthApiService {
 
     @POST("api/auth/reset-password")
     Call<String> resetPassword(@Body ResetPasswordRequest dto);
+
+    @POST("api/auth/validate")
+    Call<TokenValidationResponse> validateToken(
+            @Header("Authorization") String authHeader,
+            @Body Map<String, String> body
+    );
 }
