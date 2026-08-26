@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/profileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile &amp; Settings"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Profile Header (Raised) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profileHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/neumorphic_raised"
+            android:padding="20dp"
+            app:layout_constraintTop_toBottomOf="@id/profileTitle">
+
+            <FrameLayout
+                android:id="@+id/profileImageContainer"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/neumorphic_recessed"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:tint="@color/electric_cyan" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnChangeProfileImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:fabCustomSize="24dp"
+                    app:fabSize="mini"
+                    app:tint="@color/primary_background"
+                    app:backgroundTint="@color/electric_cyan" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="User Name"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/profileImageContainer"
+                app:layout_constraintTop_toTopOf="@id/profileImageContainer" />
+
+            <TextView
+                android:id="@+id/userEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="user@example.com"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/userName"
+                app:layout_constraintTop_toBottomOf="@id/userName" />
+
+            <TextView
+                android:id="@+id/kycBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="VERIFIED"
+                android:textColor="@color/mint_green"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/userName"
+                app:layout_constraintTop_toBottomOf="@id/userEmail" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Settings Options -->
+        <LinearLayout
+            android:id="@+id/settingsGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/profileHeader">
+
+            <!-- Edit Profile -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/editProfileAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/neumorphic_raised"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Profile"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_secondary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Change Password -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/changePasswordAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/neumorphic_raised"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change Password"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_secondary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Personal Info -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/personalInfoAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/neumorphic_raised"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personal Information"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_secondary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- KYC Documents -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/kycAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/neumorphic_raised"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KYC Documents"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_secondary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Notifications Settings -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/notificationsAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/neumorphic_raised"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notifications"
+                    android:textColor="@color/text_primary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_secondary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/neumorphic_button_selector"
+            android:text="Logout"
+            android:textAllCaps="false"
+            android:textColor="@color/neon_pink"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/settingsGroup" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

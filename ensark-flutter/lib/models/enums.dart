@@ -1,0 +1,45 @@
+// ignore_for_file: constant_identifier_names
+
+enum AccountType { SAVINGS, CURRENT, FIXED_DEPOSIT, LOAN }
+enum AccountStatus { ACTIVE, INACTIVE, CLOSED, PENDING }
+enum HolderType { PRIMARY, JOINT, NOMINEE }
+enum NomineeRelation { FATHER, MOTHER, SPOUSE, SON, DAUGHTER, BROTHER, SISTER, OTHER }
+
+enum TransactionType { DEPOSIT, WITHDRAWAL, TRANSFER, PAYMENT }
+enum TransactionChannel { WEB, MOBILE, ATM, BRANCH }
+enum TransactionStatus { PENDING, COMPLETED, FAILED, CANCELLED }
+
+enum CardNetwork { VISA, MASTERCARD, AMEX, DISCOVER }
+enum CardType { DEBIT, CREDIT, PREPAID }
+enum CardStatus { ACTIVE, INACTIVE, BLOCKED, EXPIRED, PENDING }
+
+enum ChequeBookStatus { REQUESTED, APPROVED, REJECTED, PROCESSED, SHIPPED, DELIVERED, ACTIVATED, EXPIRED }
+enum ChequeLeafStatus { UNUSED, USED, CANCELLED, STOPPED, BOUNCED }
+
+enum LoanStatus { PENDING, APPROVED, REJECTED, DISBURSED, CLOSED }
+enum RepaymentStatus { UNPAID, PAID, OVERDUE, PARTIAL }
+
+enum StandingOrderFrequency { DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY }
+enum StandingOrderStatus { ACTIVE, PAUSED, CANCELLED, COMPLETED }
+
+enum BeneficiaryType { INTERNAL, EXTERNAL }
+enum RequestStatus { PENDING, APPROVED, REJECTED }
+enum ATMTransactionType { WITHDRAWAL, DEPOSIT, BALANCE_INQUIRY, PIN_CHANGE }
+
+enum NotificationType { 
+  TRANSACTION, 
+  SECURITY, 
+  PROMOTION, 
+  SYSTEM,
+  KYC_VERIFIED,
+  KYC_REJECTED,
+  KYC_PENDING,
+  ACCOUNT_OPENED,
+  LOAN_APPROVED,
+  LOAN_REJECTED,
+  CHEQUE_BOOK_READY
+}
+
+enum BranchType { HEAD_OFFICE, BRANCH, SUB_BRANCH, AGENT_BANKING }
+enum BranchStatus { ACTIVE, INACTIVE }
+enum Currency { BDT, USD, EUR, GBP }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Glow/Border Gradient -->
+    <item>
+        <shape>
+            <corners android:radius="24dp" />
+            <gradient
+                android:startColor="@color/electric_cyan"
+                android:endColor="@color/neon_blue"
+                android:angle="45" />
+        </shape>
+    </item>
+
+    <!-- Inner Glassy Surface -->
+    <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="1dp">
+        <shape>
+            <corners android:radius="23dp" />
+            <gradient
+                android:startColor="#33FFFFFF"
+                android:endColor="#11FFFFFF"
+                android:angle="135" />
+        </shape>
+    </item>
+</layer-list>

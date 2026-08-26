@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/neumorphic_raised"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/bookNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book #CHQ-5521"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bookStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/neumorphic_recessed"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:text="ACTIVE"
+        android:textColor="@color/mint_green"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/accountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Account Number"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookNumber" />
+
+    <TextView
+        android:id="@+id/accountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234 5678 9012"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountLabel" />
+
+    <TextView
+        android:id="@+id/leavesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leaves"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/accountLabel" />
+
+    <TextView
+        android:id="@+id/leavesValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25 Leaves"
+        android:textColor="@color/electric_cyan"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/leavesLabel" />
+
+    <TextView
+        android:id="@+id/serialRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Range: 1001 - 1025"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountValue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

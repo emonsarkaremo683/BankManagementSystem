@@ -1,0 +1,87 @@
+<aside [class.w-64]="!isCollapsed"
+       [class.w-20]="isCollapsed"
+       class="h-full max-h-screen bg-white border-r border-[var(--color-border)] shadow-[var(--shadow-sidebar)] flex flex-col transition-all duration-300 overflow-hidden">
+
+  <!-- Brand lockup -->
+  <div class="h-16 flex items-center border-b border-[var(--color-border)] flex-shrink-0"
+       [class.px-4]="!isCollapsed" [class.justify-center]="isCollapsed">
+    <div class="h-9 w-9 rounded-xl bg-[var(--color-brand-600)] flex items-center justify-center flex-shrink-0 font-display font-extrabold text-white text-sm shadow-[var(--shadow-soft)]">
+      EB
+    </div>
+    <div *ngIf="!isCollapsed" class="ml-3 overflow-hidden">
+      <div class="text-sm font-bold text-[var(--color-text-primary)] font-display truncate">EnsarkBank</div>
+      <div class="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest truncate">{{ isCustomer ? 'Customer Portal' : 'Staff Portal' }}</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+    <div *ngFor="let group of visibleNavGroups" class="space-y-1">
+      <div *ngIf="!isCollapsed" class="px-3 text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5">
+        {{ group.title }}
+      </div>
+
+      <a *ngFor="let item of group.items"
+         [routerLink]="item.route"
+         routerLinkActive="bg-[var(--color-brand-50)] text-[var(--color-brand-700)] font-semibold"
+         #rla="routerLinkActive"
+         (click)="onNavClick()"
+         [title]="isCollapsed ? item.label : ''"
+         class="flex items-center py-2.5 rounded-xl text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text-primary)] transition-colors"
+         [class.justify-center]="isCollapsed"
+         [class.px-4]="!isCollapsed"
+         [class.px-0]="isCollapsed">
+
+        <svg *ngIf="item.icon === 'dashboard'" lucideLayoutDashboard class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'branch'" lucideBuilding2 class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'employee'" lucideUserCog class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'account'" lucideWallet class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'transaction'" lucideArrowLeftRight class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'customer'" lucideUsers class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'kyc'" lucideBadgeCheck class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'profile'" lucideCircleUser class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'beneficiary'" lucideHandshake class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'card'" lucideCreditCard class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'loan'" lucideHandCoins class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'cheque'" lucideFileText class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'standing-order'" lucideRepeat class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'fraud'" lucideShieldAlert class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'report'" lucideChartColumn class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'currency'" lucideCoins class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'atm'" lucideLandmark class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+        <svg *ngIf="item.icon === 'map-pin'" lucideMapPin class="w-[18px] h-[18px] flex-shrink-0" [attr.stroke-width]="rla.isActive ? 2.5 : 2"></svg>
+
+        <span *ngIf="!isCollapsed" class="ml-3 truncate">{{ item.label }}</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Contextual footer card -->
+  <div class="p-3 border-t border-[var(--color-border)] flex-shrink-0">
+    <div *ngIf="!isCollapsed" class="app-card !shadow-none !rounded-2xl px-3 py-2.5 mb-2 bg-[var(--color-surface-alt)]">
+      <div class="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">Signed in as</div>
+      <div class="text-xs font-semibold text-[var(--color-text-primary)] truncate mt-0.5">{{ userName }}</div>
+      <div class="text-[10px] text-[var(--color-brand-700)] font-semibold uppercase tracking-wide mt-0.5">{{ userRole }}</div>
+    </div>
+
+    <button (click)="toggleCollapse()"
+            class="hidden lg:flex w-full items-center py-2 rounded-xl text-xs font-medium text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text-primary)] transition-colors mb-1"
+            [class.justify-center]="isCollapsed"
+            [class.px-4]="!isCollapsed"
+            [class.px-0]="isCollapsed">
+      <svg *ngIf="!isCollapsed" lucidePanelLeftClose class="w-4 h-4 flex-shrink-0"></svg>
+      <svg *ngIf="isCollapsed" lucidePanelLeftOpen class="w-4 h-4 flex-shrink-0"></svg>
+      <span *ngIf="!isCollapsed" class="ml-2">Collapse</span>
+    </button>
+
+    <button (click)="logout(); $event.stopPropagation()"
+            [title]="isCollapsed ? 'Logout' : ''"
+            class="w-full flex items-center py-2.5 rounded-xl text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-danger-50)] hover:text-[var(--color-danger-600)] transition-colors"
+            [class.justify-center]="isCollapsed"
+            [class.px-4]="!isCollapsed"
+            [class.px-0]="isCollapsed">
+      <svg lucideLogOut class="w-[18px] h-[18px] flex-shrink-0"></svg>
+      <span *ngIf="!isCollapsed" class="ml-3 truncate">Logout</span>
+    </button>
+  </div>
+</aside>

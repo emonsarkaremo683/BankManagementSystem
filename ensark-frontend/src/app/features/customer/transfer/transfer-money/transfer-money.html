@@ -1,0 +1,180 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-2xl mx-auto space-y-6">
+
+    <div class="flex items-center gap-4">
+      <a routerLink="/customer/dashboard" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+        <svg lucideArrowLeft class="w-4 h-4"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Transfer Money</h1>
+        <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Send money securely with OTP verification.</p>
+      </div>
+    </div>
+
+    <!-- STEP 1: Transfer Form -->
+    <div *ngIf="step === 'form'" class="app-card p-8">
+      <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">From Account</label>
+          <select formControlName="senderAccountId" (change)="onAccountChange()" class="app-input">
+            <option value="">Select your account</option>
+            <option *ngFor="let a of accounts" [value]="a.id">{{ a.accountNumber }} ({{ a.accountType }}) - {{ a.availableBalance | number:'1.2-2' }}</option>
+          </select>
+        </div>
+
+        <div *ngIf="selectedAccount" class="bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] p-4 border border-[var(--color-border)]">
+          <div class="text-xs text-[var(--color-text-muted)]">Available Balance</div>
+          <div class="text-lg font-bold text-[var(--color-text-primary)]">{{ selectedAccount.availableBalance | number:'1.2-2' }}</div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">Send To</label>
+          <div class="flex gap-3 mb-4">
+            <button type="button" (click)="useBeneficiary = true; transferForm.patchValue({receiverMode: 'beneficiary'})"
+              class="px-4 py-2 rounded-[var(--radius-btn)] text-sm font-medium transition-all border"
+              [ngClass]="useBeneficiary ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)] border-[var(--color-brand-500)]/30' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:text-[var(--color-text-primary)]'">
+              Saved Beneficiary
+            </button>
+            <button type="button" (click)="useBeneficiary = false; transferForm.patchValue({receiverMode: 'manual', beneficiaryId: ''})"
+              class="px-4 py-2 rounded-[var(--radius-btn)] text-sm font-medium transition-all border"
+              [ngClass]="!useBeneficiary ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)] border-[var(--color-brand-500)]/30' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:text-[var(--color-text-primary)]'">
+              Account Number
+            </button>
+          </div>
+
+          <div *ngIf="useBeneficiary">
+            <select formControlName="beneficiaryId" (change)="onBeneficiarySelect()" class="app-input">
+              <option value="">Select a beneficiary</option>
+              <option *ngFor="let b of beneficiaries" [value]="b.id">{{ b.name }} - {{ b.accNumber }} ({{ b.provider }})</option>
+            </select>
+            <div *ngIf="beneficiaries.length === 0" class="mt-2 text-sm text-[var(--color-text-muted)]">
+              No verified beneficiaries. <a routerLink="/customer/beneficiaries/new" class="text-[var(--color-brand-600)] hover:underline">Add one</a>
+            </div>
+          </div>
+
+          <div *ngIf="!useBeneficiary" class="space-y-4">
+            <div>
+              <label class="block text-xs text-[var(--color-text-muted)] mb-1">Account Number</label>
+              <input type="text" formControlName="receiverAccountNumber" class="app-input" placeholder="Enter account number">
+            </div>
+            <div>
+              <label class="block text-xs text-[var(--color-text-muted)] mb-1">Receiver Name (optional)</label>
+              <input type="text" formControlName="receiverName" class="app-input" placeholder="Receiver name">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs text-[var(--color-text-muted)] mb-1">Bank Name</label>
+                <input type="text" formControlName="bankName" class="app-input" placeholder="Ensark Bank">
+              </div>
+              <div>
+                <label class="block text-xs text-[var(--color-text-muted)] mb-1">Routing Number</label>
+                <input type="text" formControlName="routingNumber" class="app-input" placeholder="Optional">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Amount</label>
+          <input type="number" formControlName="amount" step="0.01" class="app-input" placeholder="0.00">
+          <div *ngIf="selectedAccount && transferForm.get('amount')?.value > 0" class="mt-2 text-sm">
+            <span class="text-[var(--color-text-muted)]">Balance after transfer: </span>
+            <span [ngClass]="balanceAfterTransfer >= 0 ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">{{ balanceAfterTransfer | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Remarks (optional)</label>
+          <textarea formControlName="remarks" rows="2" class="app-input !h-auto py-3 resize-none" placeholder="What's this transfer for?"></textarea>
+        </div>
+
+        <div *ngIf="errorMessage" class="bg-[var(--color-danger-50)] border border-[var(--color-danger-500)]/30 rounded-[var(--radius-input)] p-4">
+          <p class="text-sm text-[var(--color-danger-700)]">{{ errorMessage }}</p>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3">
+          <a routerLink="/customer/dashboard" class="app-btn app-btn-secondary">Cancel</a>
+          <button type="submit" [disabled]="transferForm.invalid || isLoading" class="app-btn app-btn-primary">
+            <svg *ngIf="isLoading" lucideLoaderCircle class="w-4 h-4 animate-spin"></svg>
+            Send Money
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- STEP 2: OTP Verification -->
+    <div *ngIf="step === 'otp'" class="app-card p-8">
+      <div class="text-center mb-8">
+        <div class="mx-auto w-16 h-16 bg-[var(--color-brand-50)] rounded-full flex items-center justify-center mb-4">
+          <svg lucideLock class="w-8 h-8 text-[var(--color-brand-600)]"></svg>
+        </div>
+        <h2 class="text-xl font-bold text-[var(--color-text-primary)]">Verify with OTP</h2>
+        <p class="text-sm text-[var(--color-text-muted)] mt-2">A 6-digit code has been sent to<br><span class="text-[var(--color-text-primary)] font-medium">{{ otpResponse?.maskedEmail }}</span></p>
+        <p class="text-xs text-[var(--color-text-muted)] mt-1">Expires at {{ otpResponse?.expiresAt | date:'shortTime' }}</p>
+      </div>
+
+      <form [formGroup]="otpForm" (ngSubmit)="onVerifyOtp()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Enter OTP Code</label>
+          <input type="text" formControlName="otpCode" maxlength="6" class="app-input text-center text-2xl tracking-[0.5em] font-mono !h-16" placeholder="------">
+        </div>
+
+        <div *ngIf="errorMessage" class="bg-[var(--color-danger-50)] border border-[var(--color-danger-500)]/30 rounded-[var(--radius-input)] p-4">
+          <p class="text-sm text-[var(--color-danger-700)]">{{ errorMessage }}</p>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3">
+          <button type="button" (click)="backToForm()" class="app-btn app-btn-secondary">Back</button>
+          <button type="submit" [disabled]="otpForm.invalid || isVerifying" class="app-btn app-btn-primary">
+            <svg *ngIf="isVerifying" lucideLoaderCircle class="w-4 h-4 animate-spin"></svg>
+            Verify &amp; Complete
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- STEP 3: Success -->
+    <div *ngIf="step === 'success'" class="app-card p-8 text-center">
+      <div class="mx-auto w-20 h-20 bg-[var(--color-success-50)] rounded-full flex items-center justify-center mb-6">
+        <svg lucideCircleCheck class="w-10 h-10 text-[var(--color-success-600)]"></svg>
+      </div>
+      <h2 class="text-2xl font-bold text-[var(--color-text-primary)] mb-2">Transfer Successful!</h2>
+      <p class="text-sm text-[var(--color-text-muted)] mb-8">Your money has been sent securely.</p>
+
+      <div class="bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] p-6 border border-[var(--color-border)] text-left space-y-3 mb-8">
+        <div class="flex justify-between">
+          <span class="text-[var(--color-text-muted)] text-sm">Reference</span>
+          <span class="text-[var(--color-text-primary)] text-sm font-mono">{{ transactionResult?.response?.referenceNo }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[var(--color-text-muted)] text-sm">Transaction ID</span>
+          <span class="text-[var(--color-text-primary)] text-sm font-mono">{{ transactionResult?.response?.transactionId }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[var(--color-text-muted)] text-sm">Amount</span>
+          <span class="text-[var(--color-success-600)] text-sm font-bold">{{ transactionResult?.response?.amount | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[var(--color-text-muted)] text-sm">To</span>
+          <span class="text-[var(--color-text-primary)] text-sm">{{ transactionResult?.receiverName }} ({{ transactionResult?.receiverAccountNumber }})</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[var(--color-text-muted)] text-sm">Status</span>
+          <span class="text-[var(--color-success-600)] text-sm font-medium">{{ transactionResult?.response?.status }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[var(--color-text-muted)] text-sm">Date</span>
+          <span class="text-[var(--color-text-primary)] text-sm">{{ transactionResult?.response?.createdAt | date:'medium' }}</span>
+        </div>
+      </div>
+
+      <div class="flex justify-center gap-3">
+        <a routerLink="/customer/transactions" class="app-btn app-btn-secondary">View Transactions</a>
+        <button (click)="step = 'form'; transactionResult = null" class="app-btn app-btn-primary">New Transfer</button>
+      </div>
+    </div>
+
+  </div>
+</div>

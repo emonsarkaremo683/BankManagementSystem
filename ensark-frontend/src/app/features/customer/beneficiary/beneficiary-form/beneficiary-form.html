@@ -1,0 +1,69 @@
+<div class="p-4 sm:p-6 lg:p-8">
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <div class="flex items-center">
+      <a routerLink="/customer/beneficiaries" class="mr-4 p-2 app-btn-secondary app-btn !px-2.5 !py-2.5">
+        <svg lucideArrowLeft class="w-5 h-5"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">{{ isEditMode ? 'Edit' : 'Add' }} Beneficiary</h1>
+        <p class="text-[var(--color-text-secondary)] mt-1 text-sm">{{ isEditMode ? 'Update beneficiary details.' : 'Add a new beneficiary for quick transfers.' }}</p>
+      </div>
+    </div>
+
+    <div class="app-card p-8">
+      <form [formGroup]="beneficiaryForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Beneficiary Name</label>
+          <input type="text" formControlName="name" class="app-input" placeholder="Enter beneficiary name">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Account Number</label>
+          <input type="text" formControlName="accNumber" class="app-input" placeholder="Enter account number">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Beneficiary Type</label>
+          <select formControlName="beneficiaryType" class="app-input">
+            <option *ngFor="let t of beneficiaryTypes" [value]="t">{{ t.replace('_', ' ') }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
+            Provider / Bank Name
+            <span *ngIf="beneficiaryForm.get('beneficiaryType')?.value !== 'INTER_BANK'" class="text-[var(--color-text-muted)] font-normal">(optional)</span>
+          </label>
+          <input type="text" formControlName="provider" class="app-input" placeholder="e.g. bKash, Nagad, or bank name">
+          <p *ngIf="beneficiaryForm.get('provider')?.invalid && beneficiaryForm.get('provider')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Provider is required for Inter-Bank beneficiaries</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">
+            Routing Number
+            <span *ngIf="beneficiaryForm.get('beneficiaryType')?.value !== 'INTER_BANK'" class="text-[var(--color-text-muted)] font-normal">(optional)</span>
+          </label>
+          <input type="text" formControlName="routingNumber" class="app-input" placeholder="Enter routing number">
+          <p *ngIf="beneficiaryForm.get('routingNumber')?.invalid && beneficiaryForm.get('routingNumber')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Routing number is required for Inter-Bank beneficiaries</p>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-4">
+          <a routerLink="/customer/beneficiaries" class="app-btn app-btn-secondary">
+            Cancel
+          </a>
+          <button type="submit" [disabled]="beneficiaryForm.invalid || isLoading" class="app-btn app-btn-primary">
+            <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ isEditMode ? 'Update' : 'Add' }} Beneficiary
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

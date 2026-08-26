@@ -1,0 +1,19 @@
+<div class="relative">
+  <button
+    (click)="toggleDropdown()"
+    class="relative p-2.5 rounded-xl text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text-primary)] transition-colors focus:outline-none"
+    title="Notifications"
+  >
+    <svg lucideBell class="w-5 h-5"></svg>
+
+    <!-- Unread Badge -->
+    <span *ngIf="unreadCount > 0" class="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-[var(--color-danger-500)] text-[10px] font-bold text-white ring-2 ring-white">
+      {{ unreadCount > 99 ? '99+' : unreadCount }}
+    </span>
+  </button>
+
+  <!-- Dropdown overlay -->
+  <div *ngIf="isOpen" class="absolute right-0 mt-3 z-50">
+    <app-notification-dropdown (close)="onCloseDropdown()"></app-notification-dropdown>
+  </div>
+</div>

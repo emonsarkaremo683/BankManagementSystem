@@ -1,0 +1,132 @@
+<div class="p-4 sm:p-6 lg:p-8">
+  <div class="max-w-4xl mx-auto space-y-6">
+
+    <app-page-header title="My Profile" subtitle="Manage your personal information.">
+      <button *ngIf="!isEditing" (click)="toggleEdit()" class="app-btn app-btn-secondary">
+        <svg lucidePencil class="w-4 h-4"></svg>
+        Edit Profile
+      </button>
+    </app-page-header>
+
+    <div *ngIf="isLoading" class="app-card p-8 animate-pulse space-y-4">
+      <div class="h-20 bg-[var(--color-border)] rounded-full w-20"></div>
+      <div class="space-y-3">
+        <div class="h-4 bg-[var(--color-border)] rounded w-full"></div>
+        <div class="h-4 bg-[var(--color-border)] rounded w-3/4"></div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && customer" class="space-y-6">
+      <div class="app-card p-8">
+        <div class="flex items-center">
+          <div class="relative">
+            <div class="w-20 h-20 rounded-full bg-[var(--color-brand-50)] flex items-center justify-center text-[var(--color-brand-600)] text-2xl font-bold overflow-hidden">
+              <img *ngIf="profilePreview || customer.profile" [src]="profilePreview || getProfileUrl(customer.profile)" class="w-full h-full object-cover" alt="">
+              <span *ngIf="!profilePreview && !customer.profile">{{ customer.name?.charAt(0) }}</span>
+            </div>
+            <label *ngIf="isEditing" class="absolute bottom-0 right-0 p-1.5 bg-[var(--color-brand-600)] rounded-full cursor-pointer hover:bg-[var(--color-brand-700)] transition-colors">
+              <svg lucidePencil class="w-3 h-3 text-white"></svg>
+              <input type="file" accept="image/*" (change)="onProfileChange($event)" class="hidden">
+            </label>
+          </div>
+          <div class="ml-6">
+            <h2 class="text-xl font-bold text-[var(--color-text-primary)]">{{ customer.name }}</h2>
+            <p class="text-[var(--color-text-muted)] text-sm">{{ customer.email }}</p>
+            <div class="mt-2">
+              <app-badge [label]="'KYC: ' + (customer.kycStatus || 'NOT SUBMITTED')" [color]="kycBadgeColor()"></app-badge>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="app-card p-6">
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Personal Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Full Name</label>
+              <input type="text" formControlName="name" [disabled]="!isEditing" class="app-input disabled:opacity-60">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Phone</label>
+              <input type="text" formControlName="phone" [disabled]="!isEditing" class="app-input disabled:opacity-60">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Gender</label>
+              <select formControlName="gender" [disabled]="!isEditing" class="app-input disabled:opacity-60">
+                <option value="">Select gender</option>
+                <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Date of Birth</label>
+              <input type="date" formControlName="dob" [disabled]="!isEditing" class="app-input disabled:opacity-60">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Occupation</label>
+              <select formControlName="occupation" [disabled]="!isEditing" class="app-input disabled:opacity-60">
+                <option value="">Select occupation</option>
+                <option *ngFor="let o of occupations" [value]="o">{{ o }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="app-card p-6">
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Addresses</h3>
+          <div formArrayName="addresses" class="space-y-4">
+            <div *ngFor="let addr of addresses.controls; let i = index" [formGroupName]="i" class="p-4 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">Type</label>
+                  <select formControlName="addressType" [disabled]="!isEditing" class="app-input disabled:opacity-60 !py-2 text-sm">
+                    <option value="PRESENT">Present</option>
+                    <option value="PERMANENT">Permanent</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">Holding No</label>
+                  <input type="text" formControlName="holdingNo" [disabled]="!isEditing" class="app-input disabled:opacity-60 !py-2 text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">Area</label>
+                  <input type="text" formControlName="area" [disabled]="!isEditing" class="app-input disabled:opacity-60 !py-2 text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">Postal Code</label>
+                  <input type="text" formControlName="postalCode" [disabled]="!isEditing" class="app-input disabled:opacity-60 !py-2 text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">Police Station</label>
+                  <select formControlName="policeStationId" [disabled]="!isEditing" (change)="onPoliceStationChange(i, +$any($event.target).value)" class="app-input disabled:opacity-60 !py-2 text-sm">
+                    <option [ngValue]="null">Select police station</option>
+                    <option *ngFor="let ps of policeStations" [ngValue]="ps.id">{{ ps.name }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">District</label>
+                  <input type="text" formControlName="districtName" [disabled]="true" class="app-input disabled:opacity-60 !py-2 text-sm" placeholder="Auto-filled from police station">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-[var(--color-text-muted)] mb-1">Division</label>
+                  <input type="text" formControlName="divisionName" [disabled]="true" class="app-input disabled:opacity-60 !py-2 text-sm" placeholder="Auto-filled from police station">
+                </div>
+              </div>
+            </div>
+            <p *ngIf="addresses.length === 0" class="text-sm text-[var(--color-text-muted)]">No addresses on file.</p>
+          </div>
+        </div>
+
+        <div *ngIf="isEditing" class="flex justify-end gap-4">
+          <button type="button" (click)="toggleEdit()" class="app-btn app-btn-secondary">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="profileForm.invalid" class="app-btn app-btn-primary">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

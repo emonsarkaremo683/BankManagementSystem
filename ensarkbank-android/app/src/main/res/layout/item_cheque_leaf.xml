@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/neumorphic_raised"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/leafNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Leaf #001" />
+
+    <TextView
+        android:id="@+id/leafStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/neumorphic_recessed"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="2dp"
+        android:textColor="@color/mint_green"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="UNUSED" />
+
+    <TextView
+        android:id="@+id/payeeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Payee:"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/leafNumber" />
+
+    <TextView
+        android:id="@+id/payeeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/text_primary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/payeeLabel"
+        app:layout_constraintStart_toEndOf="@id/payeeLabel"
+        app:layout_constraintTop_toTopOf="@id/payeeLabel"
+        tools:text="---" />
+
+    <TextView
+        android:id="@+id/amountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/electric_cyan"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/leafStatus"
+        tools:text="৳ 0.00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

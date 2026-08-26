@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">EnSark Bank</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="open_new_account">Open New Account</string>
+    <string name="account_type">Account Type</string>
+    <string name="select_branch">Select Branch</string>
+    <string name="initial_deposit">Initial Deposit Amount</string>
+    <string name="nominee_info">Nominee Information</string>
+    <string name="nominee_name">Nominee Name</string>
+    <string name="nominee_email">Nominee Email</string>
+    <string name="nominee_phone">Nominee Phone</string>
+    <string name="relation_nominee">Relation with Nominee</string>
+    <string name="nominee_docs">Nominee Documents</string>
+    <string name="photo">Photo</string>
+    <string name="nid_front">NID Front</string>
+    <string name="nid_back">NID Back</string>
+    <string name="submit_application">Submit Application</string>
+    <string name="currency_format">৳ %s</string>
+</resources>

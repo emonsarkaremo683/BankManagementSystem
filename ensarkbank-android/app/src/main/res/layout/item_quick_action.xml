@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/actionIcon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/neumorphic_button_selector"
+            android:clickable="false"
+            android:focusable="false"
+            tools:src="@drawable/ic_send"
+            tools:tint="@color/mint_green" />
+
+        <TextView
+            android:id="@+id/actionCount"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/neumorphic_button_selector"
+            android:gravity="center"
+            android:textColor="@color/primary_background"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="3"
+            tools:visibility="visible"
+            tools:backgroundTint="@color/electric_cyan" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/actionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        tools:text="Send" />
+
+</LinearLayout>

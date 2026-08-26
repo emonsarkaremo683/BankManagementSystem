@@ -1,0 +1,114 @@
+# ═══════════════════════════════════════════════════════════
+#  Root .gitignore — BankManagementSystem (monorepo)
+# ═══════════════════════════════════════════════════════════
+
+# ─── OS & Editor ──────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ─── Environment & Secrets ────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+
+# ═══════════════════════════════════════════════════════════
+#  Backend — ensark (Spring Boot / Maven)
+# ═══════════════════════════════════════════════════════════
+ensark/target/
+ensark/.mvn/wrapper/maven-wrapper.jar
+ensark/.apt_generated
+ensark/.classpath
+ensark/.factorypath
+ensark/.project
+ensark/.settings/
+ensark/.springBeans
+ensark/.sts4-cache
+
+# ═══════════════════════════════════════════════════════════
+#  Frontend — ensark-frontend (Angular)
+# ═══════════════════════════════════════════════════════════
+ensark-frontend/node_modules/
+ensark-frontend/dist/
+ensark-frontend/tmp/
+ensark-frontend/out-tsc/
+ensark-frontend/.angular/
+ensark-frontend/coverage/
+ensark-frontend/npm-debug.log
+ensark-frontend/yarn-error.log
+ensark-frontend/ng_output.log
+
+# ═══════════════════════════════════════════════════════════
+#  Flutter — ensark-flutter
+# ═══════════════════════════════════════════════════════════
+ensark-flutter/.dart_tool/
+ensark-flutter/.flutter-plugins-dependencies
+ensark-flutter/.pub-cache/
+ensark-flutter/.pub/
+ensark-flutter/build/
+ensark-flutter/coverage/
+ensark-flutter/.metadata
+ensark-flutter/local.properties
+
+# Flutter Android sub-build
+ensark-flutter/android/app/build/
+ensark-flutter/android/app/debug/
+ensark-flutter/android/app/profile/
+ensark-flutter/android/app/release/
+ensark-flutter/android/.gradle/
+ensark-flutter/android/build/
+ensark-flutter/android/local.properties
+
+# Flutter iOS sub-build
+ensark-flutter/ios/Pods/
+ensark-flutter/ios/.symlinks/
+ensark-flutter/ios/Flutter/.last_build_id
+ensark-flutter/ios/build/
+
+# Generated Dart files
+*.g.dart
+*.freezed.dart
+
+# ═══════════════════════════════════════════════════════════
+#  Android Native — ensarkbank-android
+# ═══════════════════════════════════════════════════════════
+ensarkbank-android/.gradle/
+ensarkbank-android/build/
+ensarkbank-android/app/build/
+ensarkbank-android/captures/
+ensarkbank-android/.externalNativeBuild/
+ensarkbank-android/.cxx/
+ensarkbank-android/local.properties
+ensarkbank-android/.artifacts/
+ensarkbank-android/lint_err.txt
+ensarkbank-android/lint_out.txt
+
+# ═══════════════════════════════════════════════════════════
+#  Global — Large / Generated / Binary artifacts
+# ═══════════════════════════════════════════════════════════
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+*.jar
+!ensark/.mvn/wrapper/maven-wrapper.jar
+*.so
+*.o
+*.dill
+*.hprof
+*.log
+
+# Build caches
+**/build/
+**/.gradle/
+**/target/

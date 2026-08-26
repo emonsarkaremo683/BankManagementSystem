@@ -1,0 +1,81 @@
+<div class="pt-8 pb-20 w-full px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Loans</h1>
+        <p class="text-[var(--color-text-secondary)] mt-1">Manage all loan applications.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <app-stat-card label="Total Loans" [value]="totalLoans" color="brand" [loading]="isLoading">
+        <svg icon lucideHandCoins></svg>
+      </app-stat-card>
+      <app-stat-card label="Active Loans" [value]="activeCount" color="success" [loading]="isLoading">
+        <svg icon lucideCircleCheck></svg>
+      </app-stat-card>
+      <app-stat-card label="Pending Review" [value]="pendingCount" color="warning" [loading]="isLoading">
+        <svg icon lucideClock></svg>
+      </app-stat-card>
+      <app-stat-card label="Total Outstanding" [value]="totalOutstanding | number:'1.2-2'" color="info" [loading]="isLoading">
+        <svg icon lucideBanknote></svg>
+      </app-stat-card>
+    </div>
+
+    <div class="app-table-shell">
+      <div class="p-6 border-b border-[var(--color-border)]">
+        <div class="relative w-full md:w-96">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg lucideSearch class="h-4 w-4 text-[var(--color-text-muted)]"></svg>
+          </div>
+          <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" class="app-input pl-10" placeholder="Search by account number, loan ID...">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+            <tr>
+              <th class="px-6 py-4 font-medium">Loan ID</th>
+              <th class="px-6 py-4 font-medium">Account</th>
+              <th class="px-6 py-4 font-medium">Principal</th>
+              <th class="px-6 py-4 font-medium">EMI</th>
+              <th class="px-6 py-4 font-medium">Tenure</th>
+              <th class="px-6 py-4 font-medium">Status</th>
+              <th class="px-6 py-4 font-medium">Applied</th>
+              <th class="px-6 py-4 font-medium text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="!isLoading">
+            <tr *ngFor="let loan of filteredLoans" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+              <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-primary)]">#{{ loan.loanId }}</td>
+              <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-secondary)]">{{ loan.accountNumber }}</td>
+              <td class="px-6 py-4 font-medium text-[var(--color-text-primary)]">{{ loan.principalAmount | number:'1.2-2' }}</td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ loan.emiAmount | number:'1.2-2' }}</td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ loan.tenureMonths }} months</td>
+              <td class="px-6 py-4">
+                <app-badge [label]="loan.status" [color]="getStatusColor(loan.status)"></app-badge>
+              </td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ loan.applicationDate | date:'mediumDate' }}</td>
+              <td class="px-6 py-4 text-right">
+                <a [routerLink]="['/staff/loans', loan.loanId]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-xs font-semibold hover:underline transition-colors">View</a>
+              </td>
+            </tr>
+            <tr *ngIf="filteredLoans.length === 0">
+              <td colspan="8" class="px-6 py-8 text-center text-[var(--color-text-muted)]">No loans found.</td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="isLoading">
+            <tr *ngFor="let i of [1,2,3,4,5]">
+              <td colspan="8" class="px-6 py-4">
+                <div class="h-10 bg-[var(--color-border)] rounded animate-pulse"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

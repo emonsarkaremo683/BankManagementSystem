@@ -1,0 +1,80 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+        <span class="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--color-brand-600)] text-white flex-shrink-0">
+          <svg lucideArrowLeftRight class="w-5 h-5"></svg>
+        </span>
+        Currency Converter
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-1">Live exchange rates for international transfers and conversions.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+      <!-- Converter Card -->
+      <div class="md:col-span-2 app-card p-6 sm:p-8 space-y-6">
+        <h2 class="text-base font-semibold text-[var(--color-text-primary)]">Live Rate Calculator</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wide">Amount</label>
+            <input type="number" [(ngModel)]="amount" (ngModelChange)="onConvert()" placeholder="100" class="app-input font-semibold text-lg" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wide">From</label>
+            <select [(ngModel)]="fromCurrency" (change)="onConvert()" class="app-input">
+              <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+            </select>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wide">To</label>
+            <select [(ngModel)]="toCurrency" (change)="onConvert()" class="app-input">
+              <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Swap Button -->
+        <div class="flex justify-center">
+          <button (click)="swapCurrencies()"
+                  class="w-11 h-11 rounded-full flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border-strong)] text-[var(--color-brand-600)] hover:bg-[var(--color-brand-50)] hover:border-[var(--color-brand-200)] transition-colors">
+            <svg lucideArrowLeftRight class="w-5 h-5"></svg>
+          </button>
+        </div>
+
+        <!-- Result Display -->
+        <div *ngIf="conversionResult" class="p-6 rounded-[var(--radius-input)] bg-[var(--color-brand-50)] border border-[var(--color-brand-100)] text-center space-y-1.5">
+          <span class="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wide">Converted Value</span>
+          <div class="text-3xl font-bold font-display text-[var(--color-brand-700)]">
+            {{ conversionResult.result | number:'1.2-2' }} {{ conversionResult.to }}
+          </div>
+          <p class="text-xs text-[var(--color-text-muted)] font-mono">
+            {{ conversionResult.amount }} {{ conversionResult.from }} = {{ conversionResult.result | number:'1.2-2' }} {{ conversionResult.to }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Exchange Rates Sidebar -->
+      <div class="app-card p-6 space-y-4">
+        <h3 class="text-sm font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+          <svg lucideCircleDollarSign class="w-4 h-4 text-[var(--color-brand-600)]"></svg>
+          Base Rates (BDT)
+        </h3>
+
+        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+          <div *ngFor="let item of popularRates" class="flex justify-between items-center p-3 rounded-[var(--radius-input)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs">
+            <div class="font-semibold text-[var(--color-text-primary)]">1 {{ item.currency }}</div>
+            <div class="font-mono text-[var(--color-brand-600)] font-semibold">{{ item.rate | number:'1.2-2' }} BDT</div>
+          </div>
+          <div *ngIf="popularRates.length === 0" class="text-center text-xs text-[var(--color-text-muted)] py-6">
+            No rates available.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

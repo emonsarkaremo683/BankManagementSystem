@@ -1,0 +1,208 @@
+<div class="pt-8 pb-20 w-full px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="mb-6">
+      <button (click)="goBack()" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] text-sm flex items-center transition-colors">
+        <svg lucideArrowLeft class="w-4 h-4 mr-1.5"></svg>
+        Back to Loans
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="space-y-4">
+      <div class="h-48 app-card animate-pulse"></div>
+      <div class="h-64 app-card animate-pulse"></div>
+    </div>
+
+    <div *ngIf="!isLoading && loan" class="space-y-6">
+      <div class="app-card p-6">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+          <div>
+            <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Loan #{{ loan.loanId }}</h1>
+            <p class="text-[var(--color-text-secondary)] text-sm mt-1">Account: {{ loan.accountNumber }}</p>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <app-badge [label]="loan.status" [color]="getStatusColor(loan.status)"></app-badge>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Principal</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.principalAmount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">EMI Amount</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.emiAmount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Outstanding</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.outstandingBalance | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Interest Rate</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.annualInterestRate }}% p.a.</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 pt-6 border-t border-[var(--color-border)]">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Tenure</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.tenureMonths }} months</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Total Payable</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.totalPayable | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Applied On</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.applicationDate | date:'mediumDate' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Next Due</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.nextDueDate | date:'mediumDate' }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="loan.rejectionReason" class="mt-6 pt-6 border-t border-[var(--color-border)]">
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rejection Reason</div>
+          <div class="text-sm text-[var(--color-danger-600)]">{{ loan.rejectionReason }}</div>
+        </div>
+      </div>
+
+      <div *ngIf="loan.guarantors && loan.guarantors.length > 0" class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)] flex items-center gap-2">
+          <svg lucideHandshake class="w-4 h-4 text-[var(--color-text-muted)]"></svg>
+          <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Guarantors</h2>
+        </div>
+        <div class="p-6 space-y-4">
+          <div *ngFor="let g of loan.guarantors" class="p-4 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Name</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.name }}</div>
+              </div>
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Phone</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.phone }}</div>
+              </div>
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Relation</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.relation }}</div>
+              </div>
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">NID</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.nidNumber }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="loan.documents && loan.documents.length > 0" class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)] flex items-center gap-2">
+          <svg lucideFileText class="w-4 h-4 text-[var(--color-text-muted)]"></svg>
+          <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Documents</h2>
+        </div>
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div *ngFor="let d of loan.documents" class="flex items-center justify-between px-4 py-3 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+            <div class="min-w-0">
+              <div class="text-sm text-[var(--color-text-primary)] truncate">{{ d.originalFileName }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ d.contentType }} &middot; {{ (d.fileSize / 1024) | number:'1.0-1' }} KB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)]">
+          <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Repayment Schedule</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+              <tr>
+                <th class="px-6 py-4 font-medium">#</th>
+                <th class="px-6 py-4 font-medium">Due Date</th>
+                <th class="px-6 py-4 font-medium">Principal</th>
+                <th class="px-6 py-4 font-medium">Interest</th>
+                <th class="px-6 py-4 font-medium">EMI</th>
+                <th class="px-6 py-4 font-medium">Balance</th>
+                <th class="px-6 py-4 font-medium">Status</th>
+                <th class="px-6 py-4 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of schedule" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+                <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ s.installmentNumber }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ s.dueDate | date:'mediumDate' }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ s.principalComponent | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ s.interestComponent | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-xs font-medium text-[var(--color-text-primary)]">{{ s.emiAmount | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ s.remainingBalanceAfter | number:'1.2-2' }}</td>
+                <td class="px-6 py-4">
+                  <app-badge [label]="s.status" [color]="getRepaymentStatusColor(s.status)"></app-badge>
+                </td>
+                <td class="px-6 py-4">
+                  <button *ngIf="canPayInstallment(s)" (click)="openPayModal(s.repaymentId)" class="app-btn app-btn-primary text-xs px-3 py-1.5">
+                    <svg lucideCircleDollarSign class="w-3.5 h-3.5 mr-1"></svg>
+                    Pay
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="schedule.length === 0">
+                <td colspan="8" class="px-6 py-8 text-center text-[var(--color-text-muted)]">No schedule available.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showPayModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" (click)="closePayModal()">
+      <div class="app-card w-full max-w-md p-6" (click)="$event.stopPropagation()">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-[var(--color-text-primary)]">Pay EMI</h3>
+          <button (click)="closePayModal()" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
+            <svg lucideX class="w-5 h-5"></svg>
+          </button>
+        </div>
+
+        <p class="text-sm text-[var(--color-text-secondary)] mb-4">
+          Select an account to debit the installment amount from.
+        </p>
+
+        <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">Pay From Account</label>
+        <select [(ngModel)]="selectedAccountId" class="app-input">
+          <option [ngValue]="null" disabled>Select an account</option>
+          <option *ngFor="let a of accounts" [ngValue]="a.id">
+            {{ a.accountNumber }} — {{ a.accountType }} (Balance: {{ a.availableBalance | number:'1.2-2' }})
+          </option>
+        </select>
+
+        <div *ngIf="accounts.length === 0" class="text-sm text-[var(--color-text-muted)] mt-2">
+          No active accounts found.
+        </div>
+
+        <div *ngIf="payError" class="text-[var(--color-danger-600)] text-xs mt-2">{{ payError }}</div>
+
+        <div class="flex justify-end space-x-3 mt-4">
+          <button (click)="closePayModal()" class="app-btn app-btn-secondary">Cancel</button>
+          <button (click)="payInstallment()" [disabled]="isPaying || !selectedAccountId" class="app-btn app-btn-primary">
+            {{ isPaying ? 'Processing...' : 'Confirm Payment' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="toastMessage" class="fixed bottom-6 right-6 z-50">
+      <div class="px-4 py-3 rounded-[var(--radius-input)] text-sm font-medium shadow-lg"
+           [ngClass]="{
+             'bg-[var(--color-success-600)] text-white': toastMessage.type === 'success',
+             'bg-[var(--color-danger-600)] text-white': toastMessage.type === 'error'
+           }">
+        {{ toastMessage.text }}
+      </div>
+    </div>
+
+  </div>
+</div>

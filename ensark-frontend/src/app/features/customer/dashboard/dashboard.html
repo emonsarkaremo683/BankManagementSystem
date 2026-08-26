@@ -1,0 +1,238 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Greeting Header -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <h1 class="text-2xl font-bold font-display text-[var(--color-text-primary)]">Welcome back, {{ userName }}</h1>
+          <span class="inline-flex items-center px-3 py-1 rounded-[var(--radius-pill)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-semibold text-[var(--color-text-secondary)]">
+            {{ today | date:'EEEE, MMM d' }}
+          </span>
+        </div>
+        <p class="text-sm text-[var(--color-text-muted)] mt-1">Here's an overview of your accounts, cards, and recent activity.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a routerLink="/customer/currency-converter" class="app-btn app-btn-secondary">
+          <svg lucideArrowLeftRight class="w-4 h-4"></svg>
+          Currency Converter
+        </a>
+        <a routerLink="/customer/transactions" class="app-btn app-btn-secondary">
+          <svg lucideCalendarClock class="w-4 h-4"></svg>
+          Transactions
+        </a>
+        <a routerLink="/customer/accounts" class="app-btn app-btn-primary">
+          <svg lucideLandmark class="w-4 h-4"></svg>
+          My Accounts
+        </a>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="app-card p-6 border-l-4 border-l-[var(--color-danger-500)] flex items-center gap-3">
+      <svg lucideTriangleAlert class="w-5 h-5 text-[var(--color-danger-600)] flex-shrink-0"></svg>
+      <span class="text-[var(--color-danger-600)] text-sm font-medium">{{ error }}</span>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div *ngIf="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <app-stat-card *ngFor="let i of [1,2,3,4,5]" label="Loading" [value]="0" [loading]="true"></app-stat-card>
+    </div>
+
+    <ng-container *ngIf="!isLoading && dashboardData">
+
+      <!-- Stat Card Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <app-stat-card label="Total Balance" [value]="dashboardData.balance | number:'1.2-2'" color="success">
+          <svg icon lucideWallet></svg>
+        </app-stat-card>
+        <app-stat-card label="Total Credit" [value]="dashboardData.totalCredit | number:'1.2-2'" color="info">
+          <svg icon lucideTrendingUp></svg>
+        </app-stat-card>
+        <app-stat-card label="Total Debit" [value]="dashboardData.totalDebit | number:'1.2-2'" color="danger">
+          <svg icon lucideTrendingDown></svg>
+        </app-stat-card>
+        <app-stat-card label="Active Cards" [value]="dashboardData.totalCard" color="purple">
+          <svg icon lucideCreditCard></svg>
+        </app-stat-card>
+        <app-stat-card label="Total Accounts" [value]="dashboardData.totalAccount" color="brand">
+          <svg icon lucideLandmark></svg>
+        </app-stat-card>
+      </div>
+
+      <!-- KYC Status Banner -->
+      <div *ngIf="!kycLoading && kycStatus !== 'VERIFIED'" class="app-card p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                 [ngClass]="kycStatus === 'NOT_SUBMITTED' ? 'bg-[var(--color-warning-50)] text-[var(--color-warning-600)]' :
+                            (kycStatus === 'PENDING' || kycStatus === 'UNDER_REVIEW') ? 'bg-[var(--color-info-50)] text-[var(--color-info-600)]' :
+                            'bg-[var(--color-danger-50)] text-[var(--color-danger-600)]'">
+              <svg *ngIf="kycStatus === 'NOT_SUBMITTED'" lucideFileCheck class="w-5 h-5"></svg>
+              <svg *ngIf="kycStatus === 'PENDING' || kycStatus === 'UNDER_REVIEW'" lucideClock class="w-5 h-5"></svg>
+              <svg *ngIf="kycStatus === 'REJECTED'" lucideTriangleAlert class="w-5 h-5"></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <p class="font-semibold text-sm text-[var(--color-text-primary)]">
+                  <span *ngIf="kycStatus === 'NOT_SUBMITTED'">KYC Not Submitted</span>
+                  <span *ngIf="kycStatus === 'PENDING' || kycStatus === 'UNDER_REVIEW'">KYC Under Review</span>
+                  <span *ngIf="kycStatus === 'REJECTED'">KYC Rejected</span>
+                </p>
+                <app-badge [label]="kycStatus" [color]="kycStatusColor"></app-badge>
+              </div>
+              <p class="text-xs text-[var(--color-text-muted)] mt-1">
+                <span *ngIf="kycStatus === 'NOT_SUBMITTED'">Upload your KYC documents to start banking. You need verified KYC to open accounts.</span>
+                <span *ngIf="kycStatus === 'PENDING' || kycStatus === 'UNDER_REVIEW'">Your documents are being reviewed. This usually takes 1-2 business days.</span>
+                <span *ngIf="kycStatus === 'REJECTED'">Your KYC was rejected. Please re-upload your documents.</span>
+              </p>
+            </div>
+          </div>
+          <a routerLink="/customer/kyc" class="app-btn app-btn-primary shrink-0">
+            {{ kycStatus === 'NOT_SUBMITTED' ? 'Upload Documents' : kycStatus === 'REJECTED' ? 'Re-upload Documents' : 'View Status' }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Stats Row -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucideArrowLeftRight class="w-3.5 h-3.5 text-[var(--color-brand-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Transactions</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-text-primary)]">{{ dashboardData.totalTransaction | number }}</div>
+        </div>
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucideCircleDollarSign class="w-3.5 h-3.5 text-[var(--color-warning-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Loans</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-text-primary)]">{{ dashboardData.totalLoan | number:'1.2-2' }}</div>
+        </div>
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucideHandshake class="w-3.5 h-3.5 text-[var(--color-purple-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Beneficiaries</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-text-primary)]">{{ dashboardData.totalBeneficiary | number }}</div>
+        </div>
+      </div>
+
+      <!-- Accounts Section -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">Your Accounts</h2>
+          <a routerLink="/customer/accounts" class="text-sm font-semibold text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] hover:underline">View all</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <a *ngFor="let acc of dashboardData.accounts" [routerLink]="['/customer/accounts', acc.id]" class="app-card p-6 hover:border-[var(--color-brand-200)] transition-colors block">
+            <div class="flex justify-between items-start mb-6">
+              <div>
+                <app-badge [label]="acc.accountType" color="brand" [dotted]="false"></app-badge>
+                <div class="mt-2 text-[var(--color-text-muted)] text-sm tracking-widest font-mono">{{ acc.accountNumber }}</div>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-[var(--color-brand-50)] flex items-center justify-center flex-shrink-0">
+                <svg lucideLandmark class="w-5 h-5 text-[var(--color-brand-600)]"></svg>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-[var(--color-text-muted)] text-sm mb-1">Available Balance</p>
+              <p class="text-2xl font-bold font-display text-[var(--color-text-primary)]">{{ acc.availableBalance | number:'1.2-2' }}</p>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-[var(--color-border)] flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
+              <span>{{ acc.branchName }}</span>
+              <span>&middot;</span>
+              <app-badge [label]="acc.accountStatus" [color]="accountStatusColor(acc.accountStatus)"></app-badge>
+            </div>
+          </a>
+        </div>
+
+        <div *ngIf="dashboardData.accounts.length === 0" class="app-card text-center py-12">
+          <svg lucideLandmark class="w-12 h-12 mx-auto text-[var(--color-text-muted)]"></svg>
+          <h3 class="text-base font-semibold text-[var(--color-text-primary)] mt-4">No accounts found</h3>
+          <p class="text-sm text-[var(--color-text-muted)] mt-1">You don't have any bank accounts yet.</p>
+        </div>
+      </div>
+
+      <!-- Cards Section -->
+      <div *ngIf="dashboardData.cards?.length">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">My Cards</h2>
+          <a routerLink="/customer/cards" class="text-sm font-semibold text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] hover:underline">View all</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div *ngFor="let card of dashboardData.cards" class="app-card p-6">
+            <div class="flex justify-between items-start mb-6">
+              <div class="flex items-center gap-2">
+                <app-badge [label]="card.cardType" [color]="cardTypeColor(card.cardType)" [dotted]="false"></app-badge>
+                <app-badge [label]="card.status" [color]="cardStatusColor(card.status)"></app-badge>
+              </div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ card.cardNetwork }}</div>
+            </div>
+            <div class="text-lg font-mono text-[var(--color-text-primary)] tracking-widest mb-4">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; {{ card.cardNumber?.slice(-4) }}</div>
+            <div class="flex justify-between items-end">
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Card Holder</div>
+                <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ card.cardHolderName }}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs text-[var(--color-text-muted)]">Expires</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ card.expiryDate | date:'MM/yy' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions Section -->
+      <div *ngIf="dashboardData.recentTransactions?.length">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-[var(--color-text-primary)]">Recent Transactions</h2>
+          <a routerLink="/customer/transactions" class="text-sm font-semibold text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] hover:underline">View all</a>
+        </div>
+
+        <div class="app-table-shell">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+                <tr>
+                  <th class="px-6 py-3 font-semibold">Type</th>
+                  <th class="px-6 py-3 font-semibold">Account</th>
+                  <th class="px-6 py-3 font-semibold">Counterparty</th>
+                  <th class="px-6 py-3 font-semibold">Amount</th>
+                  <th class="px-6 py-3 font-semibold">Status</th>
+                  <th class="px-6 py-3 font-semibold">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let txn of dashboardData.recentTransactions" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+                  <td class="px-6 py-4">
+                    <app-badge [label]="txn.entryType" [color]="entryTypeColor(txn.entryType)"></app-badge>
+                  </td>
+                  <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-primary)]">{{ txn.accountNumber }}</td>
+                  <td class="px-6 py-4">
+                    <div class="text-xs text-[var(--color-text-primary)]">{{ txn.counterpartyName || '-' }}</div>
+                    <div class="text-xs text-[var(--color-text-muted)]">{{ txn.counterpartyAccountNumber || '' }}</div>
+                  </td>
+                  <td class="px-6 py-4 font-semibold" [ngClass]="txn.entryType === 'CREDIT' ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+                    {{ txn.entryType === 'CREDIT' ? '+' : '-' }}{{ txn.amount | number:'1.2-2' }}
+                  </td>
+                  <td class="px-6 py-4">
+                    <app-badge [label]="txn.status" [color]="txnStatusColor(txn.status)"></app-badge>
+                  </td>
+                  <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ txn.date | date:'medium' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</div>

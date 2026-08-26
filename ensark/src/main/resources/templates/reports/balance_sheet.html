@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Balance Sheet Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 40pt 30pt 40pt 30pt;
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: 'Helvetica', sans-serif;
+                font-size: 8pt;
+                color: #787878;
+            }
+        }
+        body {
+            font-family: 'Helvetica', sans-serif;
+            color: #0A1628;
+            margin: 0;
+            padding: 0;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10pt;
+        }
+        .logo-text {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #0A1628;
+        }
+        .logo-accent {
+            color: #C9A84C;
+        }
+        .tagline {
+            font-size: 8pt;
+            font-style: italic;
+            color: #787878;
+        }
+        .contact-info {
+            text-align: right;
+            font-size: 8pt;
+            color: #555555;
+        }
+        .divider {
+            height: 3pt;
+            background-color: #C9A84C;
+            margin-bottom: 15pt;
+        }
+        .watermark {
+            position: absolute;
+            top: 35%;
+            left: 20%;
+            font-size: 70pt;
+            color: rgba(201, 168, 76, 0.04);
+            transform: rotate(-40deg);
+            z-index: -1000;
+            font-weight: bold;
+        }
+        .title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #0A1628;
+            margin-bottom: 12pt;
+        }
+        .metadata-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 10pt;
+            margin-bottom: 15pt;
+            background-color: #F8FAFC;
+        }
+        .metadata-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .metadata-label {
+            font-weight: bold;
+            color: #4A5568;
+            width: 25%;
+            padding: 3pt 0;
+        }
+        .metadata-val {
+            color: #1A202C;
+            width: 25%;
+            padding: 3pt 0;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20pt;
+        }
+        .report-table th {
+            background-color: #0A1628;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 8.5pt;
+            padding: 6pt 5pt;
+            border-bottom: 2pt solid #C9A84C;
+            text-align: left;
+        }
+        .section-header {
+            background-color: #F1F5F9;
+            font-weight: bold;
+            font-size: 9pt;
+            color: #C9A84C;
+            padding: 6pt 5pt;
+            border-bottom: 1px solid #CBD5E1;
+        }
+        .report-table td {
+            padding: 5pt 5pt;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 8.5pt;
+        }
+        .subtotal-row td {
+            font-weight: bold;
+            background-color: #F8FAFC !important;
+            border-bottom: 1.5pt solid #0A1628;
+        }
+        .grandtotal-row td {
+            font-weight: bold;
+            background-color: #0A1628 !important;
+            color: #FFFFFF !important;
+            font-size: 9.5pt !important;
+            padding: 7pt 5pt;
+        }
+        .text-right {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="watermark">ENSARK BANK</div>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="logo-text">EnSark<span class="logo-accent">Bank</span></div>
+                <div class="tagline">Secure. Smart. Simple.</div>
+            </td>
+            <td class="contact-info">
+                Head Office: 121/A Gulshan Avenue, Dhaka<br/>
+                Email: support@ensarkbank.com | Web: www.ensarkbank.com<br/>
+                Phone: +880 9612-ENSARK
+            </td>
+        </tr>
+    </table>
+
+    <div class="divider"></div>
+
+    <div class="title">Balance Sheet Report</div>
+
+    <div class="metadata-card">
+        <table class="metadata-table">
+            <tr>
+                <td class="metadata-label">Branch Name</td>
+                <td class="metadata-val" th:text="${branchName}">ALL BRANCHES</td>
+                <td class="metadata-label">Period From</td>
+                <td class="metadata-val" th:text="${periodFrom}">Start</td>
+            </tr>
+            <tr>
+                <td class="metadata-label">Period To</td>
+                <td class="metadata-val" th:text="${periodTo}">Present</td>
+                <td class="metadata-label">Report Type</td>
+                <td class="metadata-val">Financial Position</td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th style="width: 20%;">GL Code</th>
+                <th style="width: 55%;">Account Details</th>
+                <th style="width: 25%;" class="text-right">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td colspan="3" class="section-header">ASSETS</td>
+            </tr>
+            <tr th:each="row : ${assets.lines}">
+                <td th:text="${row.glCode}">-</td>
+                <td th:text="${row.accountName}">Cash Account</td>
+                <td class="text-right" th:text="${row.amount}">$0.00</td>
+            </tr>
+            <tr class="subtotal-row">
+                <td></td>
+                <td>Total Assets Section</td>
+                <td class="text-right" th:text="${assets.total}">$0.00</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="border: none; height: 10pt;"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-header">LIABILITIES</td>
+            </tr>
+            <tr th:each="row : ${liabilities.lines}">
+                <td th:text="${row.glCode}">-</td>
+                <td th:text="${row.accountName}">Customer Deposits</td>
+                <td class="text-right" th:text="${row.amount}">$0.00</td>
+            </tr>
+            <tr class="subtotal-row">
+                <td></td>
+                <td>Total Liabilities Section</td>
+                <td class="text-right" th:text="${liabilities.total}">$0.00</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="border: none; height: 10pt;"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-header">EQUITY</td>
+            </tr>
+            <tr th:each="row : ${equity.lines}">
+                <td th:text="${row.glCode}">-</td>
+                <td th:text="${row.accountName}">Share Capital</td>
+                <td class="text-right" th:text="${row.amount}">$0.00</td>
+            </tr>
+            <tr class="subtotal-row">
+                <td></td>
+                <td>Total Equity Section</td>
+                <td class="text-right" th:text="${equity.total}">$0.00</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="border: none; height: 15pt;"></td>
+            </tr>
+
+            <tr class="grandtotal-row">
+                <td>TOTAL ASSETS</td>
+                <td></td>
+                <td class="text-right" th:text="${totalAssets}">$0.00</td>
+            </tr>
+            <tr class="grandtotal-row">
+                <td>TOTAL LIABILITIES &amp; EQUITY</td>
+                <td></td>
+                <td class="text-right" th:text="${totalLiabilitiesAndEquity}">$0.00</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>

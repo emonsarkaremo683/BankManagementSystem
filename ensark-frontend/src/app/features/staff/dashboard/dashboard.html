@@ -1,0 +1,379 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Greeting Header -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <h1 class="text-2xl font-bold font-display text-[var(--color-text-primary)]">Welcome back, {{ userName }}</h1>
+          <span class="inline-flex items-center px-3 py-1 rounded-[var(--radius-pill)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-semibold text-[var(--color-text-secondary)]">
+            {{ today | date:'EEEE, MMM d' }}
+          </span>
+        </div>
+        <p class="text-sm text-[var(--color-text-muted)] mt-1">Real-time ledger metrics, branch aggregates, and verification queues.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a routerLink="/staff/accounts/create" class="app-btn app-btn-secondary">
+          <svg lucidePlus class="w-4 h-4"></svg>
+          Open Account
+        </a>
+        <a routerLink="/staff/transactions/new" class="app-btn app-btn-secondary">
+          <svg lucidePlus class="w-4 h-4"></svg>
+          New Transaction
+        </a>
+        <a routerLink="/staff/transactions/cashier-new" class="app-btn app-btn-primary">
+          <svg lucidePlus class="w-4 h-4"></svg>
+          Cashier Transaction
+        </a>
+      </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div *ngIf="isLoading" class="space-y-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <app-stat-card *ngFor="let i of [1,2,3,4,5]" label="Loading" [value]="0" [loading]="true"></app-stat-card>
+      </div>
+      <div class="app-card h-80 animate-pulse"></div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="loadError" class="app-card p-12 text-center">
+      <div class="w-12 h-12 rounded-full bg-[var(--color-danger-50)] text-[var(--color-danger-600)] flex items-center justify-center mx-auto mb-4">
+        <svg lucideTriangleAlert class="w-6 h-6"></svg>
+      </div>
+      <h3 class="text-[var(--color-text-primary)] text-lg font-semibold mb-1.5">Failed to load dashboard data</h3>
+      <p class="text-[var(--color-text-muted)] text-sm mb-6">The API request timed out. This may be a network issue.</p>
+      <button (click)="retry()" class="app-btn app-btn-primary mx-auto">Retry</button>
+    </div>
+
+    <!-- ============ MAIN DASHBOARD ============ -->
+    <ng-container *ngIf="!isLoading && !loadError && stats">
+
+      <!-- Stat Card Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <app-stat-card label="Total Customers" [value]="stats.totalCustomers | number" color="brand"
+          [deltaValue]="trendDelta(stats.customersTrend)" deltaLabel="vs last month">
+          <svg icon lucideUsers></svg>
+        </app-stat-card>
+        <app-stat-card label="Active Accounts" [value]="stats.totalAccounts | number" color="info"
+          [deltaValue]="trendDelta(stats.accountsTrend)" deltaLabel="vs last month">
+          <svg icon lucideWallet></svg>
+        </app-stat-card>
+        <app-stat-card label="Total Assets" [value]="stats.totalAssets | currency:'BDT ':'symbol':'1.0-0'" color="success"
+          [deltaValue]="trendDelta(stats.balanceTrend)" deltaLabel="growth rate">
+          <svg icon lucideLandmark></svg>
+        </app-stat-card>
+        <app-stat-card label="Total Transactions" [value]="stats.totalTransactions | number" color="purple"
+          [deltaValue]="trendDelta(stats.transactionsTrend)" deltaLabel="activity index">
+          <svg icon lucideArrowLeftRight></svg>
+        </app-stat-card>
+        <app-stat-card label="Total Loans" [value]="stats.totalLoans | number" color="warning"
+          [deltaValue]="trendDelta(stats.loansTrend)" deltaLabel="vs last month">
+          <svg icon lucideHandshake></svg>
+        </app-stat-card>
+      </div>
+
+      <!-- Financial Snapshot -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="app-card p-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--color-success-50)] text-[var(--color-success-600)] flex-shrink-0">
+            <svg lucideWallet class="w-4 h-4"></svg>
+          </span>
+          <div class="min-w-0">
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide block">Total Balance</span>
+            <div class="text-sm font-bold text-[var(--color-text-primary)] truncate">{{ stats.totalBalance | currency:'BDT ':'symbol':'1.0-0' }}</div>
+          </div>
+        </div>
+        <div class="app-card p-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--color-danger-50)] text-[var(--color-danger-600)] flex-shrink-0">
+            <svg lucideTrendingDown class="w-4 h-4"></svg>
+          </span>
+          <div class="min-w-0">
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide block">Liabilities</span>
+            <div class="text-sm font-bold text-[var(--color-text-primary)] truncate">{{ stats.totalLiabilities | currency:'BDT ':'symbol':'1.0-0' }}</div>
+          </div>
+        </div>
+        <div class="app-card p-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--color-info-50)] text-[var(--color-info-600)] flex-shrink-0">
+            <svg lucideCreditCard class="w-4 h-4"></svg>
+          </span>
+          <div class="min-w-0">
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide block">Active Cards</span>
+            <div class="text-sm font-bold text-[var(--color-text-primary)]">{{ stats.totalActiveCards | number }}</div>
+          </div>
+        </div>
+        <div class="app-card p-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full flex items-center justify-center bg-[var(--color-brand-50)] text-[var(--color-brand-600)] flex-shrink-0">
+            <svg lucideUsers class="w-4 h-4"></svg>
+          </span>
+          <div class="min-w-0">
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide block">Employees</span>
+            <div class="text-sm font-bold text-[var(--color-text-primary)]">{{ stats.totalEmployees | number }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deposits / Withdrawals / Transfers / Expenses -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucidePiggyBank class="w-3.5 h-3.5 text-[var(--color-success-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Deposits</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-success-600)]">{{ stats.totalDeposit | currency:'BDT ':'symbol':'1.0-0' }}</div>
+        </div>
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucideBanknote class="w-3.5 h-3.5 text-[var(--color-danger-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Withdrawals</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-danger-600)]">{{ stats.totalWithdraw | currency:'BDT ':'symbol':'1.0-0' }}</div>
+        </div>
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucideArrowLeftRight class="w-3.5 h-3.5 text-[var(--color-info-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Transfers</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-info-600)]">{{ stats.totalTransfer | currency:'BDT ':'symbol':'1.0-0' }}</div>
+        </div>
+        <div class="app-card p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg lucideReceipt class="w-3.5 h-3.5 text-[var(--color-warning-600)]"></svg>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide">Expenses</span>
+          </div>
+          <div class="text-lg font-bold text-[var(--color-warning-600)]">{{ stats.totalExpense | currency:'BDT ':'symbol':'1.0-0' }}</div>
+        </div>
+      </div>
+
+      <!-- Cash Flow Overview -->
+      <div class="app-card p-6">
+        <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Cash Flow Overview</h2>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="text-center">
+            <div class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide mb-1">Inflow</div>
+            <div class="text-xl font-bold text-[var(--color-success-600)]">{{ stats.cashInflow | currency:'BDT ':'symbol':'1.0-0' }}</div>
+          </div>
+          <div class="text-center">
+            <div class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide mb-1">Outflow</div>
+            <div class="text-xl font-bold text-[var(--color-danger-600)]">{{ stats.cashOutflow | currency:'BDT ':'symbol':'1.0-0' }}</div>
+          </div>
+          <div class="text-center">
+            <div class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wide mb-1">Net Flow</div>
+            <div class="text-xl font-bold" [ngClass]="netCashFlow >= 0 ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+              {{ netCashFlow | currency:'BDT ':'symbol':'1.0-0' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Trend Chart -->
+      <div class="app-card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Transaction Trend</h2>
+        </div>
+        <div class="h-72" *ngIf="stats.transactionTrends && stats.transactionTrends.length > 0">
+          <canvas #trendCanvas></canvas>
+        </div>
+        <p *ngIf="!stats.transactionTrends || stats.transactionTrends.length === 0" class="text-sm text-[var(--color-text-muted)] text-center py-10">
+          No transaction trend data available.
+        </p>
+      </div>
+
+      <!-- Distribution Charts -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="app-card p-6">
+          <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Account Types</h2>
+          <div class="h-56" *ngIf="stats.accountTypeDistribution && stats.accountTypeDistribution.length > 0">
+            <canvas #accountTypeCanvas></canvas>
+          </div>
+          <p *ngIf="!stats.accountTypeDistribution || stats.accountTypeDistribution.length === 0" class="text-sm text-[var(--color-text-muted)] text-center py-10">No data available.</p>
+        </div>
+        <div class="app-card p-6">
+          <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Loan Status</h2>
+          <div class="h-56" *ngIf="stats.loanStatusDistribution && stats.loanStatusDistribution.length > 0">
+            <canvas #loanStatusCanvas></canvas>
+          </div>
+          <p *ngIf="!stats.loanStatusDistribution || stats.loanStatusDistribution.length === 0" class="text-sm text-[var(--color-text-muted)] text-center py-10">No data available.</p>
+        </div>
+        <div class="app-card p-6">
+          <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Transaction Channels</h2>
+          <div class="h-56" *ngIf="stats.transactionTypeDistribution && stats.transactionTypeDistribution.length > 0">
+            <canvas #txnTypeCanvas></canvas>
+          </div>
+          <p *ngIf="!stats.transactionTypeDistribution || stats.transactionTypeDistribution.length === 0" class="text-sm text-[var(--color-text-muted)] text-center py-10">No data available.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="app-card p-6">
+          <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Transaction Status</h2>
+          <div class="h-56" *ngIf="stats.transactionStatusDistribution && stats.transactionStatusDistribution.length > 0">
+            <canvas #txnStatusCanvas></canvas>
+          </div>
+          <p *ngIf="!stats.transactionStatusDistribution || stats.transactionStatusDistribution.length === 0" class="text-sm text-[var(--color-text-muted)] text-center py-10">No data available.</p>
+        </div>
+        <div class="app-card p-6">
+          <h2 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Revenue vs Expense</h2>
+          <div class="h-56">
+            <canvas #revenueExpenseCanvas></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approvals + Quick Operations -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Approvals Queue -->
+        <div class="lg:col-span-2 app-table-shell">
+          <div class="p-6 border-b border-[var(--color-border)] flex items-center justify-between">
+            <h2 class="text-base font-semibold text-[var(--color-text-primary)]">Approvals Queue</h2>
+            <app-badge [label]="stats.pendingApprovals.length + ' awaiting'" color="warning"></app-badge>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+                <tr>
+                  <th scope="col" class="px-4 py-3 font-semibold">Module</th>
+                  <th scope="col" class="px-4 py-3 font-semibold">Customer</th>
+                  <th scope="col" class="px-4 py-3 font-semibold">Branch</th>
+                  <th scope="col" class="px-4 py-3 font-semibold">Amount</th>
+                  <th scope="col" class="px-4 py-3 font-semibold">Status</th>
+                  <th scope="col" class="px-4 py-3 font-semibold text-right">Review</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of stats.pendingApprovals" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+                  <td class="px-4 py-3.5">
+                    <app-badge [label]="item.type" color="brand" [dotted]="false"></app-badge>
+                  </td>
+                  <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">{{ item.customerName }}</td>
+                  <td class="px-4 py-3.5 text-xs text-[var(--color-text-muted)]">{{ item.branchName }}</td>
+                  <td class="px-4 py-3.5 font-medium text-[var(--color-text-secondary)]">
+                    <span *ngIf="item.type === 'CHEQUE'">{{ item.amount }} leaves</span>
+                    <span *ngIf="item.type !== 'CHEQUE' && item.type !== 'KYC'">{{ item.amount | currency:'BDT ':'symbol':'1.0-0' }}</span>
+                    <span *ngIf="item.type === 'KYC'">&mdash;</span>
+                  </td>
+                  <td class="px-4 py-3.5">
+                    <app-badge [label]="item.status" [color]="getApprovalStatusColor(item.status)"></app-badge>
+                  </td>
+                  <td class="px-4 py-3.5 text-right">
+                    <a [routerLink]="item.link" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-xs font-semibold hover:underline transition-colors">Verify</a>
+                  </td>
+                </tr>
+                <tr *ngIf="stats.pendingApprovals.length === 0">
+                  <td colspan="6" class="px-4 py-10 text-center text-sm text-[var(--color-text-muted)]">
+                    <div class="flex flex-col items-center gap-2">
+                      <svg lucideCheck class="w-6 h-6 text-[var(--color-success-500)]"></svg>
+                      No pending items in your queue. All tasks verified!
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick Operations -->
+        <div class="app-card p-6 space-y-3">
+          <h2 class="text-base font-semibold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-3">Quick Operations</h2>
+          <a routerLink="/staff/reports/trial-balance" class="flex items-center justify-between p-3.5 rounded-[var(--radius-input)] border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-colors text-sm font-medium text-[var(--color-text-primary)]">
+            <span class="flex items-center gap-2.5">
+              <svg lucideChartColumn class="w-4 h-4 text-[var(--color-brand-600)]"></svg>
+              Trial Balance
+            </span>
+            <span class="text-[var(--color-text-muted)]">&rarr;</span>
+          </a>
+          <a routerLink="/staff/reports/balance-sheet" class="flex items-center justify-between p-3.5 rounded-[var(--radius-input)] border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-colors text-sm font-medium text-[var(--color-text-primary)]">
+            <span class="flex items-center gap-2.5">
+              <svg lucideLandmark class="w-4 h-4 text-[var(--color-info-600)]"></svg>
+              Balance Sheet
+            </span>
+            <span class="text-[var(--color-text-muted)]">&rarr;</span>
+          </a>
+          <a routerLink="/staff/reports/profit-loss" class="flex items-center justify-between p-3.5 rounded-[var(--radius-input)] border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-colors text-sm font-medium text-[var(--color-text-primary)]">
+            <span class="flex items-center gap-2.5">
+              <svg lucideTrendingUp class="w-4 h-4 text-[var(--color-success-600)]"></svg>
+              Profit &amp; Loss
+            </span>
+            <span class="text-[var(--color-text-muted)]">&rarr;</span>
+          </a>
+          <a routerLink="/staff/atms" class="flex items-center justify-between p-3.5 rounded-[var(--radius-input)] border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-colors text-sm font-medium text-[var(--color-text-primary)]">
+            <span class="flex items-center gap-2.5">
+              <svg lucideBuilding2 class="w-4 h-4 text-[var(--color-warning-600)]"></svg>
+              ATM Fleet
+            </span>
+            <span class="text-[var(--color-text-muted)]">&rarr;</span>
+          </a>
+          <a routerLink="/staff/fraud" class="flex items-center justify-between p-3.5 rounded-[var(--radius-input)] border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-colors text-sm font-medium text-[var(--color-text-primary)]">
+            <span class="flex items-center gap-2.5">
+              <svg lucideShieldAlert class="w-4 h-4 text-[var(--color-danger-600)]"></svg>
+              Fraud Alerts
+            </span>
+            <span class="text-[var(--color-text-muted)]">&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Branch-Wise Summary -->
+      <div *ngIf="stats.branchWiseSummary && stats.branchWiseSummary.length > 0" class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)] flex items-center justify-between">
+          <h2 class="text-base font-semibold text-[var(--color-text-primary)]">Branch-Wise Financial Consolidation</h2>
+          <span class="text-xs text-[var(--color-text-muted)]">{{ stats.branchWiseSummary.length }} active branch{{ stats.branchWiseSummary.length > 1 ? 'es' : '' }}</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs min-w-[1300px]">
+            <thead class="text-[10px] uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+              <tr>
+                <th scope="col" class="px-3 py-3 sticky left-0 bg-[var(--color-surface-alt)] font-semibold">Branch</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Customers</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Accounts</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Employees</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Txns</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Balance</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Deposits</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Withdrawals</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Transfers</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Loans</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Revenue</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Expense</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Assets</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Liabilities</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Inflow</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Outflow</th>
+                <th scope="col" class="px-3 py-3 text-right font-semibold">Net Flow</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let branch of stats.branchWiseSummary" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+                <td class="px-3 py-3 font-semibold text-[var(--color-text-primary)] sticky left-0 bg-[var(--color-surface)]">{{ branch.branchName }}</td>
+                <td class="px-3 py-3 text-right">{{ branch.customerCount | number }}</td>
+                <td class="px-3 py-3 text-right">{{ branch.accountCount | number }}</td>
+                <td class="px-3 py-3 text-right">{{ branch.employeeCount | number }}</td>
+                <td class="px-3 py-3 text-right">{{ branch.transactionCount | number }}</td>
+                <td class="px-3 py-3 text-right font-semibold text-[var(--color-text-primary)]">{{ branch.totalBalance | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-success-600)]">{{ branch.totalDeposit | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-danger-600)]">{{ branch.totalWithdraw | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-info-600)]">{{ branch.totalTransfer | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right">
+                  <span class="text-[var(--color-warning-600)]">{{ branch.totalLoan | currency:'BDT ':'symbol':'1.0-0' }}</span>
+                  <span class="text-[var(--color-text-muted)] ml-1">({{ branch.loanCount }})</span>
+                </td>
+                <td class="px-3 py-3 text-right text-[var(--color-success-600)]">{{ branch.totalRevenue | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-danger-600)]">{{ branch.totalExpense | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-brand-600)]">{{ branch.totalAssets | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-danger-600)]">{{ branch.totalLiabilities | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-success-600)]">{{ branch.cashInflow | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right text-[var(--color-danger-600)]">{{ branch.cashOutflow | currency:'BDT ':'symbol':'1.0-0' }}</td>
+                <td class="px-3 py-3 text-right font-bold"
+                    [ngClass]="branch.cashInflow - branch.cashOutflow >= 0 ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+                  {{ branch.cashInflow - branch.cashOutflow | currency:'BDT ':'symbol':'1.0-0' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</div>

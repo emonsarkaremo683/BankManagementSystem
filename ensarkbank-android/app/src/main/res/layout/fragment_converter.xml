@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/converterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Currency Converter"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/inputsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/converterTitle">
+
+        <EditText
+            android:id="@+id/amountInput"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:gravity="center"
+            android:hint="Enter Amount"
+            android:inputType="numberDecimal"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/fromCurrency"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/neumorphic_recessed"
+                    android:hint="From"
+                    android:inputType="none"
+                    android:padding="16dp"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher_foreground"
+                app:tint="@color/text_secondary" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/toCurrency"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/neumorphic_recessed"
+                    android:hint="To"
+                    android:inputType="none"
+                    android:padding="16dp"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/resultCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/neumorphic_raised"
+        android:padding="32dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/inputsContainer">
+
+        <TextView
+            android:id="@+id/resultLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Converted Amount"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/resultValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="0.00"
+            android:textColor="@color/electric_cyan"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/resultLabel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/convertButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/neumorphic_button_selector"
+        android:text="Convert"
+        android:textAllCaps="false"
+        android:textColor="@color/primary_background"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/resultCard" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

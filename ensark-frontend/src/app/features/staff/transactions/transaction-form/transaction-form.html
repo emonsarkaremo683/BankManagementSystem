@@ -1,0 +1,56 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-2xl mx-auto space-y-6">
+
+    <div class="flex items-center gap-4">
+      <a routerLink="/staff/transactions" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+        <svg lucideArrowLeft class="w-4 h-4"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">New Transaction</h1>
+        <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Transfer funds between accounts.</p>
+      </div>
+    </div>
+
+    <div class="app-card p-8">
+      <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Sender Account</label>
+          <select formControlName="senderAccountId" class="app-input">
+            <option value="">Select sender account</option>
+            <option *ngFor="let a of accounts" [value]="a.id">{{ a.accountNumber }} - {{ a.branchName }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Receiver Account Number</label>
+          <input type="text" formControlName="receiverAccountNumber" class="app-input" placeholder="Enter account number">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Amount</label>
+          <input type="number" formControlName="amount" class="app-input" placeholder="0.00">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Remarks (optional)</label>
+          <textarea formControlName="remarks" rows="3" class="app-input !h-auto py-3 resize-none" placeholder="Transaction notes..."></textarea>
+        </div>
+
+        <div *ngIf="errorMessage" class="bg-[var(--color-danger-50)] border border-[var(--color-danger-500)]/30 rounded-[var(--radius-input)] p-4">
+          <p class="text-sm text-[var(--color-danger-700)]">{{ errorMessage }}</p>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3">
+          <a routerLink="/staff/transactions" class="app-btn app-btn-secondary">Cancel</a>
+          <button type="submit" [disabled]="transactionForm.invalid || isLoading" class="app-btn app-btn-primary">
+            <svg *ngIf="isLoading" lucideLoaderCircle class="w-4 h-4 animate-spin"></svg>
+            Submit Transaction
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

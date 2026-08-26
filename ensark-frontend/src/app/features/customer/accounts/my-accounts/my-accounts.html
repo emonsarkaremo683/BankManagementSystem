@@ -1,0 +1,56 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">My Accounts</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View all your bank accounts and balances.</p>
+    </div>
+    <a routerLink="/customer/accounts/create" class="app-btn app-btn-primary">
+      <svg lucidePlus class="w-4 h-4"></svg>
+      Open Account
+    </a>
+  </div>
+
+  <div *ngIf="isLoading" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div *ngFor="let i of [1,2,3]" class="h-28 app-card animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading" class="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <app-stat-card label="Total Balance" [value]="(getTotalBalance() | number:'1.2-2') ?? '0.00'" color="brand">
+        <svg icon lucideWallet></svg>
+      </app-stat-card>
+      <app-stat-card label="Active Accounts" [value]="activeCount + ' / ' + accounts.length" color="success">
+        <svg icon lucideCircleCheck></svg>
+      </app-stat-card>
+    </div>
+
+    <!-- Account Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <a *ngFor="let account of accounts" [routerLink]="['/customer/accounts', account.id]"
+         class="app-card p-6 hover:border-[var(--color-brand-500)]/50 transition-all cursor-pointer group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-xs text-[var(--color-text-muted)] font-mono">{{ account.accountNumber }}</div>
+          <app-badge [label]="account.accountStatus" [color]="statusColor(account.accountStatus)"></app-badge>
+        </div>
+        <div class="text-2xl font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-brand-600)] transition-colors">{{ account.availableBalance | number:'1.2-2' }}</div>
+        <div class="text-sm text-[var(--color-text-muted)] mt-1">{{ account.accountType }} - {{ account.branchName }}</div>
+        <div class="flex items-center mt-4 text-xs text-[var(--color-brand-600)] font-medium">
+          <span>View Details</span>
+          <svg lucideArrowRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></svg>
+        </div>
+      </a>
+    </div>
+
+    <div *ngIf="accounts.length === 0" class="app-card text-center py-12">
+      <svg lucideLandmark class="w-14 h-14 mx-auto text-[var(--color-text-muted)]"></svg>
+      <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mt-4">No accounts found</h3>
+      <p class="text-sm text-[var(--color-text-muted)] mt-2">You don't have any bank accounts yet.</p>
+      <a routerLink="/customer/accounts/create" class="app-btn app-btn-primary mt-4 inline-flex">
+        <svg lucidePlus class="w-4 h-4"></svg>
+        Open Your First Account
+      </a>
+    </div>
+  </div>
+
+</div>

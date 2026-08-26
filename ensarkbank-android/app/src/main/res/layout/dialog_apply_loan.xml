@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primary_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apply for Loan"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/accountLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Disbursement Account"
+            app:hintTextColor="@color/electric_cyan"
+            app:layout_constraintTop_toBottomOf="@id/dialogTitle">
+
+            <AutoCompleteTextView
+                android:id="@+id/accountAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/neumorphic_recessed"
+                android:inputType="none"
+                android:padding="16dp"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/amountEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Requested Amount"
+            android:inputType="numberDecimal"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/accountLayout" />
+
+        <EditText
+            android:id="@+id/tenureEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Tenure (Months)"
+            android:inputType="number"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/amountEditText" />
+
+        <TextView
+            android:id="@+id/guarantorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Guarantor Details"
+            android:textColor="@color/electric_cyan"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tenureEditText" />
+
+        <EditText
+            android:id="@+id/guarantorNameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Guarantor Name"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            app:layout_constraintTop_toBottomOf="@id/guarantorLabel" />
+
+        <EditText
+            android:id="@+id/guarantorPhoneEdit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Guarantor Phone"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            app:layout_constraintTop_toBottomOf="@id/guarantorNameEdit" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnUploadGuarantorPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            app:layout_constraintTop_toBottomOf="@id/guarantorPhoneEdit">
+            <ImageView
+                android:id="@+id/imgGuarantorPhoto"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_camera"
+                app:layout_constraintBottom_toTopOf="@id/txtPhoto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_secondary" />
+            <TextView
+                android:id="@+id/txtPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload Guarantor Photo"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgGuarantorPhoto" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/applyButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/neumorphic_button_selector"
+            android:text="Submit Loan Request"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_background"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/btnUploadGuarantorPhoto" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

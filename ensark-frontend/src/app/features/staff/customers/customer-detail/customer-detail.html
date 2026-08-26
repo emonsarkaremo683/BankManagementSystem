@@ -1,0 +1,105 @@
+<div class="p-4 sm:p-6 lg:p-8">
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <div class="flex items-center">
+      <a routerLink="/staff/customers" class="mr-4 p-2 app-btn-secondary app-btn !px-2.5 !py-2.5">
+        <svg lucideArrowLeft class="w-5 h-5"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Customer Details</h1>
+        <p class="text-[var(--color-text-secondary)] mt-1 text-sm">View customer information and documents.</p>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="app-card p-8 animate-pulse space-y-4">
+      <div class="h-16 bg-[var(--color-border)] rounded-full w-16"></div>
+      <div class="space-y-3">
+        <div class="h-4 bg-[var(--color-border)] rounded w-full"></div>
+        <div class="h-4 bg-[var(--color-border)] rounded w-3/4"></div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && customer" class="space-y-6">
+      <div class="app-card p-8">
+        <div class="flex flex-col sm:flex-row items-start justify-between gap-4">
+          <div class="flex items-center">
+            <div class="w-16 h-16 rounded-full bg-[var(--color-brand-50)] flex items-center justify-center text-[var(--color-brand-600)] text-xl font-bold mr-6 overflow-hidden flex-shrink-0">
+              <img *ngIf="customer.profile" [src]="getProfileUrl(customer.profile)" class="w-full h-full object-cover" alt="">
+              <span *ngIf="!customer.profile">{{ customer.name?.charAt(0) }}</span>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-[var(--color-text-primary)]">{{ customer.name }}</h2>
+              <p class="text-[var(--color-text-muted)] text-sm">{{ customer.email }}</p>
+            </div>
+          </div>
+          <app-badge [label]="'KYC: ' + (customer.kycStatus || 'NOT SUBMITTED')" [color]="kycBadgeColor(customer.kycStatus)"></app-badge>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="app-card p-6">
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Personal Information</h3>
+          <dl class="space-y-3">
+            <div class="flex justify-between">
+              <dt class="text-[var(--color-text-muted)] text-sm">Phone</dt>
+              <dd class="text-[var(--color-text-primary)] text-sm">{{ customer.phone }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-[var(--color-text-muted)] text-sm">Gender</dt>
+              <dd class="text-[var(--color-text-primary)] text-sm">{{ customer.gender }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-[var(--color-text-muted)] text-sm">Occupation</dt>
+              <dd class="text-[var(--color-text-primary)] text-sm">{{ customer.occupation }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-[var(--color-text-muted)] text-sm">Date of Birth</dt>
+              <dd class="text-[var(--color-text-primary)] text-sm">{{ customer.dob | date:'mediumDate' }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-[var(--color-text-muted)] text-sm">Email Verified</dt>
+              <dd class="text-sm font-medium" [ngClass]="customer.isEmailVerified ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+                {{ customer.isEmailVerified ? 'Yes' : 'No' }}
+              </dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-[var(--color-text-muted)] text-sm">Account Status</dt>
+              <dd class="text-sm font-medium" [ngClass]="customer.active ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+                {{ customer.active ? 'Active' : 'Inactive' }}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="app-card p-6">
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Addresses</h3>
+          <div *ngIf="!customer.addresses?.length" class="text-[var(--color-text-muted)] text-sm">No addresses on file.</div>
+          <div *ngFor="let addr of customer.addresses" class="mb-4 last:mb-0 p-3 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wide">{{ addr.addressType }}</span>
+            </div>
+            <div class="text-[var(--color-text-primary)] text-sm">{{ addr.holdingNo }}, {{ addr.area }}</div>
+            <div class="text-[var(--color-text-muted)] text-xs mt-1">{{ addr.policeStationName }}, {{ addr.postalCode }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-card p-6">
+        <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">KYC Documents</h3>
+        <div *ngIf="!customer.documents?.length" class="text-[var(--color-text-muted)] text-sm">No documents uploaded.</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let doc of customer.documents" class="p-4 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-[var(--color-brand-50)] flex items-center justify-center text-[var(--color-brand-600)] flex-shrink-0">
+              <svg lucideFileText class="w-4 h-4"></svg>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[var(--color-text-primary)] text-sm font-medium">{{ doc.doc_type }}</div>
+              <div class="text-[var(--color-text-muted)] text-xs mt-0.5 truncate max-w-[200px]">{{ doc.path }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

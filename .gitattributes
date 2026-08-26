@@ -1,0 +1,79 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# ─── Source Code ────────────────────────────────────────────
+*.java          text diff=java
+*.kt            text diff=kotlin
+*.ts            text diff=typescript
+*.js            text
+*.dart          text
+*.html          text diff=html
+*.css           text diff=css
+*.scss          text diff=css
+*.json          text
+*.yaml          text
+*.yml           text
+*.xml           text
+*.sql           text
+
+# ─── Config & Build ────────────────────────────────────────
+*.properties    text
+*.gradle        text diff=java
+*.md            text diff=markdown
+*.txt           text
+*.env           text
+*.editorconfig  text
+Makefile        text
+Dockerfile      text
+
+# ─── Scripts ───────────────────────────────────────────────
+*.sh            text eol=lf
+*.bash          text eol=lf
+mvnw            text eol=lf
+gradlew         text eol=lf
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+mvnw.cmd        text eol=crlf
+
+# ─── Binary Files (no diff / no merge) ────────────────────
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.ico           binary
+*.webp          binary
+*.svg           text
+*.ttf           binary
+*.otf           binary
+*.woff          binary
+*.woff2         binary
+*.eot           binary
+*.jar           binary
+*.class         binary
+*.apk           binary
+*.aab           binary
+*.keystore      binary
+*.jks           binary
+*.so            binary
+*.dll           binary
+*.exe           binary
+*.zip           binary
+*.tar.gz        binary
+*.pdf           binary
+*.xlsx          binary
+
+# ─── Lock Files (no diff noise) ───────────────────────────
+package-lock.json   text -diff
+pubspec.lock        text -diff
+
+# ─── GitHub Linguist Overrides ─────────────────────────────
+# Exclude generated / vendored files from language stats
+ensark-frontend/node_modules/**    linguist-vendored
+ensark-flutter/.dart_tool/**       linguist-generated
+ensark-flutter/build/**            linguist-generated
+ensarkbank-android/.artifacts/**   linguist-generated
+ensark/target/**                   linguist-generated
+*.g.dart                           linguist-generated
+*.freezed.dart                     linguist-generated
+*.min.js                           linguist-generated
+*.min.css                          linguist-generated
