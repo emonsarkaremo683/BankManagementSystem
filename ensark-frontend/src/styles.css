@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/**
+ * EnsarkBank enterprise design tokens.
+ * Off-white surfaces, one restrained brand color, semantic status colors,
+ * soft/bordered elevation. See ensarkbank-ui-style skill for the full spec.
+ */
+@theme {
+  /* Typography */
+  --font-sans: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Manrope', 'Inter', sans-serif;
+
+  /* Brand (indigo) — used sparingly: active states, primary buttons, key numbers */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+
+  /* Semantic status colors */
+  --color-success-50: #f0fdf4;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+
+  --color-info-50: #eff6ff;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+
+  --color-purple-50: #faf5ff;
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+
+  /* Surfaces */
+  --color-canvas: #f8f9fb;
+  --color-surface: #ffffff;
+  --color-surface-alt: #fcfcfd;
+  --color-border: #e5e7eb;
+  --color-border-strong: #d1d5db;
+
+  /* Text */
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #6b7280;
+  --color-text-inverse: #ffffff;
+
+  /* Radii */
+  --radius-input: 12px;
+  --radius-btn: 12px;
+  --radius-card: 20px;
+  --radius-table: 18px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-soft: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-sidebar: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+html, body {
+  height: 100%;
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Shared card/table shell — reused verbatim across many components, so it
+   lives here once rather than being retyped per-component. */
+@layer components {
+  .app-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .app-table-shell {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-table);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+  }
+
+  .app-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: var(--radius-input);
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    font-size: 0.9375rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .app-input::placeholder {
+    color: var(--color-text-muted);
+  }
+  .app-input:focus {
+    outline: none;
+    border-color: var(--color-brand-500);
+    box-shadow: 0 0 0 3px var(--color-brand-100);
+  }
+  .app-input.is-invalid {
+    border-color: var(--color-danger-500);
+  }
+
+  .app-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: var(--radius-btn);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    box-shadow: var(--shadow-soft);
+  }
+  .app-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .app-btn-primary {
+    background: var(--color-brand-600);
+    color: var(--color-text-inverse);
+  }
+  .app-btn-primary:not(:disabled):hover {
+    background: var(--color-brand-700);
+  }
+  .app-btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-strong);
+  }
+  .app-btn-secondary:not(:disabled):hover {
+    background: var(--color-surface-alt);
+  }
+  .app-btn-danger {
+    background: var(--color-danger-600);
+    color: var(--color-text-inverse);
+  }
+  .app-btn-danger:not(:disabled):hover {
+    background: var(--color-danger-700);
+  }
+}

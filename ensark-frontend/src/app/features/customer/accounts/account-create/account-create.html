@@ -1,0 +1,181 @@
+<div class="p-6 space-y-6">
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <div class="flex items-center gap-4">
+      <a routerLink="/customer/accounts" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+        <svg lucideArrowLeft class="w-4 h-4"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Open New Account</h1>
+        <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Apply for a new bank account. Your KYC must be verified first.</p>
+      </div>
+    </div>
+
+    <!-- KYC Warning (only when not verified) -->
+    <div *ngIf="kycStatus !== 'VERIFIED'" class="bg-[var(--color-warning-50)] border border-[var(--color-warning-500)]/30 rounded-[var(--radius-input)] p-4 flex items-start gap-3">
+      <svg lucideTriangleAlert class="w-5 h-5 text-[var(--color-warning-600)] mt-0.5 shrink-0"></svg>
+      <div>
+        <p class="text-sm font-semibold text-[var(--color-warning-700)]">KYC Verification Required</p>
+        <p class="text-xs text-[var(--color-warning-700)]/80 mt-1">Your KYC documents must be approved by our team before you can open an account. If your KYC is pending or rejected, please <a routerLink="/customer/kyc" class="underline hover:no-underline">upload/verify your documents</a> first.</p>
+      </div>
+    </div>
+
+    <div class="app-card p-8">
+      <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="space-y-8">
+
+        <!-- Account Details -->
+        <div>
+          <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-4">Account Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Account Type</label>
+              <select formControlName="accountType" class="app-input">
+                <option value="SAVINGS">Savings</option>
+                <option value="CURRENT">Current</option>
+                <option value="FIXED_DEPOSIT">Fixed Deposit</option>
+                <option value="STUDENT">Student</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Initial Deposit (BDT)</label>
+              <input type="number" formControlName="availableBalance" min="0" class="app-input">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Branch</label>
+              <select formControlName="branchId" class="app-input">
+                <option value="">Select Branch</option>
+                <option *ngFor="let b of branches" [value]="b.id">{{ b.name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+        <!-- Nominee Info -->
+        <div>
+          <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-4">Nominee Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Nominee Name</label>
+              <input type="text" formControlName="n_name" placeholder="Full name of nominee" class="app-input">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Nominee Email</label>
+              <input type="email" formControlName="n_email" placeholder="nominee@example.com" class="app-input">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Nominee Phone</label>
+              <input type="tel" formControlName="n_phone" placeholder="01XXXXXXXXX" class="app-input">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Relation</label>
+              <select formControlName="relation" class="app-input">
+                <option value="FATHER">Father</option>
+                <option value="MOTHER">Mother</option>
+                <option value="SISTER">Sister</option>
+                <option value="BROTHER">Brother</option>
+                <option value="UNCLE">Uncle</option>
+                <option value="AUNTY">Aunty</option>
+                <option value="COUSIN">Cousin</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+        <!-- Documents -->
+        <div>
+          <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-4">Required Documents</h3>
+
+          <!-- Signature -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">Your Signature</label>
+            <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-[var(--color-success-50)] flex items-center justify-center">
+                  <svg lucideSignature class="w-4 h-4 text-[var(--color-success-600)]"></svg>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[var(--color-text-primary)]">Signature</span>
+                  <p class="text-xs text-[var(--color-text-muted)]">Upload a clear image of your signature</p>
+                </div>
+              </div>
+              <label class="cursor-pointer app-btn app-btn-secondary !h-10 text-xs w-full">
+                {{ signatureFile ? 'Change File' : 'Select Signature' }}
+                <input type="file" class="sr-only" (change)="onSignatureSelected($event)" accept="image/*">
+              </label>
+              <p *ngIf="signatureFile" class="text-xs text-[var(--color-success-600)] mt-2 text-center truncate">{{ signatureFile.name }}</p>
+            </div>
+          </div>
+
+          <!-- Nominee Documents -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-[var(--color-info-50)] flex items-center justify-center">
+                  <svg lucideCamera class="w-4 h-4 text-[var(--color-info-600)]"></svg>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[var(--color-text-primary)]">Nominee Photo</span>
+                  <p class="text-xs text-[var(--color-text-muted)]">Required</p>
+                </div>
+              </div>
+              <label class="cursor-pointer app-btn app-btn-secondary !h-10 text-xs w-full">
+                {{ nomineePhotoFile ? 'Change File' : 'Select Photo' }}
+                <input type="file" class="sr-only" (change)="onNomineePhotoSelected($event)" accept="image/*">
+              </label>
+              <p *ngIf="nomineePhotoFile" class="text-xs text-[var(--color-success-600)] mt-2 text-center truncate">{{ nomineePhotoFile.name }}</p>
+            </div>
+
+            <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-[var(--color-purple-50)] flex items-center justify-center">
+                  <svg lucideIdCard class="w-4 h-4 text-[var(--color-purple-600)]"></svg>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[var(--color-text-primary)]">Nominee NID Front</span>
+                  <p class="text-xs text-[var(--color-text-muted)]">Required</p>
+                </div>
+              </div>
+              <label class="cursor-pointer app-btn app-btn-secondary !h-10 text-xs w-full">
+                {{ nomineeNidFrontFile ? 'Change File' : 'Select NID Front' }}
+                <input type="file" class="sr-only" (change)="onNomineeNidFrontSelected($event)" accept="image/*">
+              </label>
+              <p *ngIf="nomineeNidFrontFile" class="text-xs text-[var(--color-success-600)] mt-2 text-center truncate">{{ nomineeNidFrontFile.name }}</p>
+            </div>
+
+            <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-[var(--color-warning-50)] flex items-center justify-center">
+                  <svg lucideIdCard class="w-4 h-4 text-[var(--color-warning-600)]"></svg>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold text-[var(--color-text-primary)]">Nominee NID Back</span>
+                  <p class="text-xs text-[var(--color-text-muted)]">Required</p>
+                </div>
+              </div>
+              <label class="cursor-pointer app-btn app-btn-secondary !h-10 text-xs w-full">
+                {{ nomineeNidBackFile ? 'Change File' : 'Select NID Back' }}
+                <input type="file" class="sr-only" (change)="onNomineeNidBackSelected($event)" accept="image/*">
+              </label>
+              <p *ngIf="nomineeNidBackFile" class="text-xs text-[var(--color-success-600)] mt-2 text-center truncate">{{ nomineeNidBackFile.name }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3">
+          <a routerLink="/customer/accounts" class="app-btn app-btn-secondary">Cancel</a>
+          <button type="submit" [disabled]="accountForm.invalid || isLoading" class="app-btn app-btn-primary">
+            <svg *ngIf="isLoading" lucideLoaderCircle class="w-4 h-4 animate-spin"></svg>
+            Submit Application
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

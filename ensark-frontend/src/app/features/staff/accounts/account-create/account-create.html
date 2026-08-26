@@ -1,0 +1,211 @@
+<div class="p-6 space-y-6">
+  <div class="flex items-center gap-4">
+    <a routerLink="/staff/accounts" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+      <svg lucideArrowLeft class="w-4 h-4"></svg>
+    </a>
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Open New Account</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Create a new bank account for a customer.</p>
+    </div>
+  </div>
+
+  <div class="app-card p-8">
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="space-y-8">
+
+      <!-- Account Details -->
+      <div>
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-4">Account Details</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Account Type</label>
+            <select formControlName="accountType" class="app-input">
+              <option value="SAVINGS">Savings</option>
+              <option value="CURRENT">Current</option>
+              <option value="FIXED_DEPOSIT">Fixed Deposit</option>
+              <option value="JOINT_ACCOUNT">Joint Account</option>
+              <option value="STUDENT">Student</option>
+              <option value="BUSINESS">Business</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Initial Deposit</label>
+            <input type="number" formControlName="availableBalance" class="app-input">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Branch</label>
+            <select formControlName="branchId" class="app-input">
+              <option value="">Select Branch</option>
+              <option *ngFor="let b of branches" [value]="b.id">{{ b.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+      <!-- Nominee Info -->
+      <div>
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-4">Nominee Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Nominee Name</label>
+            <input type="text" formControlName="n_name" class="app-input">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Nominee Email</label>
+            <input type="email" formControlName="n_email" class="app-input">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Nominee Phone</label>
+            <input type="tel" formControlName="n_phone" class="app-input">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Relation</label>
+            <select formControlName="relation" class="app-input">
+              <option value="FATHER">Father</option>
+              <option value="MOTHER">Mother</option>
+              <option value="SISTER">Sister</option>
+              <option value="BROTHER">Brother</option>
+              <option value="UNCLE">Uncle</option>
+              <option value="AUNTY">Aunty</option>
+              <option value="COUSIN">Cousin</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+      <!-- Nominee Documents -->
+      <div>
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold mb-4">Nominee Documents <span class="text-[var(--color-danger-600)]">*</span></h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <svg lucideImage class="w-4 h-4 text-[var(--color-info-600)]"></svg>
+              <span class="text-sm font-semibold text-[var(--color-text-primary)]">Nominee Photo</span>
+            </div>
+            <label class="cursor-pointer block w-full text-center app-btn app-btn-secondary !h-10 text-xs">
+              {{ nomineePhotoFile ? 'Change File' : 'Select Photo' }}
+              <input type="file" class="sr-only" (change)="onNomineePhotoSelected($event)" accept="image/*">
+            </label>
+            <p *ngIf="nomineePhotoFile" class="text-xs text-[var(--color-success-600)] mt-2 truncate">{{ nomineePhotoFile.name }}</p>
+          </div>
+          <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <svg lucideIdCard class="w-4 h-4 text-[var(--color-purple-600)]"></svg>
+              <span class="text-sm font-semibold text-[var(--color-text-primary)]">Nominee NID Front</span>
+            </div>
+            <label class="cursor-pointer block w-full text-center app-btn app-btn-secondary !h-10 text-xs">
+              {{ nomineeNidFrontFile ? 'Change File' : 'Select NID Front' }}
+              <input type="file" class="sr-only" (change)="onNomineeNidFrontSelected($event)" accept="image/*">
+            </label>
+            <p *ngIf="nomineeNidFrontFile" class="text-xs text-[var(--color-success-600)] mt-2 truncate">{{ nomineeNidFrontFile.name }}</p>
+          </div>
+          <div class="border border-[var(--color-border)] rounded-[var(--radius-input)] p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <svg lucideIdCard class="w-4 h-4 text-[var(--color-warning-600)]"></svg>
+              <span class="text-sm font-semibold text-[var(--color-text-primary)]">Nominee NID Back</span>
+            </div>
+            <label class="cursor-pointer block w-full text-center app-btn app-btn-secondary !h-10 text-xs">
+              {{ nomineeNidBackFile ? 'Change File' : 'Select NID Back' }}
+              <input type="file" class="sr-only" (change)="onNomineeNidBackSelected($event)" accept="image/*">
+            </label>
+            <p *ngIf="nomineeNidBackFile" class="text-xs text-[var(--color-success-600)] mt-2 truncate">{{ nomineeNidBackFile.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+      <!-- Account Holders -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] font-semibold">Account Holders <span class="text-[var(--color-danger-600)]">*</span></h3>
+          <button type="button" (click)="addHolder()" class="app-btn app-btn-secondary !h-9 text-xs">
+            <svg lucidePlus class="w-3.5 h-3.5"></svg>
+            Add Holder
+          </button>
+        </div>
+        <div formArrayName="accountHolders" class="space-y-4">
+          <div *ngFor="let holder of accountHolders.controls; let i = index" [formGroupName]="i" class="p-4 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-semibold text-[var(--color-text-primary)]">Holder {{ i + 1 }}</span>
+              <button type="button" *ngIf="accountHolders.length > 1" (click)="removeHolder(i)" class="text-[var(--color-danger-600)] hover:underline text-xs font-medium">Remove</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label class="block text-xs text-[var(--color-text-muted)] mb-1">Type</label>
+                <select formControlName="holderType" class="app-input !h-10 text-sm">
+                  <option value="PRIMARY">Primary</option>
+                  <option value="SECONDARY">Secondary</option>
+                  <option value="OPTIONAL">Optional</option>
+                </select>
+              </div>
+              <div class="relative">
+                <label class="block text-xs text-[var(--color-text-muted)] mb-1">Customer Email</label>
+                <input type="text"
+                       [value]="customerSearchQueries[i] || ''"
+                       (input)="onCustomerInput($event, i)"
+                       (focus)="showCustomerDropdowns[i] = true; filteredCustomers = customers"
+                       (blur)="hideCustomerDropdown(i)"
+                       placeholder="Type email to search..."
+                       class="app-input !h-10 text-sm">
+
+                <div *ngIf="showCustomerDropdowns[i] && filteredCustomers.length > 0"
+                     class="absolute z-50 mt-1 w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-input)] shadow-[var(--shadow-card)] max-h-48 overflow-y-auto">
+                  <div *ngFor="let c of filteredCustomers"
+                       (mousedown)="selectCustomer(c, i)"
+                       class="px-3 py-2 cursor-pointer hover:bg-[var(--color-surface-alt)] border-b border-[var(--color-border)] last:border-0 transition-colors">
+                    <div class="text-xs font-semibold text-[var(--color-text-primary)]">{{ c.email }}</div>
+                    <div class="text-[11px] text-[var(--color-text-muted)]">{{ c.name }} &bull; {{ c.phone }}</div>
+                  </div>
+                </div>
+                <div *ngIf="showCustomerDropdowns[i] && filteredCustomers.length === 0 && (customerSearchQueries[i]?.length || 0) > 0"
+                     class="absolute z-50 mt-1 w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-input)] shadow-[var(--shadow-card)] p-3 text-center">
+                  <p class="text-xs text-[var(--color-text-muted)]">No customers match "{{ customerSearchQueries[i] }}"</p>
+                </div>
+              </div>
+              <div class="flex items-end gap-4">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" formControlName="canWithdraw" class="rounded border-[var(--color-border-strong)] text-[var(--color-brand-600)] focus:ring-[var(--color-brand-500)]">
+                  <span class="text-xs text-[var(--color-text-secondary)]">Withdraw</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" formControlName="canDeposit" class="rounded border-[var(--color-border-strong)] text-[var(--color-brand-600)] focus:ring-[var(--color-brand-500)]">
+                  <span class="text-xs text-[var(--color-text-secondary)]">Deposit</span>
+                </label>
+              </div>
+              <div>
+                <label class="block text-xs text-[var(--color-text-muted)] mb-1">Signature</label>
+                <label class="cursor-pointer block w-full text-center app-btn app-btn-secondary !h-10 text-xs">
+                  {{ holderSignatureFiles[i] ? 'Change' : 'Upload' }}
+                  <input type="file" class="sr-only" (change)="onHolderSignatureSelected($event, i)" accept="image/*">
+                </label>
+              </div>
+            </div>
+            <div *ngIf="holderSignatureFiles[i]" class="text-xs text-[var(--color-success-600)] mt-2 truncate">{{ holderSignatureFiles[i]!.name }}</div>
+            <div *ngIf="selectedCustomers[i]" class="mt-3 inline-block p-2 bg-[var(--color-success-50)] border border-[var(--color-success-500)]/30 rounded-[var(--radius-input)] text-xs">
+              <span class="text-[var(--color-success-700)] font-semibold">{{ selectedCustomers[i]!.name }}</span>
+              <span class="text-[var(--color-success-700)]/70"> &bull; ID: {{ selectedCustomers[i]!.id }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="bg-[var(--color-danger-50)] border border-[var(--color-danger-500)]/30 rounded-[var(--radius-input)] p-4">
+        <p class="text-sm text-[var(--color-danger-700)]">{{ errorMessage }}</p>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-3">
+        <a routerLink="/staff/accounts" class="app-btn app-btn-secondary">Cancel</a>
+        <button type="submit" [disabled]="accountForm.invalid || isLoading" class="app-btn app-btn-primary">
+          <svg *ngIf="isLoading" lucideLoaderCircle class="w-4 h-4 animate-spin"></svg>
+          Create Account
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

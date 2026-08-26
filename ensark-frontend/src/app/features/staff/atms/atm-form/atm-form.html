@@ -1,0 +1,89 @@
+<div class="p-6 space-y-6 max-w-3xl mx-auto">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+        <svg lucideLandmark class="w-6 h-6 text-[var(--color-brand-600)]"></svg>
+        {{ isEditMode ? 'Edit ATM Device' : 'Register New ATM' }}
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Configure hardware location, vault capacity limit, and branch link.</p>
+    </div>
+    <a routerLink="/staff/atms" class="app-btn app-btn-secondary">
+      <svg lucideArrowLeft class="w-4 h-4"></svg>
+      Cancel
+    </a>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="app-card p-8 space-y-6">
+    <div class="space-y-4">
+      <div>
+        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Location Address</label>
+        <input
+          type="text"
+          formControlName="address"
+          placeholder="e.g. City Mall Gate 2, 45 Financial Ave"
+          class="app-input"
+          [class.is-invalid]="form.get('address')?.invalid && form.get('address')?.touched"
+        />
+        <p *ngIf="form.get('address')?.invalid && form.get('address')?.touched" class="text-[var(--color-danger-600)] text-xs mt-1">Location address is required.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Parent Branch</label>
+          <select formControlName="branchId" class="app-input">
+            <option [ngValue]="null">
+              {{ isEditMode ? ('Keep current branch (' + (atm?.branchName || 'unknown') + ')') : 'Select Branch' }}
+            </option>
+            <option *ngFor="let b of branches" [ngValue]="b.id">{{ b.name }}</option>
+          </select>
+          <p *ngIf="isEditMode" class="text-xs text-[var(--color-text-muted)] mt-1">Leave as-is to keep the ATM on its current branch.</p>
+          <p *ngIf="!isEditMode && form.get('branchId')?.invalid && form.get('branchId')?.touched" class="text-[var(--color-danger-600)] text-xs mt-1">Branch is required.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Cash Limit Capacity (BDT)</label>
+          <input
+            type="number"
+            formControlName="limit"
+            placeholder="500000"
+            class="app-input"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">
+            {{ isEditMode ? 'Vault Balance (BDT)' : 'Initial Vault Balance (BDT)' }}
+          </label>
+          <input
+            type="number"
+            formControlName="balance"
+            placeholder="0"
+            class="app-input"
+            [class.is-invalid]="form.get('balance')?.invalid && form.get('balance')?.touched"
+          />
+          <p *ngIf="form.get('balance')?.invalid && form.get('balance')?.touched" class="text-[var(--color-danger-600)] text-xs mt-1">Vault balance is required and must be 0 or greater.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Status</label>
+          <select formControlName="status" class="app-input">
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="MAINTENANCE">MAINTENANCE</option>
+            <option value="OFFLINE">OFFLINE</option>
+            <option value="OUT_OF_SERVICE">OUT OF SERVICE</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-[var(--color-border)] flex justify-end gap-3">
+      <a routerLink="/staff/atms" class="app-btn app-btn-secondary">Cancel</a>
+      <button type="submit" [disabled]="form.invalid || isSubmitting" class="app-btn app-btn-primary">
+        {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update ATM' : 'Register ATM') }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.ensark.ensarkbank.ui.dashboard.DashboardFragment"
+        android:label="Dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_transferFragment"
+            app:destination="@id/transferFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_cardFragment"
+            app:destination="@id/cardFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_loanFragment"
+            app:destination="@id/loanFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_chequeFragment"
+            app:destination="@id/chequeFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_standingOrderFragment"
+            app:destination="@id/standingOrderFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_beneficiaryFragment"
+            app:destination="@id/beneficiaryFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_converterFragment"
+            app:destination="@id/converterFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_accountListFragment"
+            app:destination="@id/accountListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountListFragment"
+        android:name="com.ensark.ensarkbank.ui.account.AccountListFragment"
+        android:label="My Accounts" >
+        <action
+            android:id="@+id/action_accountListFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ensark.ensarkbank.ui.profile.ProfileFragment"
+        android:label="Profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_kycFragment"
+            app:destination="@id/kycFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_personalInfoFragment"
+            app:destination="@id/personalInfoFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.ensark.ensarkbank.ui.profile.ChangePasswordFragment"
+        android:label="Change Password" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.ensark.ensarkbank.ui.profile.EditProfileFragment"
+        android:label="Edit Profile" />
+
+    <fragment
+        android:id="@+id/personalInfoFragment"
+        android:name="com.ensark.ensarkbank.ui.profile.PersonalInfoFragment"
+        android:label="Personal Information" />
+
+    <fragment
+        android:id="@+id/kycFragment"
+        android:name="com.ensark.ensarkbank.ui.profile.KycFragment"
+        android:label="Identity Verification" />
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.ensark.ensarkbank.ui.profile.NotificationFragment"
+        android:label="Notifications" />
+
+    <fragment
+        android:id="@+id/transferFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.TransferFragment"
+        android:label="Transfer" >
+        <action
+            android:id="@+id/action_transferFragment_to_otpFragment"
+            app:destination="@id/otpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.OtpFragment"
+        android:label="OTP Verification" >
+        <argument
+            android:name="referenceId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="com.ensark.ensarkbank.ui.card.CardFragment"
+        android:label="Cards" />
+
+    <fragment
+        android:id="@+id/loanFragment"
+        android:name="com.ensark.ensarkbank.ui.loan.LoanFragment"
+        android:label="Loans" />
+
+    <fragment
+        android:id="@+id/chequeFragment"
+        android:name="com.ensark.ensarkbank.ui.cheque.ChequeFragment"
+        android:label="Cheque Services" >
+        <action
+            android:id="@+id/action_chequeFragment_to_chequeLeafFragment"
+            app:destination="@id/chequeLeafFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chequeLeafFragment"
+        android:name="com.ensark.ensarkbank.ui.cheque.ChequeLeafFragment"
+        android:label="Cheque Leaves" >
+        <argument
+            android:name="chequeBook"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/converterFragment"
+        android:name="com.ensark.ensarkbank.ui.utility.ConverterFragment"
+        android:label="Currency Converter" />
+
+    <fragment
+        android:id="@+id/standingOrderFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.StandingOrderFragment"
+        android:label="Standing Orders" >
+        <action
+            android:id="@+id/action_standingOrderFragment_to_createStandingOrderFragment"
+            app:destination="@id/createStandingOrderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createStandingOrderFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.CreateStandingOrderFragment"
+        android:label="Set Standing Order" />
+
+    <fragment
+        android:id="@+id/beneficiaryFragment"
+        android:name="com.ensark.ensarkbank.ui.transfer.BeneficiaryFragment"
+        android:label="Beneficiaries" />
+
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.ensark.ensarkbank.ui.account.CreateAccountFragment"
+        android:label="Open Account" />
+
+</navigation>

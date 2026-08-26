@@ -1,0 +1,209 @@
+<div class="pt-8 pb-20 w-full px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="mb-6">
+      <button (click)="goBack()" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] text-sm flex items-center transition-colors">
+        <svg lucideArrowLeft class="w-4 h-4 mr-1.5"></svg>
+        Back to Loans
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="space-y-4">
+      <div class="h-48 app-card animate-pulse"></div>
+      <div class="h-64 app-card animate-pulse"></div>
+    </div>
+
+    <div *ngIf="!isLoading && loan" class="space-y-6">
+      <!-- Loan Summary -->
+      <div class="app-card p-6">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+          <div>
+            <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Loan #{{ loan.loanId }}</h1>
+            <p class="text-[var(--color-text-secondary)] text-sm mt-1">Account: {{ loan.accountNumber }}</p>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <app-badge [label]="loan.status" [color]="getStatusColor(loan.status)"></app-badge>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Principal</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.principalAmount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">EMI Amount</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.emiAmount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Outstanding</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.outstandingBalance | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Interest Rate</div>
+            <div class="text-lg font-semibold text-[var(--color-text-primary)]">{{ loan.annualInterestRate }}% p.a.</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 pt-6 border-t border-[var(--color-border)]">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Tenure</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.tenureMonths }} months</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Total Payable</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.totalPayable | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Applied On</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.applicationDate | date:'mediumDate' }}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Next Due</div>
+            <div class="text-sm text-[var(--color-text-primary)]">{{ loan.nextDueDate | date:'mediumDate' }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="loan.rejectionReason" class="mt-6 pt-6 border-t border-[var(--color-border)]">
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rejection Reason</div>
+          <div class="text-sm text-[var(--color-danger-600)]">{{ loan.rejectionReason }}</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div *ngIf="loan.status === 'PENDING' || canForeclose" class="app-card p-6">
+        <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Actions</h2>
+        <div class="flex flex-wrap gap-3">
+          <ng-container *ngIf="loan.status === 'PENDING'">
+            <button (click)="approveLoan()" class="app-btn app-btn-primary">
+              Approve Loan
+            </button>
+            <button (click)="showRejectModal = true" class="app-btn app-btn-danger">
+              Reject Loan
+            </button>
+          </ng-container>
+          <button *ngIf="canForeclose" (click)="showForecloseModal = true" class="app-btn app-btn-danger">
+            <svg lucideTriangleAlert class="w-4 h-4"></svg>
+            Foreclose Loan
+          </button>
+        </div>
+      </div>
+
+      <!-- Guarantors -->
+      <div *ngIf="loan.guarantors && loan.guarantors.length > 0" class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)] flex items-center gap-2">
+          <svg lucideHandshake class="w-4 h-4 text-[var(--color-text-muted)]"></svg>
+          <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Guarantors</h2>
+        </div>
+        <div class="p-6 space-y-4">
+          <div *ngFor="let g of loan.guarantors" class="p-4 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Name</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.name }}</div>
+              </div>
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Phone</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.phone }}</div>
+              </div>
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">Relation</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.relation }}</div>
+              </div>
+              <div>
+                <div class="text-xs text-[var(--color-text-muted)]">NID</div>
+                <div class="text-sm text-[var(--color-text-primary)]">{{ g.nidNumber }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div *ngIf="loan.documents && loan.documents.length > 0" class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)] flex items-center gap-2">
+          <svg lucideFileText class="w-4 h-4 text-[var(--color-text-muted)]"></svg>
+          <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Documents</h2>
+        </div>
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div *ngFor="let d of loan.documents" class="flex items-center justify-between px-4 py-3 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)]">
+            <div class="min-w-0">
+              <div class="text-sm text-[var(--color-text-primary)] truncate">{{ d.originalFileName }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ d.contentType }} &middot; {{ (d.fileSize / 1024) | number:'1.0-1' }} KB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repayment Schedule -->
+      <div class="app-table-shell">
+        <div class="p-6 border-b border-[var(--color-border)]">
+          <h2 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Repayment Schedule</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+              <tr>
+                <th class="px-6 py-4 font-medium">#</th>
+                <th class="px-6 py-4 font-medium">Due Date</th>
+                <th class="px-6 py-4 font-medium">Principal</th>
+                <th class="px-6 py-4 font-medium">Interest</th>
+                <th class="px-6 py-4 font-medium">EMI</th>
+                <th class="px-6 py-4 font-medium">Balance</th>
+                <th class="px-6 py-4 font-medium">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of schedule" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+                <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ s.installmentNumber }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ s.dueDate | date:'mediumDate' }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ s.principalComponent | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-primary)]">{{ s.interestComponent | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-xs font-medium text-[var(--color-text-primary)]">{{ s.emiAmount | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ s.remainingBalanceAfter | number:'1.2-2' }}</td>
+                <td class="px-6 py-4">
+                  <app-badge [label]="s.status" [color]="getRepaymentStatusColor(s.status)"></app-badge>
+                </td>
+              </tr>
+              <tr *ngIf="schedule.length === 0">
+                <td colspan="7" class="px-6 py-8 text-center text-[var(--color-text-muted)]">No schedule available.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div *ngIf="showRejectModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" (click)="showRejectModal = false">
+      <div class="app-card w-full max-w-md p-6" (click)="$event.stopPropagation()">
+        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Reject Loan</h3>
+        <textarea [(ngModel)]="rejectReason" rows="3" class="app-input h-auto py-3" placeholder="Enter rejection reason..."></textarea>
+        <div class="flex justify-end space-x-3 mt-4">
+          <button (click)="showRejectModal = false" class="app-btn app-btn-secondary">Cancel</button>
+          <button (click)="rejectLoan()" class="app-btn app-btn-danger">Reject</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Foreclose Modal -->
+    <div *ngIf="showForecloseModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" (click)="showForecloseModal = false">
+      <div class="app-card w-full max-w-md p-6" (click)="$event.stopPropagation()">
+        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-2">Foreclose Loan</h3>
+        <p class="text-sm text-[var(--color-text-secondary)] mb-4">
+          Enter the account ID to sweep the full payoff amount from. This will settle the loan's outstanding balance immediately and cannot be undone.
+        </p>
+        <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">Sweep From Account ID</label>
+        <input type="number" [(ngModel)]="sweepFromAccountId" class="app-input" placeholder="e.g. 1024">
+        <div *ngIf="forecloseError" class="text-[var(--color-danger-600)] text-xs mt-2">{{ forecloseError }}</div>
+        <div class="flex justify-end space-x-3 mt-4">
+          <button (click)="showForecloseModal = false" class="app-btn app-btn-secondary">Cancel</button>
+          <button (click)="forecloseLoan()" [disabled]="isForeclosing" class="app-btn app-btn-danger">
+            {{ isForeclosing ? 'Processing...' : 'Confirm Foreclosure' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

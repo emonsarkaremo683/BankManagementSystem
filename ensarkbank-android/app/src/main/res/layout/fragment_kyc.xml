@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/kycTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Identity Verification"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- KYC Status Summary -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/kycStatusCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/neumorphic_raised"
+                android:padding="24dp"
+                app:layout_constraintTop_toBottomOf="@id/kycTitle">
+
+                <TextView
+                    android:id="@+id/currentStatusLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Status"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/kycStatusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="PENDING"
+                    android:textColor="@color/electric_cyan"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/currentStatusLabel" />
+
+                <TextView
+                    android:id="@+id/kycDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Upload documents to verify your identity."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/kycStatusText" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Upload Section -->
+            <TextView
+                android:id="@+id/uploadDocsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Upload New Documents"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kycStatusCard" />
+
+            <GridLayout
+                android:id="@+id/uploadGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:columnCount="2"
+                app:layout_constraintTop_toBottomOf="@id/uploadDocsLabel">
+
+                <!-- NID Upload -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnUploadNid"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/neumorphic_recessed">
+                    <ImageView
+                        android:id="@+id/imgNid"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="@color/text_secondary" />
+                    <TextView
+                        android:id="@+id/txtNid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="National ID"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.8"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Passport Upload -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnUploadPassport"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/neumorphic_recessed">
+                    <ImageView
+                        android:id="@+id/imgPassport"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="@color/text_secondary" />
+                    <TextView
+                        android:id="@+id/txtPassport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Passport"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.8"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Driving License Upload -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnUploadLicense"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/neumorphic_recessed">
+                    <ImageView
+                        android:id="@+id/imgLicense"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="@color/text_secondary" />
+                    <TextView
+                        android:id="@+id/txtLicense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Driving License"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.8"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Birth Certificate Upload -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnUploadBirth"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/neumorphic_recessed">
+                    <ImageView
+                        android:id="@+id/imgBirth"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:tint="@color/text_secondary" />
+                    <TextView
+                        android:id="@+id/txtBirth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Birth Certificate"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.8"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </GridLayout>
+
+            <Button
+                android:id="@+id/submitKycButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/neumorphic_button_selector"
+                android:text="Upload All Documents"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_background"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/uploadGrid" />
+
+            <!-- Uploaded Documents View -->
+            <TextView
+                android:id="@+id/uploadedDocsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Your Uploaded Documents"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/submitKycButton" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/documentsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/uploadedDocsLabel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Backgrounds -->
+    <color name="primary_background">#0D1117</color>
+    <color name="surface_background">#161B22</color>
+
+    <!-- Electric Accents -->
+    <color name="electric_cyan">#00F2FE</color>
+    <color name="neon_blue">#4FACFE</color>
+    <color name="mint_green">#00FF87</color>
+    <color name="neon_pink">#FF3366</color>
+
+    <!-- Text -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#8B949E</color>
+
+    <!-- Shadow Physics -->
+    <color name="shadow_dark">#99000000</color>
+    <color name="shadow_light">#0DFFFFFF</color>
+    <color name="shadow_cyan">#6600F2FE</color>
+
+    <!-- Standard Colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Card Network Colors -->
+    <color name="visa_blue">#1A1F71</color>
+    <color name="mastercard_red">#EB001B</color>
+    <color name="mastercard_orange">#FF5F00</color>
+</resources>

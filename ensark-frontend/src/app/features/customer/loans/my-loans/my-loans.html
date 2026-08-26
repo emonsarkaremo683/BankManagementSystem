@@ -1,0 +1,79 @@
+<div class="pt-8 pb-20 w-full px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">My Loans</h1>
+        <p class="text-[var(--color-text-secondary)] mt-1">View your loan applications and repayment status.</p>
+      </div>
+      <div class="mt-4 md:mt-0">
+        <a routerLink="/customer/loans/apply" class="app-btn app-btn-primary">
+          <svg lucidePlus class="w-4 h-4"></svg>
+          Apply for Loan
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <app-stat-card label="Total Loans" [value]="totalLoans" color="brand" [loading]="isLoading">
+        <svg icon lucideHandCoins></svg>
+      </app-stat-card>
+      <app-stat-card label="Active Loans" [value]="activeCount" color="success" [loading]="isLoading">
+        <svg icon lucideCircleCheck></svg>
+      </app-stat-card>
+      <app-stat-card label="Pending Review" [value]="pendingCount" color="warning" [loading]="isLoading">
+        <svg icon lucideClock></svg>
+      </app-stat-card>
+      <app-stat-card label="Total Outstanding" [value]="totalOutstanding | number:'1.2-2'" color="info" [loading]="isLoading">
+        <svg icon lucideBanknote></svg>
+      </app-stat-card>
+    </div>
+
+    <div *ngIf="isLoading" class="space-y-4">
+      <div *ngFor="let i of [1,2,3]" class="h-40 app-card animate-pulse"></div>
+    </div>
+
+    <div *ngIf="!isLoading && loans.length === 0" class="app-card p-12 text-center">
+      <svg lucideScrollText class="w-12 h-12 text-[var(--color-text-muted)] mx-auto mb-4"></svg>
+      <h3 class="text-lg font-medium text-[var(--color-text-primary)] mb-2">No Loans Found</h3>
+      <p class="text-[var(--color-text-muted)] text-sm mb-4">You haven't applied for any loans yet.</p>
+      <a routerLink="/customer/loans/apply" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-sm font-semibold hover:underline">Apply for a Loan</a>
+    </div>
+
+    <div *ngIf="!isLoading && loans.length > 0" class="space-y-4">
+      <div *ngFor="let loan of loans" class="app-card p-6 hover:shadow-lg transition-shadow">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-4">
+          <div>
+            <h3 class="text-lg font-semibold text-[var(--color-text-primary)]">Loan #{{ loan.loanId }}</h3>
+            <p class="text-[var(--color-text-secondary)] text-sm mt-1">Account: {{ loan.accountNumber }}</p>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <app-badge [label]="loan.status" [color]="getStatusColor(loan.status)"></app-badge>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <div class="text-xs text-[var(--color-text-muted)]">Principal</div>
+            <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ loan.principalAmount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs text-[var(--color-text-muted)]">EMI</div>
+            <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ loan.emiAmount | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs text-[var(--color-text-muted)]">Outstanding</div>
+            <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ loan.outstandingBalance | number:'1.2-2' }}</div>
+          </div>
+          <div>
+            <div class="text-xs text-[var(--color-text-muted)]">Next Due</div>
+            <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ loan.nextDueDate | date:'mediumDate' }}</div>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-[var(--color-border)]">
+          <a [routerLink]="['/customer/loans', loan.loanId]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-sm font-semibold hover:underline transition-colors">View Details</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

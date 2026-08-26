@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardBg"
+    android:layout_width="320dp"
+    android:layout_height="200dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/bg_card_visa"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/bankName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EnSark Bank"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cardChip"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_chip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bankName"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/cardNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:letterSpacing="0.2"
+        android:text="**** **** **** 1234"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardChip" />
+
+    <TextView
+        android:id="@+id/cardExpiry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12/28"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/cardHolderName"
+        app:layout_constraintEnd_toStartOf="@id/networkLogo"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toEndOf="@id/cardHolderName" />
+
+    <TextView
+        android:id="@+id/cardHolderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CUSTOMER NAME"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/networkLogo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_visa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

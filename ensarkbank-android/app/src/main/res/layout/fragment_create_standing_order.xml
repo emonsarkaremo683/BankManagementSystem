@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Standing Order"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Source Account -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sourceAccountLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Select Source Account"
+            app:hintTextColor="@color/electric_cyan"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <AutoCompleteTextView
+                android:id="@+id/sourceAccountAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:inputType="none"
+                android:padding="16dp"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Target Account Number -->
+        <EditText
+            android:id="@+id/targetAccNoEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Target Account Number"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/sourceAccountLayout" />
+
+        <!-- Target Account Name -->
+        <EditText
+            android:id="@+id/targetNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Target Account Name"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/targetAccNoEditText" />
+
+        <!-- Amount -->
+        <EditText
+            android:id="@+id/amountEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Amount (৳)"
+            android:inputType="numberDecimal"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/targetNameEditText" />
+
+        <!-- Frequency -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/frequencyLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Frequency"
+            app:hintTextColor="@color/electric_cyan"
+            app:layout_constraintTop_toBottomOf="@id/amountEditText">
+
+            <AutoCompleteTextView
+                android:id="@+id/frequencyAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:inputType="none"
+                android:padding="16dp"
+                android:textColor="@color/text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Start Date -->
+        <EditText
+            android:id="@+id/startDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:clickable="true"
+            android:focusable="false"
+            android:hint="Start Date"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/frequencyLayout" />
+
+        <!-- End Date -->
+        <EditText
+            android:id="@+id/endDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:clickable="true"
+            android:focusable="false"
+            android:hint="End Date (Optional)"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/startDateEditText" />
+
+        <FrameLayout
+            android:id="@+id/buttonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/endDateEditText">
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/neumorphic_button_selector"
+                android:text="Set Standing Order"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_background"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminateTint="@color/primary_background" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

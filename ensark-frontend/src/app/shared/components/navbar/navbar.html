@@ -1,0 +1,96 @@
+<nav class="bg-slate-900/80 backdrop-blur-md relative z-50 border-b border-slate-700/50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-20">
+      
+      <!-- Logo -->
+      <div class="flex items-center flex-shrink-0 cursor-pointer" routerLink="/">
+        <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 transform transition-transform hover:scale-105 duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <span class="ml-3 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-100 to-slate-400">Ensark Bank</span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-1">
+        <a routerLink="/" routerLinkActive="bg-slate-800 text-emerald-400" [routerLinkActiveOptions]="{exact: true}" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">Home</a>
+        <a routerLink="/about" routerLinkActive="bg-slate-800 text-emerald-400" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">About</a>
+        <a routerLink="/services" routerLinkActive="bg-slate-800 text-emerald-400" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">Services</a>
+        <a routerLink="/branches" routerLinkActive="bg-slate-800 text-emerald-400" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">Branches</a>
+        <a routerLink="/atms" routerLinkActive="bg-slate-800 text-emerald-400" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">ATMs</a>
+        
+        <div class="h-6 w-px bg-slate-700 mx-2"></div>
+        
+        <!-- Not Logged In -->
+        <ng-container *ngIf="!(authService.currentUser$ | async)">
+          <a routerLink="/login" class="px-5 py-2 text-sm font-medium text-slate-200 hover:text-emerald-400 transition-colors">Sign In</a>
+          <a routerLink="/register" class="px-5 py-2 text-sm font-semibold text-slate-900 bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-lg shadow-emerald-500/20 transform transition-all hover:-translate-y-0.5 duration-200">Open Account</a>
+        </ng-container>
+
+        <!-- Logged In -->
+        <ng-container *ngIf="authService.currentUser$ | async as user">
+          <a *ngIf="user.role === 'CUSTOMER'" routerLink="/customer/dashboard" routerLinkActive="bg-slate-800 text-emerald-400" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">Dashboard</a>
+          <a *ngIf="user.role !== 'CUSTOMER'" routerLink="/staff/dashboard" routerLinkActive="bg-slate-800 text-emerald-400" class="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-emerald-300 transition-colors duration-200 text-sm font-medium">Dashboard</a>
+          
+          <div class="h-6 w-px bg-slate-700 mx-2"></div>
+          
+          <div class="flex items-center space-x-3 ml-2">
+            <div class="flex flex-col text-right">
+              <span class="text-sm font-medium text-slate-200">{{ user.name || user.email }}</span>
+              <span class="text-xs text-slate-400 capitalize">{{ user.role.toLowerCase().replace('_', ' ') }}</span>
+            </div>
+            <div class="h-10 w-10 rounded-full bg-slate-700 flex items-center justify-center border-2 border-slate-600 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <button (click)="logout()" class="ml-2 p-2 text-slate-400 hover:text-red-400 transition-colors" title="Logout">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex items-center md:hidden">
+        <button (click)="toggleMobileMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none transition-colors">
+          <svg [class.hidden]="isMobileMenuOpen" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg [class.hidden]="!isMobileMenuOpen" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Panel -->
+  <div *ngIf="isMobileMenuOpen" class="md:hidden bg-slate-900 border-t border-slate-800 animate-fade-in-down">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a routerLink="/" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+      <a routerLink="/about" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+      <a routerLink="/services" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Services</a>
+      <a routerLink="/branches" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Branches</a>
+      <a routerLink="/atms" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">ATMs</a>
+
+      <ng-container *ngIf="!(authService.currentUser$ | async)">
+        <a routerLink="/login" class="text-emerald-400 hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium">Sign In</a>
+        <a routerLink="/register" class="bg-emerald-500/10 text-emerald-400 block px-3 py-2 rounded-md text-base font-medium mt-2">Open Account</a>
+      </ng-container>
+
+      <ng-container *ngIf="authService.currentUser$ | async as user">
+        <div class="px-3 py-3 mb-2 border-b border-slate-800">
+          <div class="text-base font-medium text-white">{{ user.name || user.email }}</div>
+          <div class="text-sm font-medium text-slate-400">{{ user.role }}</div>
+        </div>
+        <a *ngIf="user.role === 'CUSTOMER'" routerLink="/customer/dashboard" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+        <a *ngIf="user.role !== 'CUSTOMER'" routerLink="/staff/dashboard" class="text-slate-300 hover:bg-slate-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+        <button (click)="logout()" class="w-full text-left text-red-400 hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium mt-2">Logout</button>
+      </ng-container>
+    </div>
+  </div>
+</nav>

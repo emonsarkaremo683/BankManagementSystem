@@ -1,0 +1,70 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">My Cheque Books</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View and manage your cheque books.</p>
+    </div>
+    <a routerLink="/customer/cheques/apply" class="app-btn app-btn-primary">
+      <svg lucidePlus class="w-4 h-4"></svg>
+      Apply for Cheque Book
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <app-stat-card label="Total Books" [value]="chequeBooks.length" color="brand" [loading]="isLoading">
+      <svg icon lucideScrollText></svg>
+    </app-stat-card>
+    <app-stat-card label="Active" [value]="activeCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck></svg>
+    </app-stat-card>
+    <app-stat-card label="Pending" [value]="pendingCount" color="warning" [loading]="isLoading">
+      <svg icon lucideClock></svg>
+    </app-stat-card>
+  </div>
+
+  <div *ngIf="isLoading" class="space-y-4">
+    <div *ngFor="let i of [1,2,3]" class="h-32 bg-[var(--color-surface-alt)] rounded-[var(--radius-card)] animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading && chequeBooks.length === 0" class="app-card p-12 text-center">
+    <svg lucideScrollText class="w-16 h-16 text-[var(--color-text-muted)] mx-auto mb-4"></svg>
+    <h3 class="text-lg font-medium text-[var(--color-text-primary)] mb-2">No Cheque Books Found</h3>
+    <p class="text-sm text-[var(--color-text-muted)] mb-4">You haven't applied for any cheque books yet.</p>
+    <a routerLink="/customer/cheques/apply" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-sm font-semibold hover:underline">Apply for a Cheque Book</a>
+  </div>
+
+  <div *ngIf="!isLoading && chequeBooks.length > 0" class="space-y-4">
+    <div *ngFor="let cb of chequeBooks" class="app-card p-6">
+      <div class="flex flex-col md:flex-row justify-between items-start mb-4 gap-3">
+        <div>
+          <h3 class="text-lg font-semibold text-[var(--color-text-primary)]">Book #{{ cb.bookSerialNumber }}</h3>
+          <p class="text-sm text-[var(--color-text-muted)] mt-1">Account: {{ cb.accountNumber }}</p>
+        </div>
+        <app-badge [label]="cb.status" [color]="statusColor(cb.status)"></app-badge>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Total Leaves</div>
+          <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ cb.numberOfLeaves }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Leaf Range</div>
+          <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ cb.startLeafNumber }} - {{ cb.endLeafNumber }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Applied On</div>
+          <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ cb.applicationDate | date:'mediumDate' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Rejection Reason</div>
+          <div class="text-sm font-medium text-[var(--color-text-primary)]">{{ cb.rejectionReason || 'N/A' }}</div>
+        </div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-[var(--color-border)]">
+        <a [routerLink]="['/customer/cheques', cb.chequeBookId]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-sm font-semibold hover:underline transition-colors">View Details</a>
+      </div>
+    </div>
+  </div>
+
+</div>

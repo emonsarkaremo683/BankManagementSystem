@@ -1,0 +1,97 @@
+<div class="p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+        <span class="p-2 rounded-[var(--radius-input)] bg-[var(--color-purple-50)] text-[var(--color-purple-600)]">
+          <svg lucideScrollText class="w-5 h-5"></svg>
+        </span>
+        Trial Balance Statement
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">General ledger account balances: debit vs credit reconciliation</p>
+    </div>
+    <button (click)="exportToPdf()" class="app-btn app-btn-secondary">
+      <svg lucideDownload class="w-4 h-4"></svg>
+      Export PDF
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="app-card p-12 flex justify-center items-center">
+    <div class="w-8 h-8 border-2 border-[var(--color-brand-500)] border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!isLoading && errorMessage" class="app-card p-8 text-center">
+    <div class="text-[var(--color-danger-600)] text-sm font-medium mb-2">Something went wrong</div>
+    <p class="text-[var(--color-text-muted)] text-sm mb-4">{{ errorMessage }}</p>
+    <button (click)="loadTrialBalance()" class="app-btn app-btn-primary">Retry</button>
+  </div>
+
+  <!-- Report -->
+  <div *ngIf="!isLoading && report" class="app-card p-8 space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-6 border-b border-[var(--color-border)]">
+      <div>
+        <span class="text-xs text-[var(--color-purple-600)] font-semibold uppercase tracking-wider">EnsarK Bank Management System</span>
+        <h2 class="text-xl font-bold text-[var(--color-text-primary)] mt-1">Trial Balance</h2>
+        <p class="text-xs text-[var(--color-text-muted)] mt-0.5">Generated {{ today | date:'longDate' }}<span *ngIf="report.branchName"> &middot; {{ report.branchName }}</span></p>
+      </div>
+
+      <div class="mt-4 sm:mt-0">
+        <app-badge
+          [label]="report.totalDebit === report.totalCredit ? 'Debit & Credit Reconciled' : 'Debit & Credit Out of Balance'"
+          [color]="report.totalDebit === report.totalCredit ? 'success' : 'danger'">
+        </app-badge>
+      </div>
+    </div>
+
+    <div class="app-table-shell">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+            <tr>
+              <th class="py-3.5 px-4 font-semibold">GL Code</th>
+              <th class="py-3.5 px-4 font-semibold">Account No</th>
+              <th class="py-3.5 px-4 font-semibold">Account Title / Particulars</th>
+              <th class="py-3.5 px-4 font-semibold text-right">Debit (BDT)</th>
+              <th class="py-3.5 px-4 font-semibold text-right">Credit (BDT)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of report.lines" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+              <td class="py-3.5 px-4">
+                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-purple-600)] font-mono">
+                  {{ item.glCode || 'GL-ACC' }}
+                </span>
+              </td>
+              <td class="py-3.5 px-4 font-mono text-xs text-[var(--color-brand-600)]">{{ item.accountNumber }}</td>
+              <td class="py-3.5 px-4 font-medium text-[var(--color-text-primary)]">{{ item.accountName }}</td>
+              <td class="py-3.5 px-4 text-right font-mono" [ngClass]="{'text-[var(--color-text-primary)]': item.debit > 0, 'text-[var(--color-text-muted)]': item.debit === 0}">
+                {{ item.debit > 0 ? (item.debit | currency:'BDT':'symbol':'1.2-2') : '-' }}
+              </td>
+              <td class="py-3.5 px-4 text-right font-mono" [ngClass]="{'text-[var(--color-text-primary)]': item.credit > 0, 'text-[var(--color-text-muted)]': item.credit === 0}">
+                {{ item.credit > 0 ? (item.credit | currency:'BDT':'symbol':'1.2-2') : '-' }}
+              </td>
+            </tr>
+            <tr *ngIf="report.lines.length === 0">
+              <td colspan="5" class="py-8 px-4 text-center text-[var(--color-text-muted)]">No trial balance lines available.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2 border-[var(--color-border-strong)] bg-[var(--color-surface-alt)] font-bold text-[var(--color-text-primary)]">
+              <td colspan="3" class="py-4 px-4 uppercase text-xs tracking-wider">Total Ledger Balances</td>
+              <td class="py-4 px-4 text-right font-mono text-[var(--color-success-700)] text-base">
+                {{ report.totalDebit | currency:'BDT':'symbol':'1.2-2' }}
+              </td>
+              <td class="py-4 px-4 text-right font-mono text-[var(--color-success-700)] text-base">
+                {{ report.totalCredit | currency:'BDT':'symbol':'1.2-2' }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

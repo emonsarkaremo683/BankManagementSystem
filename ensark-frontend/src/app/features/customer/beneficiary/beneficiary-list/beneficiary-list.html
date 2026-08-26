@@ -1,0 +1,105 @@
+<div class="p-4 sm:p-6 lg:p-8">
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">My Beneficiaries</h1>
+        <p class="text-[var(--color-text-secondary)] mt-1 text-sm">Manage your saved beneficiaries for quick transfers.</p>
+      </div>
+      <a routerLink="/customer/beneficiaries/new" class="app-btn app-btn-primary">
+        <svg lucidePlus class="w-4 h-4"></svg>
+        Add Beneficiary
+      </a>
+    </div>
+
+    <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let i of [1,2,3]" class="app-card p-6 animate-pulse">
+        <div class="h-6 bg-[var(--color-border)] rounded w-1/3 mb-4"></div>
+        <div class="h-4 bg-[var(--color-border)] rounded w-1/2 mb-2"></div>
+        <div class="h-4 bg-[var(--color-border)] rounded w-2/3"></div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && beneficiaries.length === 0" class="app-card p-12 text-center">
+      <svg lucideUsers class="w-16 h-16 text-[var(--color-text-muted)] mx-auto mb-4"></svg>
+      <h3 class="text-[var(--color-text-primary)] text-lg font-semibold">No Beneficiaries Yet</h3>
+      <p class="text-[var(--color-text-muted)] text-sm mt-1 mb-6">Add beneficiaries to make quick transfers.</p>
+      <a routerLink="/customer/beneficiaries/new" class="app-btn app-btn-primary inline-flex">
+        Add Your First Beneficiary
+      </a>
+    </div>
+
+    <div *ngIf="!isLoading && beneficiaries.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let beneficiary of beneficiaries" class="app-card p-6">
+        <div class="flex items-start justify-between mb-4 gap-2">
+          <div class="flex items-center min-w-0">
+            <div class="w-11 h-11 rounded-full bg-[var(--color-brand-50)] flex items-center justify-center text-[var(--color-brand-600)] text-lg font-bold mr-3 flex-shrink-0">
+              {{ beneficiary.name?.charAt(0) }}
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-[var(--color-text-primary)] font-medium truncate">{{ beneficiary.name }}</h3>
+              <p class="text-[var(--color-text-muted)] text-sm">{{ beneficiary.provider }} &bull; {{ beneficiary.beneficiaryType }}</p>
+            </div>
+          </div>
+          <app-badge *ngIf="beneficiary.blocked" label="Blocked" color="danger"></app-badge>
+          <app-badge *ngIf="!beneficiary.blocked && beneficiary.verified" label="Verified" color="success"></app-badge>
+          <app-badge *ngIf="!beneficiary.blocked && !beneficiary.verified" label="Unverified" color="warning"></app-badge>
+        </div>
+
+        <p *ngIf="beneficiary.blocked && beneficiary.blockReason" class="text-xs text-[var(--color-danger-600)] mb-3">{{ beneficiary.blockReason }}</p>
+
+        <div class="space-y-2 mb-4">
+          <div class="flex justify-between text-sm">
+            <span class="text-[var(--color-text-muted)]">Account Number</span>
+            <span class="text-[var(--color-text-primary)] font-mono">{{ beneficiary.accNumber }}</span>
+          </div>
+          <div *ngIf="beneficiary.routingNumber" class="flex justify-between text-sm">
+            <span class="text-[var(--color-text-muted)]">Routing Number</span>
+            <span class="text-[var(--color-text-primary)] font-mono">{{ beneficiary.routingNumber }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="verifyingId !== beneficiary.id" class="flex justify-between items-center pt-4 border-t border-[var(--color-border)]">
+          <a [routerLink]="['/customer/beneficiaries/edit', beneficiary.id]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-sm font-medium flex items-center gap-1">
+            <svg lucidePencil class="w-3.5 h-3.5"></svg>
+            Edit
+          </a>
+          <div class="flex items-center gap-4">
+            <button *ngIf="!beneficiary.verified && !beneficiary.blocked" (click)="startVerification(beneficiary.id)" class="text-[var(--color-success-600)] hover:text-[var(--color-success-700)] text-sm font-medium flex items-center gap-1">
+              <svg lucideBadgeCheck class="w-3.5 h-3.5"></svg>
+              Verify
+            </button>
+            <button (click)="deleteBeneficiary(beneficiary.id)" class="text-[var(--color-danger-600)] hover:text-[var(--color-danger-700)] text-sm font-medium flex items-center gap-1">
+              <svg lucideTrash2 class="w-3.5 h-3.5"></svg>
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="verifyingId === beneficiary.id" class="pt-4 border-t border-[var(--color-border)] space-y-3">
+          <p *ngIf="otpSuccess" class="text-xs text-[var(--color-success-600)]">{{ otpSuccess }}</p>
+          <p *ngIf="otpError" class="text-xs text-[var(--color-danger-600)]">{{ otpError }}</p>
+          <div class="flex items-center gap-2">
+            <input
+              type="text"
+              [(ngModel)]="otpCode"
+              placeholder="Enter OTP code"
+              class="flex-1 px-3 py-2 text-sm border border-[var(--color-border)] rounded-lg bg-[var(--color-surface)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-500)] focus:border-transparent"
+            />
+            <button
+              (click)="verifyBeneficiary(beneficiary.id)"
+              [disabled]="!otpCode.trim() || otpLoading"
+              class="app-btn app-btn-primary text-xs px-3 py-2"
+            >
+              {{ otpLoading ? 'Verifying...' : 'Submit' }}
+            </button>
+            <button (click)="cancelVerification()" class="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
+              <svg lucideX class="w-4 h-4"></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

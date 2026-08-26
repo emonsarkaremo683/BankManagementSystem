@@ -1,0 +1,83 @@
+<div class="p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+        <span class="p-2 rounded-[var(--radius-input)] bg-[var(--color-brand-50)] text-[var(--color-brand-600)]">
+          <svg lucideFileText class="w-5 h-5"></svg>
+        </span>
+        General Ledger Records
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Audit log of all double-entry debit and credit journal postings</p>
+    </div>
+
+    <button (click)="exportToPdf()" class="app-btn app-btn-secondary">
+      <svg lucideDownload class="w-4 h-4"></svg>
+      Export PDF
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="app-card p-4">
+    <div class="relative w-full sm:w-96">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg lucideSearch class="h-4 w-4 text-[var(--color-text-muted)]"></svg>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search account, reference, particulars..."
+        class="app-input pl-10"
+      />
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="app-card p-12 flex justify-center items-center">
+    <div class="w-8 h-8 border-2 border-[var(--color-brand-500)] border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!isLoading" class="app-table-shell">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-sm">
+        <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+          <tr>
+            <th class="py-4 px-6 font-semibold">Posting Date</th>
+            <th class="py-4 px-6 font-semibold">Ref #</th>
+            <th class="py-4 px-6 font-semibold">Account Name / Number</th>
+            <th class="py-4 px-6 font-semibold">Particulars</th>
+            <th class="py-4 px-6 font-semibold text-right">Debit (BDT)</th>
+            <th class="py-4 px-6 font-semibold text-right">Credit (BDT)</th>
+            <th class="py-4 px-6 font-semibold text-right">Running Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredEntries" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+            <td class="py-4 px-6 text-xs text-[var(--color-text-muted)]">{{ item.date | date:'medium' }}</td>
+            <td class="py-4 px-6 font-mono text-xs text-[var(--color-brand-600)]">{{ item.transactionId || '-' }}</td>
+            <td class="py-4 px-6">
+              <div class="font-medium text-[var(--color-text-primary)]">{{ item.accountName }}</div>
+              <div class="text-xs text-[var(--color-text-muted)] font-mono">{{ item.accountNumber }}</div>
+            </td>
+            <td class="py-4 px-6 text-xs text-[var(--color-text-secondary)]">{{ item.particulars || '-' }}</td>
+            <td class="py-4 px-6 text-right font-mono" [ngClass]="{'text-[var(--color-danger-600)] font-semibold': item.debit > 0, 'text-[var(--color-text-muted)]': item.debit === 0}">
+              {{ item.debit > 0 ? (item.debit | currency:'BDT':'symbol':'1.0-0') : '-' }}
+            </td>
+            <td class="py-4 px-6 text-right font-mono" [ngClass]="{'text-[var(--color-success-600)] font-semibold': item.credit > 0, 'text-[var(--color-text-muted)]': item.credit === 0}">
+              {{ item.credit > 0 ? (item.credit | currency:'BDT':'symbol':'1.0-0') : '-' }}
+            </td>
+            <td class="py-4 px-6 text-right font-mono font-bold text-[var(--color-text-primary)]">
+              {{ item.balance | currency:'BDT':'symbol':'1.0-0' }}
+            </td>
+          </tr>
+          <tr *ngIf="filteredEntries.length === 0">
+            <td colspan="7" class="py-10 px-6 text-center text-[var(--color-text-muted)]">No ledger entries found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

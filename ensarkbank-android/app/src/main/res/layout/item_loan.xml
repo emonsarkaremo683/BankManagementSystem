@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/neumorphic_raised"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/loanIdText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loan #10245"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/loanStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/neumorphic_recessed"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:text="ACTIVE"
+        android:textColor="@color/mint_green"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/principalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Principal Amount"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loanIdText" />
+
+    <TextView
+        android:id="@+id/principalValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="৳ 50,000.00"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/principalLabel" />
+
+    <TextView
+        android:id="@+id/outstandingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Outstanding"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/principalLabel" />
+
+    <TextView
+        android:id="@+id/outstandingValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="৳ 32,500.00"
+        android:textColor="@color/neon_pink"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/outstandingLabel" />
+
+    <!-- Progress Bar (EMI Progress) -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/loanProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:indicatorColor="@color/electric_cyan"
+        app:layout_constraintTop_toBottomOf="@id/principalValue"
+        app:trackColor="@color/primary_background"
+        app:trackThickness="6dp"
+        app:trackCornerRadius="3dp"
+        android:progress="65" />
+
+    <TextView
+        android:id="@+id/nextDueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Next Payment: 15 Sep 2026"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loanProgress" />
+
+    <TextView
+        android:id="@+id/emiValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EMI: ৳ 1,200.00"
+        android:textColor="@color/electric_cyan"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nextDueLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

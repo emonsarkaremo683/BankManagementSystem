@@ -1,0 +1,96 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Transactions</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View all account transactions.</p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <button (click)="exportToPdf()" class="app-btn app-btn-secondary">
+        <svg lucideDownload class="w-4 h-4"></svg>
+        Export PDF
+      </button>
+      <a routerLink="/staff/transactions/new" class="app-btn app-btn-secondary">
+        <svg lucideArrowLeftRight class="w-4 h-4"></svg>
+        New Transaction
+      </a>
+      <a routerLink="/staff/transactions/cashier-new" class="app-btn app-btn-primary">
+        <svg lucideBanknote class="w-4 h-4"></svg>
+        Cashier Transaction
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <app-stat-card label="Total Transactions" [value]="transactions.length" color="brand" [loading]="isLoading">
+      <svg icon lucideArrowLeftRight></svg>
+    </app-stat-card>
+    <app-stat-card label="Successful" [value]="successCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck></svg>
+    </app-stat-card>
+    <app-stat-card label="Pending" [value]="pendingCount" color="warning" [loading]="isLoading">
+      <svg icon lucideClock></svg>
+    </app-stat-card>
+  </div>
+
+  <div class="app-table-shell">
+    <div class="p-6 border-b border-[var(--color-border)]">
+      <div class="relative w-full md:w-96">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg lucideSearch class="h-4 w-4 text-[var(--color-text-muted)]"></svg>
+        </div>
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" class="app-input pl-10" placeholder="Search by reference, account, name...">
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+          <tr>
+            <th class="px-6 py-3 font-semibold">Reference</th>
+            <th class="px-6 py-3 font-semibold">From</th>
+            <th class="px-6 py-3 font-semibold">To</th>
+            <th class="px-6 py-3 font-semibold">Type</th>
+            <th class="px-6 py-3 font-semibold">Amount</th>
+            <th class="px-6 py-3 font-semibold">Status</th>
+            <th class="px-6 py-3 font-semibold">Date</th>
+            <th class="px-6 py-3 font-semibold text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isLoading">
+          <tr *ngFor="let txn of filteredTransactions" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+            <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-primary)]">{{ txn.response?.referenceNo }}</td>
+            <td class="px-6 py-4">
+              <div class="text-xs text-[var(--color-text-primary)]">{{ txn.senderAccountNumber }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ txn.senderName }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-xs text-[var(--color-text-primary)]">{{ txn.receiverAccountNumber }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ txn.receiverName }}</div>
+            </td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ txn.response?.transactionType }}</td>
+            <td class="px-6 py-4 font-medium text-[var(--color-text-primary)]">{{ txn.response?.amount | number:'1.2-2' }}</td>
+            <td class="px-6 py-4">
+              <app-badge [label]="txn.response?.status || ''" [color]="statusColor(txn.response?.status)"></app-badge>
+            </td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ txn.response?.createdAt | date:'medium' }}</td>
+            <td class="px-6 py-4 text-right">
+              <a [routerLink]="['/staff/transactions', txn.response?.referenceNo]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-xs font-semibold hover:underline transition-colors">View</a>
+            </td>
+          </tr>
+          <tr *ngIf="filteredTransactions.length === 0">
+            <td colspan="8" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No transactions found.</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="isLoading">
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td colspan="8" class="px-6 py-4">
+              <div class="h-8 bg-[var(--color-surface-alt)] rounded animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

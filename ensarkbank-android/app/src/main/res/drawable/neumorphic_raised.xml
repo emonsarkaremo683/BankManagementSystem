@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Bottom-right deep shadow -->
+    <item
+        android:bottom="-4dp"
+        android:right="-4dp"
+        android:top="4dp"
+        android:left="4dp">
+        <shape>
+            <corners android:radius="20dp" />
+            <solid android:color="@color/shadow_dark" />
+        </shape>
+    </item>
+
+    <!-- Top-left subtle reflection -->
+    <item
+        android:bottom="4dp"
+        android:right="4dp"
+        android:top="-2dp"
+        android:left="-2dp">
+        <shape>
+            <corners android:radius="20dp" />
+            <solid android:color="@color/shadow_light" />
+        </shape>
+    </item>
+
+    <!-- Main Surface -->
+    <item>
+        <shape>
+            <corners android:radius="20dp" />
+            <solid android:color="@color/surface_background" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,133 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex items-center gap-4">
+    <a routerLink="/staff/accounts" class="app-btn app-btn-secondary !h-10 !w-10 !px-0">
+      <svg lucideArrowLeft class="w-4 h-4"></svg>
+    </a>
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Account Details</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View account information and recent transactions.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="space-y-4">
+    <div class="h-40 app-card animate-pulse"></div>
+    <div class="h-60 app-card animate-pulse"></div>
+  </div>
+
+  <div *ngIf="!isLoading && account" class="space-y-6">
+    <!-- Account Info Card -->
+    <div class="app-card p-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Account Number</div>
+          <div class="text-2xl font-bold text-[var(--color-text-primary)] font-mono">{{ account.accountNumber }}</div>
+        </div>
+        <div class="flex items-center gap-3">
+          <app-badge [label]="account.accountStatus" [color]="statusColor(account.accountStatus)"></app-badge>
+          <div *ngIf="account.accountStatus === 'PENDING'" class="flex gap-2">
+            <button (click)="updateStatus(AccountStatus.ACTIVE)" [disabled]="isUpdatingStatus"
+              class="app-btn app-btn-primary !h-9 !bg-[var(--color-success-600)] hover:!bg-[var(--color-success-700)] text-xs">
+              <svg lucideCheck class="w-3.5 h-3.5"></svg>
+              Approve
+            </button>
+            <button (click)="updateStatus(AccountStatus.BLOCKED)" [disabled]="isUpdatingStatus"
+              class="app-btn app-btn-danger !h-9 text-xs">
+              <svg lucideX class="w-3.5 h-3.5"></svg>
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Available Balance</div>
+          <div class="text-xl font-bold text-[var(--color-success-600)]">{{ account.availableBalance | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Current Balance</div>
+          <div class="text-xl font-bold text-[var(--color-text-primary)]">{{ account.currentBalance | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Hold Balance</div>
+          <div class="text-xl font-bold text-[var(--color-warning-600)]">{{ account.holdBalance | number:'1.2-2' }}</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-[var(--color-border)]">
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Account Type</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ account.accountType }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Branch</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ account.branchName }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Nominee</div>
+          <div class="text-sm text-[var(--color-text-primary)]">{{ account.n_name || 'N/A' }}</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Routing Number</div>
+          <div class="text-sm text-[var(--color-text-primary)] font-mono">{{ account.branchRoutingNumber }}</div>
+        </div>
+      </div>
+
+      <div *ngIf="account.holderResponses?.length" class="mt-6 pt-6 border-t border-[var(--color-border)]">
+        <div class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-3">Account Holders</div>
+        <div class="space-y-2">
+          <div *ngFor="let h of account.holderResponses" class="flex items-center justify-between p-3 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)]">
+            <div>
+              <div class="text-sm text-[var(--color-text-primary)]">{{ h.accountHolderName }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">{{ h.holderType }}</div>
+            </div>
+            <div class="flex gap-3 text-xs">
+              <span *ngIf="h.canWithdraw" class="text-[var(--color-success-600)]">Withdraw</span>
+              <span *ngIf="h.canDeposit" class="text-[var(--color-info-600)]">Deposit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="app-table-shell">
+      <div class="p-6 border-b border-[var(--color-border)]">
+        <h3 class="text-sm font-semibold text-[var(--color-text-primary)]">Recent Transactions</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]">
+            <tr>
+              <th class="px-6 py-3 font-semibold">Reference</th>
+              <th class="px-6 py-3 font-semibold">Type</th>
+              <th class="px-6 py-3 font-semibold">Amount</th>
+              <th class="px-6 py-3 font-semibold">Channel</th>
+              <th class="px-6 py-3 font-semibold">Status</th>
+              <th class="px-6 py-3 font-semibold">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let txn of transactions" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+              <td class="px-6 py-4 font-mono text-xs text-[var(--color-text-primary)]">{{ txn.response?.referenceNo }}</td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ txn.response?.transactionType }}</td>
+              <td class="px-6 py-4 font-medium" [ngClass]="txn.direction === 'IN' ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+                {{ txn.direction === 'IN' ? '+' : '-' }}{{ txn.response?.amount | number:'1.2-2' }}
+              </td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ txn.response?.channel }}</td>
+              <td class="px-6 py-4">
+                <app-badge [label]="txn.response?.status || ''" [color]="txnStatusColor(txn.response?.status)"></app-badge>
+              </td>
+              <td class="px-6 py-4 text-xs text-[var(--color-text-muted)]">{{ txn.response?.createdAt | date:'medium' }}</td>
+            </tr>
+            <tr *ngIf="transactions.length === 0">
+              <td colspan="6" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No transactions yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

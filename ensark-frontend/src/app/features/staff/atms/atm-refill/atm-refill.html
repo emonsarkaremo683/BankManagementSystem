@@ -1,0 +1,61 @@
+<div *ngIf="atm" class="p-6 space-y-6 max-w-xl mx-auto">
+  <div class="app-card p-6 space-y-1">
+    <h1 class="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+      <svg lucideCoins class="w-6 h-6 text-[var(--color-brand-600)]"></svg>
+      Refill ATM Cash Vault
+    </h1>
+    <p class="text-sm text-[var(--color-text-muted)]">Replenish currency notes into ATM Terminal #{{ atm.atmId }}</p>
+  </div>
+
+  <div class="app-card p-8 space-y-6">
+    <!-- Current Vault Status -->
+    <div class="p-4 rounded-[var(--radius-input)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-3">
+      <div class="flex justify-between text-sm">
+        <span class="text-[var(--color-text-muted)]">Terminal Address:</span>
+        <span class="text-[var(--color-text-primary)] font-medium">{{ atm.address }}</span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span class="text-[var(--color-text-muted)]">Current Balance:</span>
+        <span class="text-[var(--color-success-600)] font-semibold">{{ atm.availableBalance | currency:'BDT':'symbol':'1.0-0' }}</span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span class="text-[var(--color-text-muted)]">Max Vault Capacity:</span>
+        <span class="text-[var(--color-text-secondary)]">{{ atm.limit | currency:'BDT':'symbol':'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Refill Cash Amount (BDT)</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg lucideCircleDollarSign class="w-4 h-4 text-[var(--color-text-muted)]"></svg>
+          </div>
+          <input
+            type="number"
+            [(ngModel)]="amount"
+            placeholder="e.g. 200000"
+            class="app-input pl-10 font-semibold text-lg"
+          />
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button (click)="amount = 100000" class="app-btn app-btn-secondary text-xs">+ 100,000</button>
+        <button (click)="amount = 200000" class="app-btn app-btn-secondary text-xs">+ 200,000</button>
+        <button (click)="amount = (atm.limit - atm.availableBalance)" class="app-btn text-xs bg-[var(--color-brand-50)] text-[var(--color-brand-700)]">Fill to Max</button>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="text-[var(--color-danger-600)] text-sm bg-[var(--color-danger-50)] border border-[var(--color-danger-500)]/20 rounded-[var(--radius-input)] px-4 py-3">
+      {{ errorMessage }}
+    </div>
+
+    <div class="pt-4 border-t border-[var(--color-border)] flex justify-end gap-3">
+      <a routerLink="/staff/atms" class="app-btn app-btn-secondary">Cancel</a>
+      <button (click)="onRefill()" [disabled]="!amount || amount <= 0 || isSubmitting" class="app-btn app-btn-primary">
+        {{ isSubmitting ? 'Processing...' : 'Confirm Cash Refill' }}
+      </button>
+    </div>
+  </div>
+</div>

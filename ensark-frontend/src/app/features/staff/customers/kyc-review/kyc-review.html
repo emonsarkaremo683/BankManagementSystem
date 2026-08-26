@@ -1,0 +1,315 @@
+<div class="p-4 sm:p-6 lg:p-8 space-y-6">
+
+  <!-- Toast Notification -->
+  <div *ngIf="toastMessage"
+       class="fixed top-5 right-5 z-50 flex items-center px-4 py-3 rounded-[var(--radius-card)] shadow-lg border"
+       [ngClass]="toastMessage.type === 'success' ? 'bg-[var(--color-success-50)] text-[var(--color-success-700)] border-[var(--color-success-500)]' : 'bg-[var(--color-danger-50)] text-[var(--color-danger-700)] border-[var(--color-danger-500)]'">
+    <svg *ngIf="toastMessage.type === 'success'" lucideCircleCheck class="w-5 h-5 mr-3"></svg>
+    <svg *ngIf="toastMessage.type === 'error'" lucideCircleX class="w-5 h-5 mr-3"></svg>
+    <span class="text-sm font-medium">{{ toastMessage.text }}</span>
+  </div>
+
+  <!-- Header -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 bg-[var(--color-brand-50)] rounded-[var(--radius-card)] text-[var(--color-brand-600)]">
+        <svg lucideShieldCheck class="w-6 h-6"></svg>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">KYC Verification</h1>
+        <p class="text-[var(--color-text-secondary)] text-sm mt-0.5">Review identity documents and manage customer compliance.</p>
+      </div>
+    </div>
+    <button (click)="loadAllCustomers()" [disabled]="isLoading" class="app-btn app-btn-secondary">
+      <svg lucideRefreshCw class="w-4 h-4" [class.animate-spin]="isLoading"></svg>
+      Refresh Queue
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <app-stat-card label="Total Submissions" [value]="totalCount" color="brand" [loading]="isLoading">
+      <svg icon lucideUsers class="w-5 h-5"></svg>
+    </app-stat-card>
+    <app-stat-card label="Pending Review" [value]="pendingCount" color="warning" [loading]="isLoading">
+      <svg icon lucideClock class="w-5 h-5"></svg>
+    </app-stat-card>
+    <app-stat-card label="Verified" [value]="verifiedCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck class="w-5 h-5"></svg>
+    </app-stat-card>
+    <app-stat-card label="Rejected" [value]="rejectedCount" color="danger" [loading]="isLoading">
+      <svg icon lucideCircleX class="w-5 h-5"></svg>
+    </app-stat-card>
+  </div>
+
+  <!-- Main Workspace Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- Left Panel: Customer Queue List -->
+    <div class="lg:col-span-5 app-card overflow-hidden flex flex-col min-h-[600px] p-0">
+
+      <div class="p-4 border-b border-[var(--color-border)] space-y-3">
+        <div class="relative">
+          <svg lucideSearch class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"></svg>
+          <input type="text"
+                 [(ngModel)]="searchTerm"
+                 (input)="onSearch()"
+                 placeholder="Search by customer name or email..."
+                 class="app-input pl-10 text-xs">
+        </div>
+
+        <div class="flex items-center gap-1 p-1 bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] text-xs border border-[var(--color-border)]">
+          <button (click)="setFilterTab('PENDING')"
+                  [class]="activeTab === 'PENDING' ? 'bg-[var(--color-warning-50)] text-[var(--color-warning-700)] font-semibold' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'"
+                  class="flex-1 py-1.5 px-2 rounded-lg text-center transition-all">
+            Pending ({{ pendingCount }})
+          </button>
+          <button (click)="setFilterTab('VERIFIED')"
+                  [class]="activeTab === 'VERIFIED' ? 'bg-[var(--color-success-50)] text-[var(--color-success-700)] font-semibold' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'"
+                  class="flex-1 py-1.5 px-2 rounded-lg text-center transition-all">
+            Verified
+          </button>
+          <button (click)="setFilterTab('REJECTED')"
+                  [class]="activeTab === 'REJECTED' ? 'bg-[var(--color-danger-50)] text-[var(--color-danger-700)] font-semibold' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'"
+                  class="flex-1 py-1.5 px-2 rounded-lg text-center transition-all">
+            Rejected
+          </button>
+          <button (click)="setFilterTab('ALL')"
+                  [class]="activeTab === 'ALL' ? 'bg-[var(--color-surface)] text-[var(--color-text-primary)] font-semibold shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'"
+                  class="flex-1 py-1.5 px-2 rounded-lg text-center transition-all">
+            All
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto max-h-[580px] divide-y divide-[var(--color-border)]">
+
+        <div *ngIf="isLoading" class="p-4 space-y-3">
+          <div *ngFor="let i of [1,2,3,4]" class="h-16 bg-[var(--color-surface-alt)] rounded-[var(--radius-card)] animate-pulse"></div>
+        </div>
+
+        <div *ngIf="!isLoading && filteredCustomers.length === 0" class="p-12 text-center space-y-3">
+          <div class="w-12 h-12 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">
+            <svg lucideFileText class="w-6 h-6"></svg>
+          </div>
+          <p class="text-sm font-medium text-[var(--color-text-muted)]">No records found for {{ activeTab }} tab</p>
+        </div>
+
+        <div *ngFor="let customer of filteredCustomers"
+             (click)="selectCustomer(customer)"
+             class="p-4 flex items-center justify-between cursor-pointer transition-all hover:bg-[var(--color-surface-alt)]"
+             [ngClass]="selectedCustomer?.id === customer.id ? 'bg-[var(--color-brand-50)] border-l-4 border-l-[var(--color-brand-600)]' : ''">
+
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-full bg-[var(--color-brand-50)] flex items-center justify-center flex-shrink-0 text-[var(--color-brand-600)] font-bold text-sm overflow-hidden">
+              <img *ngIf="customer.profile" [src]="customer.profileUrl" class="w-full h-full object-cover" alt="">
+              <span *ngIf="!customer.profile">{{ customer.name ? customer.name.charAt(0) : 'C' }}</span>
+            </div>
+            <div class="min-w-0">
+              <h4 class="text-xs font-bold text-[var(--color-text-primary)] truncate">{{ customer.name }}</h4>
+              <p class="text-[11px] text-[var(--color-text-muted)] truncate">{{ customer.email }}</p>
+            </div>
+          </div>
+
+          <app-badge [label]="customer.kycStatus || 'NOT SUBMITTED'" [color]="kycBadgeColor(customer.kycStatus)"></app-badge>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Panel: Customer Dossier & Document Grid -->
+    <div class="lg:col-span-7 app-card overflow-hidden min-h-[600px] flex flex-col p-0">
+
+      <div *ngIf="!selectedCustomer" class="flex-1 flex flex-col items-center justify-center p-12 text-center">
+        <div class="w-16 h-16 rounded-[var(--radius-card)] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] mb-4">
+          <svg lucideUsers class="w-8 h-8"></svg>
+        </div>
+        <h3 class="text-base font-bold text-[var(--color-text-primary)]">Select a Customer</h3>
+        <p class="text-xs text-[var(--color-text-muted)] max-w-sm mt-1">Choose a customer from the left queue to inspect uploaded KYC identity documents.</p>
+      </div>
+
+      <div *ngIf="selectedCustomer" class="flex-1 flex flex-col p-6 space-y-6">
+
+        <div class="p-5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-[var(--radius-card)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-[var(--radius-card)] bg-[var(--color-brand-50)] flex items-center justify-center text-[var(--color-brand-600)] font-extrabold text-xl overflow-hidden">
+              <img *ngIf="selectedCustomer.profile" [src]="selectedCustomer.profileUrl" class="w-full h-full object-cover" alt="">
+              <span *ngIf="!selectedCustomer.profile">{{ selectedCustomer.name ? selectedCustomer.name.charAt(0) : 'C' }}</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-[var(--color-text-primary)]">{{ selectedCustomer.name }}</h2>
+              <p class="text-xs text-[var(--color-text-muted)]">{{ selectedCustomer.email }} &bull; {{ selectedCustomer.phone || 'No phone' }}</p>
+              <p class="text-[10px] text-[var(--color-text-muted)] mt-1.5">Customer ID: #{{ selectedCustomer.id }}</p>
+            </div>
+          </div>
+          <app-badge [label]="selectedCustomer.kycStatus || 'NOT SUBMITTED'" [color]="kycBadgeColor(selectedCustomer.kycStatus)"></app-badge>
+        </div>
+
+        <div class="flex-1 space-y-4">
+          <h3 class="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide flex items-center gap-2">
+            <svg lucideFileText class="w-4 h-4"></svg>
+            Uploaded Documents ({{ kycDocuments.length }})
+          </h3>
+
+          <div *ngIf="isLoadingDocs" class="py-12 flex justify-center">
+            <div class="w-8 h-8 border-2 border-[var(--color-brand-600)] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+
+          <div *ngIf="!isLoadingDocs && kycDocuments.length === 0" class="p-8 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-[var(--radius-card)] text-center space-y-2">
+            <svg lucideFileText class="w-8 h-8 text-[var(--color-text-muted)] mx-auto"></svg>
+            <p class="text-xs text-[var(--color-text-muted)] font-medium">No documents uploaded by this customer yet.</p>
+          </div>
+
+          <div *ngIf="!isLoadingDocs && kycDocuments.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div *ngFor="let doc of kycDocuments"
+                 class="p-4 bg-[var(--color-surface-alt)] border border-[var(--color-border)] hover:border-[var(--color-border-strong)] rounded-[var(--radius-card)] space-y-3 transition-all">
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="p-2 bg-[var(--color-brand-50)] rounded-lg text-[var(--color-brand-600)]">
+                    <svg lucideFileText class="w-4 h-4"></svg>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-[var(--color-text-primary)] uppercase tracking-wide">{{ doc.doc_type }}</h4>
+                    <p class="text-[10px] text-[var(--color-text-muted)] font-mono truncate max-w-[140px]">{{ doc.path || 'Uploaded File' }}</p>
+                  </div>
+                </div>
+                <app-badge [label]="getDocumentTypeLabel(doc)" color="info" [dotted]="false"></app-badge>
+              </div>
+
+              <div *ngIf="isImageDocument(doc) && doc.documentUrl"
+                   class="h-32 bg-[var(--color-surface)] rounded-[var(--radius-input)] border border-[var(--color-border)] overflow-hidden flex items-center justify-center">
+                <img [src]="doc.documentUrl" [alt]="doc.doc_type" class="w-full h-full object-cover hover:opacity-90 transition-opacity">
+              </div>
+              <div *ngIf="isPdfDocument(doc)"
+                   class="h-32 bg-[var(--color-surface)] rounded-[var(--radius-input)] border border-[var(--color-border)] overflow-hidden flex items-center justify-center">
+                <div class="text-center">
+                  <svg lucideFileText class="w-10 h-10 text-[var(--color-danger-500)] mx-auto"></svg>
+                  <p class="text-[10px] text-[var(--color-text-muted)] mt-1">PDF Document</p>
+                </div>
+              </div>
+              <div *ngIf="!doc.documentUrl && !doc.loadFailed"
+                   class="h-32 bg-[var(--color-surface)] rounded-[var(--radius-input)] border border-[var(--color-border)] flex items-center justify-center">
+                <div class="w-6 h-6 border-2 border-[var(--color-brand-600)] border-t-transparent rounded-full animate-spin"></div>
+              </div>
+              <div *ngIf="doc.loadFailed"
+                   class="h-32 bg-[var(--color-surface)] rounded-[var(--radius-input)] border border-[var(--color-border)] flex items-center justify-center text-xs text-[var(--color-text-muted)]">
+                Failed to load
+              </div>
+
+              <div class="pt-2 border-t border-[var(--color-border)] flex items-center justify-between">
+                <span class="text-[10px] text-[var(--color-text-muted)] font-medium">ID: #{{ doc.id }}</span>
+                <button (click)="openDocumentPreview(doc)" [disabled]="!doc.documentUrl"
+                        class="px-3 py-1.5 bg-[var(--color-brand-50)] hover:bg-[var(--color-brand-100)] text-[var(--color-brand-600)] rounded-lg text-[11px] font-semibold flex items-center gap-1 transition-colors disabled:opacity-40">
+                  <svg lucideEye class="w-3.5 h-3.5"></svg>
+                  View Document
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-[var(--color-border)] flex items-center justify-end gap-3">
+          <button (click)="openRejectModal()"
+                  [disabled]="isSubmittingStatus"
+                  class="app-btn app-btn-danger">
+            Reject KYC
+          </button>
+          <button (click)="approveKyc()"
+                  [disabled]="isSubmittingStatus"
+                  class="app-btn app-btn-primary">
+            <svg *ngIf="isSubmittingStatus" class="animate-spin -ml-1 mr-1 h-4 w-4" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Approve KYC Status
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Document Viewer Modal -->
+  <div *ngIf="previewDocument" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" (click)="closeDocumentPreview()">
+    <div class="app-card p-6 max-w-4xl w-full max-h-[90vh] flex flex-col gap-4" (click)="$event.stopPropagation()">
+
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-[var(--color-brand-50)] rounded-lg text-[var(--color-brand-600)]">
+            <svg lucideFileText class="w-5 h-5"></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-[var(--color-text-primary)] uppercase tracking-wide">{{ previewDocument.doc_type }} Document</h3>
+            <p class="text-[11px] text-[var(--color-text-muted)] font-mono">{{ previewDocument.path }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a [href]="previewDocument.documentUrl" download class="app-btn app-btn-secondary !py-1.5 !px-3 text-xs">
+            <svg lucideDownload class="w-3.5 h-3.5"></svg>
+            Download
+          </a>
+          <button (click)="closeDocumentPreview()" class="p-1.5 bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] text-[var(--color-text-muted)] rounded-lg transition-colors">
+            <svg lucideX class="w-5 h-5"></svg>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="isPdfDocument(previewDocument)" class="flex-1 min-h-[500px] max-h-[70vh] bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)] overflow-hidden">
+        <object [data]="previewDocument.safeDocumentUrl || previewDocument.documentUrl"
+                type="application/pdf"
+                class="w-full h-full">
+          <p class="text-[var(--color-text-muted)] text-sm p-4">PDF preview not available.</p>
+        </object>
+      </div>
+
+      <div *ngIf="isImageDocument(previewDocument)" class="flex-1 min-h-[350px] max-h-[70vh] bg-[var(--color-surface-alt)] rounded-[var(--radius-input)] border border-[var(--color-border)] overflow-hidden flex items-center justify-center p-4">
+        <img [src]="previewDocument.documentUrl"
+             [alt]="previewDocument.doc_type + ' Preview'"
+             class="max-w-full max-h-[65vh] object-contain rounded-lg">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rejection Modal -->
+  <div *ngIf="showRejectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+    <div class="app-card p-6 max-w-md w-full space-y-4">
+
+      <div class="flex items-center gap-3 text-[var(--color-danger-600)]">
+        <div class="p-2.5 bg-[var(--color-danger-50)] rounded-[var(--radius-input)]">
+          <svg lucideCircleX class="w-6 h-6"></svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-[var(--color-text-primary)]">Reject KYC Submission</h3>
+          <p class="text-xs text-[var(--color-text-muted)]">Customer: {{ selectedCustomer?.name }}</p>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-xs font-semibold text-[var(--color-text-secondary)]">Reason for Rejection (Optional)</label>
+        <textarea [(ngModel)]="rejectionReason"
+                  rows="3"
+                  placeholder="e.g. Expired ID card or unclear document image..."
+                  class="app-input resize-none"></textarea>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-3">
+        <button (click)="closeRejectModal()" class="app-btn app-btn-secondary">
+          Cancel
+        </button>
+        <button (click)="confirmRejectKyc()"
+                [disabled]="isSubmittingStatus"
+                class="app-btn app-btn-danger">
+          Confirm Rejection
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

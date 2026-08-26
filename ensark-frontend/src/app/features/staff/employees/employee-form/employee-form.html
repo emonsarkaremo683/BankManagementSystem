@@ -1,0 +1,173 @@
+<div class="p-4 sm:p-6 lg:p-8">
+  <div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex items-center">
+      <a routerLink="/staff/employees" class="mr-4 p-2 app-btn-secondary app-btn !px-2.5 !py-2.5">
+        <svg lucideArrowLeft class="w-5 h-5"></svg>
+      </a>
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h1>
+        <p class="text-[var(--color-text-secondary)] mt-1 text-sm">Fill in the details below to {{ isEditMode ? 'update' : 'create' }} the employee profile.</p>
+      </div>
+    </div>
+
+    <div class="app-card p-8">
+
+      <div *ngIf="isLoading && isEditMode" class="py-12 flex justify-center">
+        <svg class="animate-spin h-8 w-8 text-[var(--color-brand-600)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+
+      <form *ngIf="!isLoading || !isEditMode" [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="space-y-8">
+
+        <!-- Profile Picture Section -->
+        <div class="flex flex-col items-center sm:flex-row sm:items-start gap-6 pb-8 border-b border-[var(--color-border)]">
+          <div class="h-24 w-24 rounded-full bg-[var(--color-brand-50)] border-2 border-[var(--color-brand-200)] flex items-center justify-center overflow-hidden text-[var(--color-brand-600)]">
+            <img *ngIf="currentProfileUrl" [src]="currentProfileUrl" class="h-full w-full object-cover" alt="">
+            <svg *ngIf="!currentProfileUrl" lucideCircleUser class="h-12 w-12"></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Profile Picture</h3>
+            <label class="app-btn app-btn-secondary cursor-pointer inline-flex">
+              <span>Upload Image</span>
+              <input type="file" class="sr-only" (change)="onFileSelected($event)" accept="image/*">
+            </label>
+            <p class="text-xs text-[var(--color-text-muted)] mt-2">JPG, PNG or GIF up to 5MB.</p>
+          </div>
+        </div>
+
+        <!-- Personal Info -->
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Personal Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Full Name</label>
+              <input type="text" formControlName="name" class="app-input">
+              <p *ngIf="employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Full name is required</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Email Address</label>
+              <input type="email" formControlName="email" class="app-input">
+              <p *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">
+                <span *ngIf="employeeForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="employeeForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+              </p>
+            </div>
+            <div *ngIf="!isEditMode">
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Password</label>
+              <input type="password" formControlName="password" class="app-input">
+              <p *ngIf="employeeForm.get('password')?.invalid && employeeForm.get('password')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">
+                <span *ngIf="employeeForm.get('password')?.errors?.['required']">Password is required</span>
+                <span *ngIf="employeeForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters</span>
+              </p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Phone Number</label>
+              <input type="tel" formControlName="phone" class="app-input">
+              <p *ngIf="employeeForm.get('phone')?.invalid && employeeForm.get('phone')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Phone number is required</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Date of Birth</label>
+              <input type="date" formControlName="dob" class="app-input">
+              <p *ngIf="employeeForm.get('dob')?.invalid && employeeForm.get('dob')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Date of birth is required</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Gender</label>
+              <select formControlName="gender" class="app-input">
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+        <!-- Role Info -->
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Employment Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Designation</label>
+              <select formControlName="designation" (change)="onDesignationChange()" class="app-input">
+                <option *ngFor="let d of designations" [value]="d">{{ designationLabel(d) }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Role</label>
+              <select formControlName="role" class="app-input">
+                <option *ngFor="let r of roles" [value]="r">{{ r.replace('_', ' ') }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Branch</label>
+              <select formControlName="branchId" class="app-input">
+                <option value="" disabled>Select branch</option>
+                <option *ngFor="let b of branches" [value]="b.id">{{ b.name }}</option>
+              </select>
+              <p *ngIf="employeeForm.get('branchId')?.invalid && employeeForm.get('branchId')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Branch is required</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-px bg-[var(--color-border)] w-full"></div>
+
+        <!-- Address Info -->
+        <div formGroupName="address">
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">Residential Address</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Holding / House No</label>
+              <input type="text" formControlName="holdingNo" class="app-input">
+              <p *ngIf="employeeForm.get('address.holdingNo')?.invalid && employeeForm.get('address.holdingNo')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Holding number is required</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Area</label>
+              <input type="text" formControlName="area" class="app-input">
+              <p *ngIf="employeeForm.get('address.area')?.invalid && employeeForm.get('address.area')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Area is required</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Postal Code</label>
+              <input type="text" formControlName="postalCode" class="app-input">
+              <p *ngIf="employeeForm.get('address.postalCode')?.invalid && employeeForm.get('address.postalCode')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Postal code is required</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Address Type</label>
+              <select formControlName="addressType" class="app-input">
+                <option value="PRESENT">Present</option>
+                <option value="PERMANENT">Permanent</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5">Police Station</label>
+              <select formControlName="policeStationId" class="app-input">
+                <option value="" disabled>Select police station</option>
+                <option *ngFor="let ps of policeStations" [value]="ps.id">{{ ps.name }}</option>
+              </select>
+              <p *ngIf="employeeForm.get('address.policeStationId')?.invalid && employeeForm.get('address.policeStationId')?.touched" class="mt-1 text-xs text-[var(--color-danger-600)]">Police station is required</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-4">
+          <a routerLink="/staff/employees" class="app-btn app-btn-secondary">
+            Cancel
+          </a>
+          <button type="submit" [disabled]="employeeForm.invalid || isLoading" class="app-btn app-btn-primary">
+            <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ isEditMode ? 'Update Employee' : 'Create Employee' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

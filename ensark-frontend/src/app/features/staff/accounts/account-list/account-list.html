@@ -1,0 +1,94 @@
+<div class="p-6 space-y-6">
+
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Account Management</h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-0.5">View and manage customer bank accounts.</p>
+    </div>
+    <a routerLink="/staff/accounts/create" class="app-btn app-btn-primary">
+      <svg lucidePlus class="w-4 h-4"></svg>
+      Open Account
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <app-stat-card label="Total Accounts" [value]="accounts.length" color="brand" [loading]="isLoading">
+      <svg icon lucideWallet></svg>
+    </app-stat-card>
+    <app-stat-card label="Active Accounts" [value]="activeCount" color="success" [loading]="isLoading">
+      <svg icon lucideCircleCheck></svg>
+    </app-stat-card>
+    <app-stat-card label="Pending Approval" [value]="pendingCount" color="warning" [loading]="isLoading">
+      <svg icon lucideClock></svg>
+    </app-stat-card>
+  </div>
+
+  <div class="app-table-shell">
+    <div class="p-6 border-b border-[var(--color-border)]">
+      <div class="relative w-full md:w-96">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg lucideSearch class="h-4 w-4 text-[var(--color-text-muted)]"></svg>
+        </div>
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" class="app-input pl-10" placeholder="Search by account number, branch, name...">
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="text-xs uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] sticky top-0">
+          <tr>
+            <th scope="col" class="px-6 py-3 font-semibold">Account</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Type</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Balance</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Branch</th>
+            <th scope="col" class="px-6 py-3 font-semibold">Status</th>
+            <th scope="col" class="px-6 py-3 font-semibold text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isLoading">
+          <tr *ngFor="let account of filteredAccounts" class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-mono text-xs font-medium text-[var(--color-text-primary)]">{{ account.accountNumber }}</div>
+              <div class="text-xs text-[var(--color-text-muted)] mt-0.5">{{ account.holderResponses?.[0]?.accountHolderName || 'N/A' }}</div>
+            </td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ account.accountType }}</td>
+            <td class="px-6 py-4">
+              <div class="font-medium text-[var(--color-text-primary)]">{{ account.availableBalance | number:'1.2-2' }}</div>
+              <div class="text-xs text-[var(--color-text-muted)]">Hold: {{ account.holdBalance | number:'1.2-2' }}</div>
+            </td>
+            <td class="px-6 py-4 text-xs text-[var(--color-text-secondary)]">{{ account.branchName }}</td>
+            <td class="px-6 py-4">
+              <app-badge [label]="account.accountStatus" [color]="statusColor(account.accountStatus)"></app-badge>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <div *ngIf="account.accountStatus === 'PENDING'" class="flex gap-1.5">
+                  <button (click)="updateStatus(account, AccountStatus.ACTIVE)" [disabled]="updatingId === account.id"
+                    class="px-2.5 py-1 bg-[var(--color-success-50)] text-[var(--color-success-700)] border border-[var(--color-success-500)]/30 rounded-md text-[11px] font-semibold hover:bg-[var(--color-success-100,#dcfce7)] transition-all disabled:opacity-50">
+                    Approve
+                  </button>
+                  <button (click)="updateStatus(account, AccountStatus.BLOCKED)" [disabled]="updatingId === account.id"
+                    class="px-2.5 py-1 bg-[var(--color-danger-50)] text-[var(--color-danger-700)] border border-[var(--color-danger-500)]/30 rounded-md text-[11px] font-semibold hover:bg-red-100 transition-all disabled:opacity-50">
+                    Reject
+                  </button>
+                </div>
+                <a [routerLink]="['/staff/accounts', account.id]" class="text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] text-xs font-semibold hover:underline transition-colors">View</a>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredAccounts.length === 0">
+            <td colspan="6" class="px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">No accounts found.</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="isLoading">
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td colspan="6" class="px-6 py-4">
+              <div class="h-8 bg-[var(--color-surface-alt)] rounded animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

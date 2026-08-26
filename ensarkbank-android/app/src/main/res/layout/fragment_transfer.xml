@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/transferTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Money Transfer"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Source Account Selection -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sourceAccountDropdownLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Select Source Account"
+            app:hintTextColor="@color/electric_cyan"
+            app:layout_constraintTop_toBottomOf="@id/transferTitle">
+
+            <AutoCompleteTextView
+                android:id="@+id/sourceAccountAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:inputType="none"
+                android:padding="16dp"
+                android:textColor="@color/text_primary"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Transfer Mode Toggle -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/transferModeToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:checkedButton="@+id/btnBeneficiary"
+            app:layout_constraintTop_toBottomOf="@id/sourceAccountDropdownLayout"
+            app:singleSelection="true">
+
+            <Button
+                android:id="@+id/btnBeneficiary"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Beneficiary"
+                android:textColor="@color/text_primary" />
+
+            <Button
+                android:id="@+id/btnDirect"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Direct Transfer"
+                android:textColor="@color/text_primary" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <!-- Beneficiary Selection (Visible when Beneficiary mode active) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/beneficiaryDropdownLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Select Beneficiary"
+            app:hintTextColor="@color/electric_cyan"
+            app:layout_constraintTop_toBottomOf="@id/transferModeToggle">
+
+            <AutoCompleteTextView
+                android:id="@+id/beneficiaryAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:inputType="none"
+                android:padding="16dp"
+                android:textColor="@color/text_primary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Direct Transfer Fields (Hidden by default) -->
+        <LinearLayout
+            android:id="@+id/directFieldsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/beneficiaryDropdownLayout">
+
+            <EditText
+                android:id="@+id/receiverAccNoEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:hint="Receiver Account Number"
+                android:padding="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <EditText
+                android:id="@+id/receiverNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:hint="Receiver Name"
+                android:padding="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <EditText
+                android:id="@+id/bankNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:hint="Bank Name"
+                android:padding="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <EditText
+                android:id="@+id/routingNoEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/neumorphic_recessed"
+                android:hint="Routing Number"
+                android:padding="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+        </LinearLayout>
+
+        <!-- Amount and Remarks -->
+        <EditText
+            android:id="@+id/amountEditText"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:gravity="center"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:textColor="@color/electric_cyan"
+            android:textColorHint="@color/text_secondary"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/directFieldsLayout" />
+
+        <EditText
+            android:id="@+id/remarksEditText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/neumorphic_recessed"
+            android:hint="Remarks (Optional)"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/amountEditText" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/remarksEditText">
+
+            <Button
+                android:id="@+id/sendButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/neumorphic_button_selector"
+                android:text="Transfer Now"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_background"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminateTint="@color/primary_background" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

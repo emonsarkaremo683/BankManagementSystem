@@ -1,0 +1,175 @@
+<div class="p-6 max-w-4xl mx-auto space-y-6">
+
+  <div class="mb-2">
+    <a routerLink="/staff/fraud" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] text-sm flex items-center transition-colors w-fit">
+      <svg lucideArrowLeft class="w-4 h-4 mr-1.5"></svg>
+      Back to Alerts
+    </a>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="space-y-4">
+    <div class="h-24 app-card animate-pulse"></div>
+    <div class="h-64 app-card animate-pulse"></div>
+  </div>
+
+  <!-- Not Found -->
+  <div *ngIf="!isLoading && notFound" class="app-card p-10 flex flex-col items-center text-center">
+    <div class="w-12 h-12 rounded-full bg-[var(--color-warning-50)] flex items-center justify-center mb-4">
+      <svg lucideCircleAlert class="w-6 h-6 text-[var(--color-warning-600)]"></svg>
+    </div>
+    <p class="text-sm font-medium text-[var(--color-text-primary)]">Alert not found or no longer listed</p>
+    <p class="text-sm text-[var(--color-text-muted)] mt-1 max-w-sm">
+      This flag may already be resolved and low-risk, or the id doesn't match any pending or high-risk flag.
+    </p>
+  </div>
+
+  <div *ngIf="!isLoading && alert" class="space-y-6">
+    <!-- Header -->
+    <div class="app-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <span class="w-12 h-12 rounded-full bg-[var(--color-danger-50)] text-[var(--color-danger-600)] flex items-center justify-center flex-shrink-0">
+          <svg lucideShieldAlert class="w-6 h-6"></svg>
+        </span>
+        <div>
+          <h1 class="text-2xl font-bold text-[var(--color-text-primary)]">Investigate Fraud Alert #FRD-{{ alert.id }}</h1>
+          <p class="text-sm text-[var(--color-text-muted)] mt-0.5">Flagged on {{ alert.createdAt | date:'medium' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case Details -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="app-card p-6 space-y-4">
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Account &amp; User Context</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">User</span>
+            <span class="text-[var(--color-text-primary)] font-semibold">User #{{ alert.userId }}</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Account</span>
+            <span class="text-[var(--color-text-primary)] font-mono">{{ alert.accountId ? 'Account #' + alert.accountId : 'N/A' }}</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Transaction Ref</span>
+            <span class="text-[var(--color-text-secondary)] font-mono">{{ alert.transactionId ? '#' + alert.transactionId : 'N/A' }}</span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-[var(--color-text-muted)]">Flagged Amount</span>
+            <span class="text-[var(--color-danger-600)] font-bold text-base">
+              <ng-container *ngIf="alert.flaggedAmount !== undefined && alert.flaggedAmount !== null; else noAmount">
+                {{ alert.flaggedAmount | currency:'BDT':'symbol':'1.0-0' }}
+              </ng-container>
+              <ng-template #noAmount>&mdash;</ng-template>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-card p-6 space-y-4">
+        <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Security Rule Assessment</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Assessed Risk Level</span>
+            <span class="flex items-center gap-1.5">
+              <svg *ngIf="alert.riskLevel === 'CRITICAL'" lucideTriangleAlert class="w-4 h-4 text-[var(--color-danger-600)]"></svg>
+              <app-badge [label]="alert.riskLevel" [color]="riskColor(alert.riskLevel)"></app-badge>
+            </span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-[var(--color-border)]">
+            <span class="text-[var(--color-text-muted)]">Current Status</span>
+            <app-badge [label]="alert.status" [color]="statusColor(alert.status)"></app-badge>
+          </div>
+          <div class="py-2">
+            <span class="text-[var(--color-text-muted)] block mb-1">Detection Reason</span>
+            <p class="text-[var(--color-text-primary)] text-xs bg-[var(--color-surface-alt)] p-3 rounded-[var(--radius-input)] border border-[var(--color-border)] leading-relaxed">
+              {{ alert.reason }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Investigation Context -->
+    <div class="app-card p-6 space-y-4" *ngIf="alert.details || alert.ipAddress || alert.deviceInfo || alert.location">
+      <h3 class="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Investigation Context</h3>
+
+      <div *ngIf="alert.details" class="text-sm">
+        <span class="text-[var(--color-text-muted)] block mb-1">Details</span>
+        <p class="text-[var(--color-text-primary)] text-xs bg-[var(--color-surface-alt)] p-3 rounded-[var(--radius-input)] border border-[var(--color-border)] leading-relaxed">
+          {{ alert.details }}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" *ngIf="alert.ipAddress || alert.deviceInfo || alert.location">
+        <div class="flex items-start gap-2.5" *ngIf="alert.ipAddress">
+          <svg lucideGlobe class="w-4 h-4 text-[var(--color-text-muted)] mt-0.5 flex-shrink-0"></svg>
+          <div class="min-w-0">
+            <div class="text-xs text-[var(--color-text-muted)]">IP Address</div>
+            <div class="text-sm text-[var(--color-text-primary)] font-mono truncate">{{ alert.ipAddress }}</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5" *ngIf="alert.deviceInfo">
+          <svg lucideSmartphone class="w-4 h-4 text-[var(--color-text-muted)] mt-0.5 flex-shrink-0"></svg>
+          <div class="min-w-0">
+            <div class="text-xs text-[var(--color-text-muted)]">Device</div>
+            <div class="text-sm text-[var(--color-text-primary)] truncate">{{ alert.deviceInfo }}</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5" *ngIf="alert.location">
+          <svg lucideMapPin class="w-4 h-4 text-[var(--color-text-muted)] mt-0.5 flex-shrink-0"></svg>
+          <div class="min-w-0">
+            <div class="text-xs text-[var(--color-text-muted)]">Location</div>
+            <div class="text-sm text-[var(--color-text-primary)] truncate">{{ alert.location }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action & Investigation Form -->
+    <div class="app-card p-8 space-y-6">
+      <h3 class="text-lg font-bold text-[var(--color-text-primary)]">Investigation Findings &amp; Enforcement Action</h3>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Investigation Resolution</label>
+          <select [(ngModel)]="selectedStatus" class="app-input">
+            <option value="CONFIRMED_FRAUD">CONFIRMED FRAUD (High Severity)</option>
+            <option value="FALSE_POSITIVE">FALSE POSITIVE (Verified Legitimate)</option>
+            <option value="REVIEWED">REVIEWED (Under Ongoing Monitoring)</option>
+            <option value="RESOLVED">RESOLVED (Case Closed)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Enforcement Command</label>
+          <select [(ngModel)]="selectedAction" class="app-input">
+            <option value="FREEZE_ACCOUNT">Freeze Customer Account Immediately</option>
+            <option value="BLOCK_CARD">Block Associated Debit/Credit Cards</option>
+            <option value="DISMISS_ALERT">Dismiss &amp; Log as Authorized</option>
+            <option value="ESCALATE">Escalate to Legal Compliance Team</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Investigator Notes &amp; Justification</label>
+          <textarea
+            [(ngModel)]="notes"
+            rows="4"
+            placeholder="Provide evidence summary, phone call confirmation notes, or IP verification trace..."
+            class="app-input h-auto py-3"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-[var(--color-border)] flex justify-end gap-3">
+        <a routerLink="/staff/fraud" class="app-btn app-btn-secondary">Cancel</a>
+        <button (click)="onSaveReview()" [disabled]="isSubmitting" class="app-btn app-btn-danger">
+          {{ isSubmitting ? 'Submitting Case...' : 'Submit Resolution' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

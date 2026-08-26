@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/neumorphic_raised"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/beneficiaryIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/neumorphic_recessed"
+        android:padding="8dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/electric_cyan" />
+
+    <TextView
+        android:id="@+id/beneficiaryName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Beneficiary Name"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/actionMenu"
+        app:layout_constraintStart_toEndOf="@id/beneficiaryIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/beneficiaryAccount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Acc: 1234 5678 9012"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@id/actionMenu"
+        app:layout_constraintStart_toStartOf="@id/beneficiaryName"
+        app:layout_constraintTop_toBottomOf="@id/beneficiaryName" />
+
+    <ImageButton
+        android:id="@+id/actionMenu"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_secondary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

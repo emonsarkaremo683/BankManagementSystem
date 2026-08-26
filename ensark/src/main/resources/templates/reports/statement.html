@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Transaction Statement</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 40pt 30pt 40pt 30pt;
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: 'Helvetica', sans-serif;
+                font-size: 8pt;
+                color: #787878;
+            }
+            @bottom-left {
+                content: "EnSark Bank Genuine Statement - Verification Code: " string(verification-code);
+                font-family: 'Helvetica', sans-serif;
+                font-size: 7pt;
+                color: #b0b0b0;
+            }
+        }
+        body {
+            font-family: 'Helvetica', sans-serif;
+            color: #0A1628;
+            margin: 0;
+            padding: 0;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10pt;
+        }
+        .logo-text {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #0A1628;
+        }
+        .logo-accent {
+            color: #C9A84C;
+        }
+        .tagline {
+            font-size: 8pt;
+            font-style: italic;
+            color: #787878;
+        }
+        .contact-info {
+            text-align: right;
+            font-size: 8pt;
+            color: #555555;
+        }
+        .divider {
+            height: 3pt;
+            background-color: #C9A84C;
+            margin-bottom: 15pt;
+        }
+        .watermark {
+            position: absolute;
+            top: 35%;
+            left: 20%;
+            font-size: 70pt;
+            color: rgba(201, 168, 76, 0.04);
+            transform: rotate(-40deg);
+            z-index: -1000;
+            font-weight: bold;
+        }
+        .title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #0A1628;
+            margin-bottom: 12pt;
+        }
+        .metadata-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 10pt;
+            margin-bottom: 15pt;
+            background-color: #F8FAFC;
+        }
+        .metadata-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .metadata-label {
+            font-weight: bold;
+            color: #4A5568;
+            width: 25%;
+            padding: 3pt 0;
+        }
+        .metadata-val {
+            color: #1A202C;
+            width: 25%;
+            padding: 3pt 0;
+        }
+        .summary-row {
+            width: 100%;
+            margin-bottom: 15pt;
+        }
+        .summary-card {
+            width: 31%;
+            display: inline-block;
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 8pt;
+            background-color: #F8FAFC;
+            text-align: center;
+        }
+        .summary-card-green {
+            border-top: 3pt solid #22C55E;
+        }
+        .summary-card-red {
+            border-top: 3pt solid #EF4444;
+        }
+        .summary-card-normal {
+            border-top: 3pt solid #0A1628;
+        }
+        .summary-label {
+            font-size: 8pt;
+            color: #718096;
+            margin-bottom: 3pt;
+        }
+        .summary-value {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        .summary-green {
+            color: #22C55E;
+        }
+        .summary-red {
+            color: #EF4444;
+        }
+        .summary-normal {
+            color: #0A1628;
+        }
+        .txn-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25pt;
+        }
+        .txn-table th {
+            background-color: #0A1628;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 8.5pt;
+            padding: 6pt 5pt;
+            border-bottom: 2pt solid #C9A84C;
+            text-align: left;
+        }
+        .txn-table td {
+            padding: 6pt 5pt;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 8.5pt;
+        }
+        .txn-table tr:nth-child(even) td {
+            background-color: #F8FAFC;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .amount-credit {
+            color: #22C55E;
+            font-weight: bold;
+        }
+        .amount-debit {
+            color: #EF4444;
+            font-weight: bold;
+        }
+        .footer-section {
+            width: 100%;
+            margin-top: 30pt;
+            page-break-inside: avoid;
+        }
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .qr-section {
+            width: 40%;
+            text-align: left;
+        }
+        .qr-image {
+            width: 80pt;
+            height: 80pt;
+        }
+        .qr-text {
+            font-size: 7pt;
+            color: #718096;
+            margin-top: 3pt;
+        }
+        .sig-section {
+            width: 60%;
+            text-align: right;
+            vertical-align: bottom;
+            padding-bottom: 10pt;
+        }
+        .sig-line {
+            width: 150pt;
+            border-bottom: 1px solid #718096;
+            display: inline-block;
+            margin-bottom: 4pt;
+        }
+        .sig-title {
+            font-size: 8.5pt;
+            font-weight: bold;
+            color: #4A5568;
+        }
+        .sig-subtitle {
+            font-size: 7.5pt;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="watermark">ENSARK BANK</div>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <div class="logo-text">EnSark<span class="logo-accent">Bank</span></div>
+                <div class="tagline">Secure. Smart. Simple.</div>
+            </td>
+            <td class="contact-info">
+                Head Office: 121/A Gulshan Avenue, Dhaka<br/>
+                Email: support@ensarkbank.com | Web: www.ensarkbank.com<br/>
+                Phone: +880 9612-ENSARK
+            </td>
+        </tr>
+    </table>
+
+    <div class="divider"></div>
+
+    <div class="title">Account Statement</div>
+
+    <div class="metadata-card">
+        <table class="metadata-table">
+            <tr>
+                <td class="metadata-label">Customer Name</td>
+                <td class="metadata-val" th:text="${customerName}">John Doe</td>
+                <td class="metadata-label">Statement Date</td>
+                <td class="metadata-val" th:text="${generatedOn}">13 Aug 2026</td>
+            </tr>
+            <tr>
+                <td class="metadata-label">Account Number</td>
+                <td class="metadata-val" th:text="${accountNumber}">acc-12345678</td>
+                <td class="metadata-label">Statement Period</td>
+                <td class="metadata-val" th:text="${period}">01 Aug 2026 to 13 Aug 2026</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="summary-row">
+        <div class="summary-card summary-card-normal">
+            <div class="summary-label">TOTAL TRANSACTIONS</div>
+            <div class="summary-value summary-normal" th:text="${totalTransactions}">0</div>
+        </div>
+        <div style="width: 2.5%; display: inline-block;"></div>
+        <div class="summary-card summary-card-green">
+            <div class="summary-label">TOTAL CREDITS</div>
+            <div class="summary-value summary-green" th:text="${totalCredits}">$0.00</div>
+        </div>
+        <div style="width: 2.5%; display: inline-block;"></div>
+        <div class="summary-card summary-card-red">
+            <div class="summary-label">TOTAL DEBITS</div>
+            <div class="summary-value summary-red" th:text="${totalDebits}">$0.00</div>
+        </div>
+    </div>
+
+    <table class="txn-table">
+        <thead>
+            <tr>
+                <th style="width: 15%;">Date</th>
+                <th style="width: 30%;">Particulars / Counterparty</th>
+                <th style="width: 15%;">Type</th>
+                <th style="width: 20%;" class="text-right">Amount</th>
+                <th style="width: 20%;" class="text-right">Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="row : ${rows}">
+                <td th:text="${row.date}">13 Aug 2026</td>
+                <td>
+                    <span th:text="${row.particulars}">Salary Payment</span>
+                    <span th:if="${row.counterparty != null}" th:text="' / ' + ${row.counterparty}"></span>
+                </td>
+                <td th:text="${row.type}">TRANSFER</td>
+                <td class="text-right">
+                    <span th:class="${row.entryType == 'CREDIT' ? 'amount-credit' : 'amount-debit'}" 
+                          th:text="${(row.entryType == 'CREDIT' ? '+' : '-') + row.amount}">+$1,000.00</span>
+                </td>
+                <td class="text-right" th:text="${row.balance}">$5,000.00</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(rows)}">
+                <td colspan="5" class="text-center" style="padding: 20pt; color: #718096;">No transactions found for the specified period.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer-section">
+        <table class="footer-table">
+            <tr>
+                <td class="qr-section">
+                    <img class="qr-image" th:src="'data:image/png;base64,' + ${qrCodeBase64}" alt="Verification QR Code"/>
+                    <div class="qr-text">Scan to verify statement integrity</div>
+                </td>
+                <td class="sig-section">
+                    <div class="sig-line"></div>
+                    <div class="sig-title">Authorized Signatory</div>
+                    <div class="sig-subtitle">EnSark Bank Limited</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

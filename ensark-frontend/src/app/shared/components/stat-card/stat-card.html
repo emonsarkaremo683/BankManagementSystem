@@ -1,0 +1,35 @@
+<div class="app-card p-6">
+  <ng-container *ngIf="!loading; else skeleton">
+    <div class="flex items-start justify-between">
+      <div class="min-w-0">
+        <p class="text-sm font-medium text-[var(--color-text-muted)] truncate">{{ label }}</p>
+        <p class="text-1.5xl font-bold font-display text-[var(--color-text-primary)] mt-1.5">{{ value }}</p>
+      </div>
+      <div class="w-6 h-6 rounded-full flex items-center justify-center text-white flex-shrink-0 ml-3 p-1" [ngClass]="colorClasses">
+        <ng-content select="[icon]"></ng-content>
+      </div>
+    </div>
+
+    <div *ngIf="deltaValue !== undefined && deltaValue !== null" class="flex items-center gap-1 mt-3 text-xs font-semibold">
+      <span class="flex items-center gap-0.5" [ngClass]="deltaDirection === 'up' ? 'text-[var(--color-success-600)]' : 'text-[var(--color-danger-600)]'">
+        <svg *ngIf="deltaDirection === 'up'" lucideArrowUpRight class="w-3.5 h-3.5"></svg>
+        <svg *ngIf="deltaDirection === 'down'" lucideArrowDownRight class="w-3.5 h-3.5"></svg>
+        {{ deltaValue > 0 ? '+' : '' }}{{ deltaValue }}%
+      </span>
+      <span class="text-[var(--color-text-muted)] font-normal" *ngIf="deltaLabel">{{ deltaLabel }}</span>
+    </div>
+  </ng-container>
+
+  <ng-template #skeleton>
+    <div class="animate-pulse">
+      <div class="flex items-start justify-between">
+        <div class="min-w-0 flex-1">
+          <div class="h-3.5 w-24 bg-[var(--color-border)] rounded"></div>
+          <div class="h-7 w-32 bg-[var(--color-border)] rounded mt-2"></div>
+        </div>
+        <div class="w-11 h-11 rounded-full bg-[var(--color-border)] flex-shrink-0 ml-3"></div>
+      </div>
+      <div class="h-3 w-28 bg-[var(--color-border)] rounded mt-4"></div>
+    </div>
+  </ng-template>
+</div>
