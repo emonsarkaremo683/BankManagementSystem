@@ -272,7 +272,7 @@ class _TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCredit = type == 'CREDIT';
+    final isCredit = type.toUpperCase() == 'CREDIT';
 
     return ListTile(
       contentPadding: EdgeInsets.zero,

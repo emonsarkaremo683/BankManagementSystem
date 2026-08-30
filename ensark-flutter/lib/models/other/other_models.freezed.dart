@@ -199,6 +199,7 @@ mixin _$ChequeBookResponse {
   int? get numberOfLeaves => throw _privateConstructorUsedError;
   int? get startLeafNumber => throw _privateConstructorUsedError;
   int? get endLeafNumber => throw _privateConstructorUsedError;
+  @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED)
   ChequeBookStatus? get status => throw _privateConstructorUsedError;
   int? get accountId => throw _privateConstructorUsedError;
   String? get accountNumber => throw _privateConstructorUsedError;
@@ -233,6 +234,7 @@ abstract class $ChequeBookResponseCopyWith<$Res> {
     int? numberOfLeaves,
     int? startLeafNumber,
     int? endLeafNumber,
+    @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED)
     ChequeBookStatus? status,
     int? accountId,
     String? accountNumber,
@@ -360,6 +362,7 @@ abstract class _$$ChequeBookResponseImplCopyWith<$Res>
     int? numberOfLeaves,
     int? startLeafNumber,
     int? endLeafNumber,
+    @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED)
     ChequeBookStatus? status,
     int? accountId,
     String? accountNumber,
@@ -479,7 +482,7 @@ class _$ChequeBookResponseImpl implements _ChequeBookResponse {
     this.numberOfLeaves,
     this.startLeafNumber,
     this.endLeafNumber,
-    this.status,
+    @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED) this.status,
     this.accountId,
     this.accountNumber,
     this.applicationDate,
@@ -505,6 +508,7 @@ class _$ChequeBookResponseImpl implements _ChequeBookResponse {
   @override
   final int? endLeafNumber;
   @override
+  @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED)
   final ChequeBookStatus? status;
   @override
   final int? accountId;
@@ -617,6 +621,7 @@ abstract class _ChequeBookResponse implements ChequeBookResponse {
     final int? numberOfLeaves,
     final int? startLeafNumber,
     final int? endLeafNumber,
+    @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED)
     final ChequeBookStatus? status,
     final int? accountId,
     final String? accountNumber,
@@ -643,6 +648,7 @@ abstract class _ChequeBookResponse implements ChequeBookResponse {
   @override
   int? get endLeafNumber;
   @override
+  @JsonKey(unknownEnumValue: ChequeBookStatus.REQUESTED)
   ChequeBookStatus? get status;
   @override
   int? get accountId;
@@ -683,6 +689,7 @@ mixin _$ChequeLeafResponse {
   double? get amount => throw _privateConstructorUsedError;
   String? get payeeName => throw _privateConstructorUsedError;
   String? get remarks => throw _privateConstructorUsedError;
+  @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED)
   ChequeLeafStatus? get status => throw _privateConstructorUsedError;
   DateTime? get issueDate => throw _privateConstructorUsedError;
   DateTime? get clearanceDate => throw _privateConstructorUsedError;
@@ -716,6 +723,7 @@ abstract class $ChequeLeafResponseCopyWith<$Res> {
     double? amount,
     String? payeeName,
     String? remarks,
+    @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED)
     ChequeLeafStatus? status,
     DateTime? issueDate,
     DateTime? clearanceDate,
@@ -837,6 +845,7 @@ abstract class _$$ChequeLeafResponseImplCopyWith<$Res>
     double? amount,
     String? payeeName,
     String? remarks,
+    @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED)
     ChequeLeafStatus? status,
     DateTime? issueDate,
     DateTime? clearanceDate,
@@ -950,7 +959,7 @@ class _$ChequeLeafResponseImpl implements _ChequeLeafResponse {
     this.amount,
     this.payeeName,
     this.remarks,
-    this.status,
+    @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED) this.status,
     this.issueDate,
     this.clearanceDate,
     this.expiryDate,
@@ -976,6 +985,7 @@ class _$ChequeLeafResponseImpl implements _ChequeLeafResponse {
   @override
   final String? remarks;
   @override
+  @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED)
   final ChequeLeafStatus? status;
   @override
   final DateTime? issueDate;
@@ -1073,6 +1083,7 @@ abstract class _ChequeLeafResponse implements ChequeLeafResponse {
     final double? amount,
     final String? payeeName,
     final String? remarks,
+    @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED)
     final ChequeLeafStatus? status,
     final DateTime? issueDate,
     final DateTime? clearanceDate,
@@ -1099,6 +1110,7 @@ abstract class _ChequeLeafResponse implements ChequeLeafResponse {
   @override
   String? get remarks;
   @override
+  @JsonKey(unknownEnumValue: ChequeLeafStatus.UNUSED)
   ChequeLeafStatus? get status;
   @override
   DateTime? get issueDate;
@@ -2604,7 +2616,7 @@ NotificationResponse _$NotificationResponseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$NotificationResponse {
   int? get id => throw _privateConstructorUsedError;
-  @JsonKey(unknownEnumValue: NotificationType.SYSTEM)
+  @JsonKey(unknownEnumValue: NotificationType.GENERAL)
   NotificationType? get type => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
@@ -2632,7 +2644,7 @@ abstract class $NotificationResponseCopyWith<$Res> {
   @useResult
   $Res call({
     int? id,
-    @JsonKey(unknownEnumValue: NotificationType.SYSTEM) NotificationType? type,
+    @JsonKey(unknownEnumValue: NotificationType.GENERAL) NotificationType? type,
     String? title,
     String? message,
     bool? read,
@@ -2720,7 +2732,7 @@ abstract class _$$NotificationResponseImplCopyWith<$Res>
   @useResult
   $Res call({
     int? id,
-    @JsonKey(unknownEnumValue: NotificationType.SYSTEM) NotificationType? type,
+    @JsonKey(unknownEnumValue: NotificationType.GENERAL) NotificationType? type,
     String? title,
     String? message,
     bool? read,
@@ -2797,7 +2809,7 @@ class __$$NotificationResponseImplCopyWithImpl<$Res>
 class _$NotificationResponseImpl implements _NotificationResponse {
   const _$NotificationResponseImpl({
     this.id,
-    @JsonKey(unknownEnumValue: NotificationType.SYSTEM) this.type,
+    @JsonKey(unknownEnumValue: NotificationType.GENERAL) this.type,
     this.title,
     this.message,
     this.read,
@@ -2812,7 +2824,7 @@ class _$NotificationResponseImpl implements _NotificationResponse {
   @override
   final int? id;
   @override
-  @JsonKey(unknownEnumValue: NotificationType.SYSTEM)
+  @JsonKey(unknownEnumValue: NotificationType.GENERAL)
   final NotificationType? type;
   @override
   final String? title;
@@ -2885,7 +2897,7 @@ class _$NotificationResponseImpl implements _NotificationResponse {
 abstract class _NotificationResponse implements NotificationResponse {
   const factory _NotificationResponse({
     final int? id,
-    @JsonKey(unknownEnumValue: NotificationType.SYSTEM)
+    @JsonKey(unknownEnumValue: NotificationType.GENERAL)
     final NotificationType? type,
     final String? title,
     final String? message,
@@ -2901,7 +2913,7 @@ abstract class _NotificationResponse implements NotificationResponse {
   @override
   int? get id;
   @override
-  @JsonKey(unknownEnumValue: NotificationType.SYSTEM)
+  @JsonKey(unknownEnumValue: NotificationType.GENERAL)
   NotificationType? get type;
   @override
   String? get title;

@@ -72,12 +72,17 @@ class AppRoutes {
 
 @riverpod
 GoRouter router(Ref ref) {
-  final authState = ref.watch(authProvider);
+  final refreshListenable = _RouterRefreshListenable(ref);
+  
+  ref.onDispose(() {
+    refreshListenable.dispose();
+  });
 
   return GoRouter(
     initialLocation: AppRoutes.dashboard,
-    refreshListenable: _RouterRefreshListenable(ref),
+    refreshListenable: refreshListenable,
     redirect: (context, state) {
+      final authState = ref.read(authProvider);
       final isAuth = authState.value?.user != null;
       final isLoggingIn = state.matchedLocation == AppRoutes.login;
       final isRegistering = state.matchedLocation == AppRoutes.register;

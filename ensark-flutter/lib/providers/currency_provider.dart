@@ -22,8 +22,8 @@ class CurrencyConverter extends _$CurrencyConverter {
         to: to,
         amount: amount,
       );
-      // Backend returns Map<String, Object> - assume 'convertedAmount' key
-      return (result['convertedAmount'] as num).toDouble();
+      // Backend returns Map with 'result' key
+      return (result['result'] as num).toDouble();
     } catch (e) {
       return 0.0;
     }

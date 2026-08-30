@@ -7,8 +7,7 @@ plugins {
 android {
     namespace = "com.ensark.bank.ensarkbank_flutter"
     compileSdk = 36
-    buildToolsVersion = "36.0.0"
-    ndkVersion = "30.0.16138531"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

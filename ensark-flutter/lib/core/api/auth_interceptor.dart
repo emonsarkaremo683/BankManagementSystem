@@ -1,16 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:ensarkbank_flutter/core/storage/secure_vault.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/auth_provider.dart';
 
 class AuthInterceptor extends Interceptor {
   final SecureVault _vault;
-  final Dio _dio; // Used for refresh token call
+  final Dio _dio;
+  final Ref _ref;
 
-  AuthInterceptor(this._vault, this._dio);
+  AuthInterceptor(this._vault, this._dio, this._ref);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    if (options.path.contains('api/auth/login') || options.path.contains('api/auth/register')) {
+    // Skip auth header for login, register, and refresh
+    if (options.path.contains('api/auth/login') || 
+        options.path.contains('api/auth/register') ||
+        options.path.contains('api/auth/refresh')) {
       return handler.next(options);
     }
 
@@ -26,11 +32,22 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401) {
+    final bool isUnauthorized = err.response?.statusCode == 401;
+    final bool isForbidden = err.response?.statusCode == 403;
+
+    if (isUnauthorized || isForbidden) {
+      // Don't intercept 401/403 for login, register, or refresh paths
+      if (err.requestOptions.path.contains('api/auth/login') || 
+          err.requestOptions.path.contains('api/auth/register') ||
+          err.requestOptions.path.contains('api/auth/refresh')) {
+        return handler.next(err);
+      }
+
       final refreshToken = await _vault.getRefreshToken();
       if (refreshToken != null) {
         try {
-          // Attempt refresh
+          // Attempt refresh - Note: we use the same dio instance, 
+          // but onRequest now skips adding the auth header for refresh path.
           final response = await _dio.post(
             'api/auth/refresh',
             data: {'refreshToken': refreshToken},
@@ -51,9 +68,13 @@ class AuthInterceptor extends Interceptor {
             return handler.resolve(retryResponse);
           }
         } catch (e) {
-          // If refresh fails, clear vault and let error bubble up
-          await _vault.clearAll();
+          debugPrint('AuthInterceptor: Token refresh failed: $e');
+          // If refresh fails, log out properly
+          await _ref.read(authProvider.notifier).logout();
         }
+      } else {
+        // No refresh token available, or it was a hard 403, log out
+        await _ref.read(authProvider.notifier).logout();
       }
     }
     return handler.next(err);

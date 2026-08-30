@@ -22,7 +22,7 @@ final transferProvider =
     );
 
 typedef _$Transfer = AutoDisposeNotifier<AsyncValue<void>>;
-String _$beneficiariesHash() => r'6f91c665e75445b3fa111812ce857342c0275377';
+String _$beneficiariesHash() => r'b35796f7399e8515d143dc794192dbf60fc0d264';
 
 /// See also [Beneficiaries].
 @ProviderFor(Beneficiaries)

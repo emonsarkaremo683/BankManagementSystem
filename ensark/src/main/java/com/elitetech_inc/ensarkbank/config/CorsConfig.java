@@ -49,7 +49,15 @@ public class CorsConfig {
             allowedOrigins.add(DEV_FRONTEND_URL);
         }
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",
+                "http://localhost:8080",
+                "http://127.0.0.1:8080",
+                "http://localhost:8081",
+                "http://127.0.0.1:8081",
+                "http://192.168.0.104:8080",
+                "http://192.168.0.104:8081"
+        ));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));

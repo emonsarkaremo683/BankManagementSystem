@@ -6,7 +6,7 @@ part of 'core_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$baseUrlHash() => r'97f1a4a898299e1c801835c9806f42c59056768f';
+String _$baseUrlHash() => r'e08568d281800c1584628a58096c181151938362';
 
 /// See also [baseUrl].
 @ProviderFor(baseUrl)
@@ -57,7 +57,7 @@ final biometricVaultProvider = AutoDisposeProvider<BiometricVault>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef BiometricVaultRef = AutoDisposeProviderRef<BiometricVault>;
-String _$dioHash() => r'3673881ee3ca6e46f72b0f56abc28f743dc5eedb';
+String _$dioHash() => r'ec0845903b21c057bda8313a8a35b76bd4644bfa';
 
 /// See also [dio].
 @ProviderFor(dio)

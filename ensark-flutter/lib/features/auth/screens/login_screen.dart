@@ -122,7 +122,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   label: 'Email',
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  validator: (value) => value == null || value.isEmpty ? 'Email is required' : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return 'Email is required';
+                    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    if (!emailRegex.hasMatch(value)) return 'Enter a valid email address';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 24),
                 NeonTextField(

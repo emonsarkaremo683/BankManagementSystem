@@ -40,7 +40,7 @@ Dio dio(Ref ref) {
   
   final dioClient = DioClient(baseUrl: baseUrl);
   
-  dioClient.dio.interceptors.add(AuthInterceptor(vault, dioClient.dio));
+  dioClient.dio.interceptors.add(AuthInterceptor(vault, dioClient.dio, ref));
   
   dioClient.dio.interceptors.add(LogInterceptor(
     requestHeader: true, // Enable header logging

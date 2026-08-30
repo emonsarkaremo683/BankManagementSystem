@@ -39,24 +39,26 @@ Map<String, dynamic> _$$AccountRequestImplToJson(
   'n_photo': instance.nPhoto,
   'n_nid_front': instance.nNidFront,
   'n_nid_back': instance.nNidBack,
-  'accountHolders': instance.accountHolders,
+  'accountHolders': instance.accountHolders?.map((e) => e.toJson()).toList(),
 };
 
 const _$AccountTypeEnumMap = {
   AccountType.SAVINGS: 'SAVINGS',
   AccountType.CURRENT: 'CURRENT',
   AccountType.FIXED_DEPOSIT: 'FIXED_DEPOSIT',
-  AccountType.LOAN: 'LOAN',
+  AccountType.JOINT_ACCOUNT: 'JOINT_ACCOUNT',
+  AccountType.STUDENT: 'STUDENT',
+  AccountType.BUSINESS: 'BUSINESS',
 };
 
 const _$NomineeRelationEnumMap = {
   NomineeRelation.FATHER: 'FATHER',
   NomineeRelation.MOTHER: 'MOTHER',
-  NomineeRelation.SPOUSE: 'SPOUSE',
-  NomineeRelation.SON: 'SON',
-  NomineeRelation.DAUGHTER: 'DAUGHTER',
-  NomineeRelation.BROTHER: 'BROTHER',
   NomineeRelation.SISTER: 'SISTER',
+  NomineeRelation.BROTHER: 'BROTHER',
+  NomineeRelation.UNCLE: 'UNCLE',
+  NomineeRelation.AUNTY: 'AUNTY',
+  NomineeRelation.COUSIN: 'COUSIN',
   NomineeRelation.OTHER: 'OTHER',
 };
 
@@ -110,13 +112,15 @@ Map<String, dynamic> _$$AccountResponseImplToJson(
   'n_photo': instance.nPhoto,
   'n_nid_front': instance.nNidFront,
   'n_nid_back': instance.nNidBack,
-  'holderResponses': instance.holderResponses,
+  'holderResponses': instance.holderResponses.map((e) => e.toJson()).toList(),
 };
 
 const _$AccountStatusEnumMap = {
   AccountStatus.ACTIVE: 'ACTIVE',
   AccountStatus.INACTIVE: 'INACTIVE',
+  AccountStatus.BLOCKED: 'BLOCKED',
   AccountStatus.CLOSED: 'CLOSED',
+  AccountStatus.FREEZE: 'FREEZE',
   AccountStatus.PENDING: 'PENDING',
 };
 
@@ -144,8 +148,8 @@ Map<String, dynamic> _$$AccountHolderRequestImplToJson(
 
 const _$HolderTypeEnumMap = {
   HolderType.PRIMARY: 'PRIMARY',
-  HolderType.JOINT: 'JOINT',
-  HolderType.NOMINEE: 'NOMINEE',
+  HolderType.SECONDARY: 'SECONDARY',
+  HolderType.OPTIONAL: 'OPTIONAL',
 };
 
 _$AccountHolderResponseImpl _$$AccountHolderResponseImplFromJson(

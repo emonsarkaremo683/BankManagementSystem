@@ -25,7 +25,7 @@ Map<String, dynamic> _$$LoanApplicationRequestImplToJson(
   'principalAmount': instance.principalAmount,
   'annualInterestRate': instance.annualInterestRate,
   'tenureMonths': instance.tenureMonths,
-  'guarantor': instance.guarantor,
+  'guarantor': instance.guarantor?.toJson(),
 };
 
 _$GuarantorRequestImpl _$$GuarantorRequestImplFromJson(
@@ -104,8 +104,8 @@ Map<String, dynamic> _$$LoanApplicationResponseImplToJson(
   'nextDueDate': instance.nextDueDate?.toIso8601String(),
   'rejectionReason': instance.rejectionReason,
   'disbursementTransactionRef': instance.disbursementTransactionRef,
-  'guarantors': instance.guarantors,
-  'documents': instance.documents,
+  'guarantors': instance.guarantors?.map((e) => e.toJson()).toList(),
+  'documents': instance.documents?.map((e) => e.toJson()).toList(),
 };
 
 const _$LoanStatusEnumMap = {
@@ -113,7 +113,10 @@ const _$LoanStatusEnumMap = {
   LoanStatus.APPROVED: 'APPROVED',
   LoanStatus.REJECTED: 'REJECTED',
   LoanStatus.DISBURSED: 'DISBURSED',
+  LoanStatus.ACTIVE: 'ACTIVE',
   LoanStatus.CLOSED: 'CLOSED',
+  LoanStatus.OVERDUE: 'OVERDUE',
+  LoanStatus.DEFAULTED: 'DEFAULTED',
 };
 
 _$GuarantorResponseImpl _$$GuarantorResponseImplFromJson(
@@ -197,10 +200,10 @@ Map<String, dynamic> _$$LoanRepaymentResponseImplToJson(
 };
 
 const _$RepaymentStatusEnumMap = {
-  RepaymentStatus.UNPAID: 'UNPAID',
+  RepaymentStatus.PENDING: 'PENDING',
   RepaymentStatus.PAID: 'PAID',
-  RepaymentStatus.OVERDUE: 'OVERDUE',
-  RepaymentStatus.PARTIAL: 'PARTIAL',
+  RepaymentStatus.LATE: 'LATE',
+  RepaymentStatus.MISSED: 'MISSED',
 };
 
 _$LoanScheduleResponseImpl _$$LoanScheduleResponseImplFromJson(

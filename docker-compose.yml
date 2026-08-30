@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # MySQL Database Service
+  # ============================================================================
+  mysql:
+    image: mysql:8.0
+    container_name: ensark-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-1234}
+      MYSQL_DATABASE: ${DB_NAME:-elitebank}
+      MYSQL_USER: ${DB_USERNAME:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-1234}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ============================================================================
+  # Spring Boot Backend Service (ensark)
+  # ============================================================================
+  backend:
+    build:
+      context: ./ensark
+      dockerfile: Dockerfile
+    container_name: ensark-backend
+    restart: always
+    ports:
+      - "8085:8085"
+    environment:
+      PORT: 8085
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_NAME:-elitebank}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: ${DB_USERNAME:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-1234}
+      JWT_SECRET: ${JWT_SECRET:-EmonSarkarIsNothingWithoutAi866214}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:4200}
+      UPLOAD_DIR: /app/uploads
+      SMTP_USERNAME: ${SMTP_USERNAME:-emonsarkar.emo683@gmail.com}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-qhpwzsceieozhiuq}
+    volumes:
+      - backend_uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ============================================================================
+  # Angular Frontend Service (ensark-frontend)
+  # ============================================================================
+  frontend:
+    build:
+      context: ./ensark-frontend
+      dockerfile: Dockerfile
+    container_name: ensark-frontend
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      PORT: 80
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+    driver: local
+  backend_uploads:
+    driver: local

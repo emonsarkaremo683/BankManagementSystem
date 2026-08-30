@@ -28,7 +28,11 @@ _$ChequeBookResponseImpl _$$ChequeBookResponseImplFromJson(
   numberOfLeaves: (json['numberOfLeaves'] as num?)?.toInt(),
   startLeafNumber: (json['startLeafNumber'] as num?)?.toInt(),
   endLeafNumber: (json['endLeafNumber'] as num?)?.toInt(),
-  status: $enumDecodeNullable(_$ChequeBookStatusEnumMap, json['status']),
+  status: $enumDecodeNullable(
+    _$ChequeBookStatusEnumMap,
+    json['status'],
+    unknownValue: ChequeBookStatus.REQUESTED,
+  ),
   accountId: (json['accountId'] as num?)?.toInt(),
   accountNumber: json['accountNumber'] as String?,
   applicationDate: json['applicationDate'] == null
@@ -69,18 +73,21 @@ Map<String, dynamic> _$$ChequeBookResponseImplToJson(
   'activationDate': instance.activationDate?.toIso8601String(),
   'expiryDate': instance.expiryDate?.toIso8601String(),
   'rejectionReason': instance.rejectionReason,
-  'leaves': instance.leaves,
+  'leaves': instance.leaves?.map((e) => e.toJson()).toList(),
 };
 
 const _$ChequeBookStatusEnumMap = {
   ChequeBookStatus.REQUESTED: 'REQUESTED',
   ChequeBookStatus.APPROVED: 'APPROVED',
   ChequeBookStatus.REJECTED: 'REJECTED',
-  ChequeBookStatus.PROCESSED: 'PROCESSED',
-  ChequeBookStatus.SHIPPED: 'SHIPPED',
+  ChequeBookStatus.PRINTED: 'PRINTED',
+  ChequeBookStatus.READY_FOR_DELIVERY: 'READY_FOR_DELIVERY',
   ChequeBookStatus.DELIVERED: 'DELIVERED',
-  ChequeBookStatus.ACTIVATED: 'ACTIVATED',
+  ChequeBookStatus.ACTIVE: 'ACTIVE',
+  ChequeBookStatus.EXHAUSTED: 'EXHAUSTED',
+  ChequeBookStatus.BLOCKED: 'BLOCKED',
   ChequeBookStatus.EXPIRED: 'EXPIRED',
+  ChequeBookStatus.CANCELLED: 'CANCELLED',
 };
 
 _$ChequeLeafResponseImpl _$$ChequeLeafResponseImplFromJson(
@@ -92,7 +99,11 @@ _$ChequeLeafResponseImpl _$$ChequeLeafResponseImplFromJson(
   amount: (json['amount'] as num?)?.toDouble(),
   payeeName: json['payeeName'] as String?,
   remarks: json['remarks'] as String?,
-  status: $enumDecodeNullable(_$ChequeLeafStatusEnumMap, json['status']),
+  status: $enumDecodeNullable(
+    _$ChequeLeafStatusEnumMap,
+    json['status'],
+    unknownValue: ChequeLeafStatus.UNUSED,
+  ),
   issueDate: json['issueDate'] == null
       ? null
       : DateTime.parse(json['issueDate'] as String),
@@ -129,10 +140,13 @@ Map<String, dynamic> _$$ChequeLeafResponseImplToJson(
 
 const _$ChequeLeafStatusEnumMap = {
   ChequeLeafStatus.UNUSED: 'UNUSED',
-  ChequeLeafStatus.USED: 'USED',
-  ChequeLeafStatus.CANCELLED: 'CANCELLED',
-  ChequeLeafStatus.STOPPED: 'STOPPED',
+  ChequeLeafStatus.ISSUED: 'ISSUED',
+  ChequeLeafStatus.PRESENTED: 'PRESENTED',
+  ChequeLeafStatus.CLEARED: 'CLEARED',
   ChequeLeafStatus.BOUNCED: 'BOUNCED',
+  ChequeLeafStatus.STOP_PAYMENT: 'STOP_PAYMENT',
+  ChequeLeafStatus.CANCELLED: 'CANCELLED',
+  ChequeLeafStatus.EXPIRED: 'EXPIRED',
 };
 
 _$StandingOrderRequestImpl _$$StandingOrderRequestImplFromJson(
@@ -169,6 +183,7 @@ Map<String, dynamic> _$$StandingOrderRequestImplToJson(
 const _$StandingOrderFrequencyEnumMap = {
   StandingOrderFrequency.DAILY: 'DAILY',
   StandingOrderFrequency.WEEKLY: 'WEEKLY',
+  StandingOrderFrequency.BI_WEEKLY: 'BI_WEEKLY',
   StandingOrderFrequency.MONTHLY: 'MONTHLY',
   StandingOrderFrequency.QUARTERLY: 'QUARTERLY',
   StandingOrderFrequency.YEARLY: 'YEARLY',
@@ -218,8 +233,9 @@ Map<String, dynamic> _$$StandingOrderResponseImplToJson(
 const _$StandingOrderStatusEnumMap = {
   StandingOrderStatus.ACTIVE: 'ACTIVE',
   StandingOrderStatus.PAUSED: 'PAUSED',
-  StandingOrderStatus.CANCELLED: 'CANCELLED',
   StandingOrderStatus.COMPLETED: 'COMPLETED',
+  StandingOrderStatus.CANCELLED: 'CANCELLED',
+  StandingOrderStatus.FAILED: 'FAILED',
 };
 
 _$BeneficiaryRequestImpl _$$BeneficiaryRequestImplFromJson(
@@ -248,8 +264,11 @@ Map<String, dynamic> _$$BeneficiaryRequestImplToJson(
 };
 
 const _$BeneficiaryTypeEnumMap = {
-  BeneficiaryType.INTERNAL: 'INTERNAL',
-  BeneficiaryType.EXTERNAL: 'EXTERNAL',
+  BeneficiaryType.BKASH: 'BKASH',
+  BeneficiaryType.NAGAD: 'NAGAD',
+  BeneficiaryType.BANK: 'BANK',
+  BeneficiaryType.CARD: 'CARD',
+  BeneficiaryType.INTER_BANK: 'INTER_BANK',
 };
 
 _$BeneficiaryResponseImpl _$$BeneficiaryResponseImplFromJson(
@@ -294,7 +313,7 @@ _$NotificationResponseImpl _$$NotificationResponseImplFromJson(
   type: $enumDecodeNullable(
     _$NotificationTypeEnumMap,
     json['type'],
-    unknownValue: NotificationType.SYSTEM,
+    unknownValue: NotificationType.GENERAL,
   ),
   title: json['title'] as String?,
   message: json['message'] as String?,
@@ -318,17 +337,31 @@ Map<String, dynamic> _$$NotificationResponseImplToJson(
 };
 
 const _$NotificationTypeEnumMap = {
-  NotificationType.TRANSACTION: 'TRANSACTION',
-  NotificationType.SECURITY: 'SECURITY',
-  NotificationType.PROMOTION: 'PROMOTION',
-  NotificationType.SYSTEM: 'SYSTEM',
-  NotificationType.KYC_VERIFIED: 'KYC_VERIFIED',
-  NotificationType.KYC_REJECTED: 'KYC_REJECTED',
-  NotificationType.KYC_PENDING: 'KYC_PENDING',
-  NotificationType.ACCOUNT_OPENED: 'ACCOUNT_OPENED',
+  NotificationType.TRANSACTION_SUCCESS: 'TRANSACTION_SUCCESS',
+  NotificationType.TRANSACTION_FAILED: 'TRANSACTION_FAILED',
+  NotificationType.DEPOSIT: 'DEPOSIT',
+  NotificationType.WITHDRAW: 'WITHDRAW',
+  NotificationType.TRANSFER: 'TRANSFER',
+  NotificationType.ACCOUNT_CREATED: 'ACCOUNT_CREATED',
+  NotificationType.ACCOUNT_SUSPENDED: 'ACCOUNT_SUSPENDED',
+  NotificationType.ACCOUNT_STATUS_CHANGED: 'ACCOUNT_STATUS_CHANGED',
+  NotificationType.CARD_APPLICATION: 'CARD_APPLICATION',
+  NotificationType.CARD_STATUS_CHANGED: 'CARD_STATUS_CHANGED',
+  NotificationType.LOAN_APPLICATION: 'LOAN_APPLICATION',
   NotificationType.LOAN_APPROVED: 'LOAN_APPROVED',
   NotificationType.LOAN_REJECTED: 'LOAN_REJECTED',
-  NotificationType.CHEQUE_BOOK_READY: 'CHEQUE_BOOK_READY',
+  NotificationType.KYC_SUBMITTED: 'KYC_SUBMITTED',
+  NotificationType.KYC_VERIFIED: 'KYC_VERIFIED',
+  NotificationType.KYC_REJECTED: 'KYC_REJECTED',
+  NotificationType.CUSTOMER_REGISTERED: 'CUSTOMER_REGISTERED',
+  NotificationType.INTEREST_CREDITED: 'INTEREST_CREDITED',
+  NotificationType.CHEQUE_BOOK_REQUEST: 'CHEQUE_BOOK_REQUEST',
+  NotificationType.CHEQUE_BOOK_APPROVED: 'CHEQUE_BOOK_APPROVED',
+  NotificationType.CHEQUE_BOOK_REJECTED: 'CHEQUE_BOOK_REJECTED',
+  NotificationType.CHEQUE_BOOK_DELIVERED: 'CHEQUE_BOOK_DELIVERED',
+  NotificationType.CHEQUE_BOOK_ACTIVATED: 'CHEQUE_BOOK_ACTIVATED',
+  NotificationType.CHEQUE_BOOK_BLOCKED: 'CHEQUE_BOOK_BLOCKED',
+  NotificationType.GENERAL: 'GENERAL',
 };
 
 _$BranchResponseImpl _$$BranchResponseImplFromJson(Map<String, dynamic> json) =>
@@ -361,13 +394,12 @@ Map<String, dynamic> _$$BranchResponseImplToJson(
 const _$BranchTypeEnumMap = {
   BranchType.HEAD_OFFICE: 'HEAD_OFFICE',
   BranchType.BRANCH: 'BRANCH',
-  BranchType.SUB_BRANCH: 'SUB_BRANCH',
-  BranchType.AGENT_BANKING: 'AGENT_BANKING',
+  BranchType.AGENT_BANK: 'AGENT_BANK',
 };
 
 const _$BranchStatusEnumMap = {
   BranchStatus.ACTIVE: 'ACTIVE',
-  BranchStatus.INACTIVE: 'INACTIVE',
+  BranchStatus.CLOSED: 'CLOSED',
 };
 
 _$DivisionResponseImpl _$$DivisionResponseImplFromJson(
@@ -460,8 +492,12 @@ Map<String, dynamic> _$$CustomerDashboardResponseImplToJson(
   'totalTransaction': instance.totalTransaction,
   'totalBeneficiary': instance.totalBeneficiary,
   'totalAccount': instance.totalAccount,
-  'cards': instance.cards,
-  'accounts': instance.accounts,
-  'last30DaysTransactions': instance.last30DaysTransactions,
-  'recentTransactions': instance.recentTransactions,
+  'cards': instance.cards?.map((e) => e.toJson()).toList(),
+  'accounts': instance.accounts?.map((e) => e.toJson()).toList(),
+  'last30DaysTransactions': instance.last30DaysTransactions
+      ?.map((e) => e.toJson())
+      .toList(),
+  'recentTransactions': instance.recentTransactions
+      ?.map((e) => e.toJson())
+      .toList(),
 };

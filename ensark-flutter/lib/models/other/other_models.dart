@@ -139,7 +139,7 @@ class BeneficiaryResponse with _$BeneficiaryResponse {
 class NotificationResponse with _$NotificationResponse {
   const factory NotificationResponse({
     int? id,
-    @JsonKey(unknownEnumValue: NotificationType.SYSTEM) NotificationType? type,
+    @JsonKey(unknownEnumValue: NotificationType.GENERAL) NotificationType? type,
     String? title,
     String? message,
     bool? read,

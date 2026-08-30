@@ -586,9 +586,15 @@ mixin _$JournalResponse {
   int? get id => throw _privateConstructorUsedError;
   String? get accountNumber => throw _privateConstructorUsedError;
   double? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'entryType')
   String? get type => throw _privateConstructorUsedError; // DEBIT/CREDIT
   String? get remarks => throw _privateConstructorUsedError;
+  @JsonKey(name: 'date')
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  String? get transactionId => throw _privateConstructorUsedError;
+  String? get particulars => throw _privateConstructorUsedError;
+  String? get counterpartyAccountNumber => throw _privateConstructorUsedError;
+  String? get counterpartyName => throw _privateConstructorUsedError;
 
   /// Serializes this JournalResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -611,9 +617,13 @@ abstract class $JournalResponseCopyWith<$Res> {
     int? id,
     String? accountNumber,
     double? amount,
-    String? type,
+    @JsonKey(name: 'entryType') String? type,
     String? remarks,
-    DateTime? createdAt,
+    @JsonKey(name: 'date') DateTime? createdAt,
+    String? transactionId,
+    String? particulars,
+    String? counterpartyAccountNumber,
+    String? counterpartyName,
   });
 }
 
@@ -638,6 +648,10 @@ class _$JournalResponseCopyWithImpl<$Res, $Val extends JournalResponse>
     Object? type = freezed,
     Object? remarks = freezed,
     Object? createdAt = freezed,
+    Object? transactionId = freezed,
+    Object? particulars = freezed,
+    Object? counterpartyAccountNumber = freezed,
+    Object? counterpartyName = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -665,6 +679,22 @@ class _$JournalResponseCopyWithImpl<$Res, $Val extends JournalResponse>
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
+            transactionId: freezed == transactionId
+                ? _value.transactionId
+                : transactionId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            particulars: freezed == particulars
+                ? _value.particulars
+                : particulars // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            counterpartyAccountNumber: freezed == counterpartyAccountNumber
+                ? _value.counterpartyAccountNumber
+                : counterpartyAccountNumber // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            counterpartyName: freezed == counterpartyName
+                ? _value.counterpartyName
+                : counterpartyName // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -684,9 +714,13 @@ abstract class _$$JournalResponseImplCopyWith<$Res>
     int? id,
     String? accountNumber,
     double? amount,
-    String? type,
+    @JsonKey(name: 'entryType') String? type,
     String? remarks,
-    DateTime? createdAt,
+    @JsonKey(name: 'date') DateTime? createdAt,
+    String? transactionId,
+    String? particulars,
+    String? counterpartyAccountNumber,
+    String? counterpartyName,
   });
 }
 
@@ -710,6 +744,10 @@ class __$$JournalResponseImplCopyWithImpl<$Res>
     Object? type = freezed,
     Object? remarks = freezed,
     Object? createdAt = freezed,
+    Object? transactionId = freezed,
+    Object? particulars = freezed,
+    Object? counterpartyAccountNumber = freezed,
+    Object? counterpartyName = freezed,
   }) {
     return _then(
       _$JournalResponseImpl(
@@ -737,6 +775,22 @@ class __$$JournalResponseImplCopyWithImpl<$Res>
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
+        transactionId: freezed == transactionId
+            ? _value.transactionId
+            : transactionId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        particulars: freezed == particulars
+            ? _value.particulars
+            : particulars // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        counterpartyAccountNumber: freezed == counterpartyAccountNumber
+            ? _value.counterpartyAccountNumber
+            : counterpartyAccountNumber // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        counterpartyName: freezed == counterpartyName
+            ? _value.counterpartyName
+            : counterpartyName // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -749,9 +803,13 @@ class _$JournalResponseImpl implements _JournalResponse {
     this.id,
     this.accountNumber,
     this.amount,
-    this.type,
+    @JsonKey(name: 'entryType') this.type,
     this.remarks,
-    this.createdAt,
+    @JsonKey(name: 'date') this.createdAt,
+    this.transactionId,
+    this.particulars,
+    this.counterpartyAccountNumber,
+    this.counterpartyName,
   });
 
   factory _$JournalResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -764,16 +822,26 @@ class _$JournalResponseImpl implements _JournalResponse {
   @override
   final double? amount;
   @override
+  @JsonKey(name: 'entryType')
   final String? type;
   // DEBIT/CREDIT
   @override
   final String? remarks;
   @override
+  @JsonKey(name: 'date')
   final DateTime? createdAt;
+  @override
+  final String? transactionId;
+  @override
+  final String? particulars;
+  @override
+  final String? counterpartyAccountNumber;
+  @override
+  final String? counterpartyName;
 
   @override
   String toString() {
-    return 'JournalResponse(id: $id, accountNumber: $accountNumber, amount: $amount, type: $type, remarks: $remarks, createdAt: $createdAt)';
+    return 'JournalResponse(id: $id, accountNumber: $accountNumber, amount: $amount, type: $type, remarks: $remarks, createdAt: $createdAt, transactionId: $transactionId, particulars: $particulars, counterpartyAccountNumber: $counterpartyAccountNumber, counterpartyName: $counterpartyName)';
   }
 
   @override
@@ -788,7 +856,18 @@ class _$JournalResponseImpl implements _JournalResponse {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.remarks, remarks) || other.remarks == remarks) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.transactionId, transactionId) ||
+                other.transactionId == transactionId) &&
+            (identical(other.particulars, particulars) ||
+                other.particulars == particulars) &&
+            (identical(
+                  other.counterpartyAccountNumber,
+                  counterpartyAccountNumber,
+                ) ||
+                other.counterpartyAccountNumber == counterpartyAccountNumber) &&
+            (identical(other.counterpartyName, counterpartyName) ||
+                other.counterpartyName == counterpartyName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -801,6 +880,10 @@ class _$JournalResponseImpl implements _JournalResponse {
     type,
     remarks,
     createdAt,
+    transactionId,
+    particulars,
+    counterpartyAccountNumber,
+    counterpartyName,
   );
 
   /// Create a copy of JournalResponse
@@ -825,9 +908,13 @@ abstract class _JournalResponse implements JournalResponse {
     final int? id,
     final String? accountNumber,
     final double? amount,
-    final String? type,
+    @JsonKey(name: 'entryType') final String? type,
     final String? remarks,
-    final DateTime? createdAt,
+    @JsonKey(name: 'date') final DateTime? createdAt,
+    final String? transactionId,
+    final String? particulars,
+    final String? counterpartyAccountNumber,
+    final String? counterpartyName,
   }) = _$JournalResponseImpl;
 
   factory _JournalResponse.fromJson(Map<String, dynamic> json) =
@@ -840,11 +927,21 @@ abstract class _JournalResponse implements JournalResponse {
   @override
   double? get amount;
   @override
+  @JsonKey(name: 'entryType')
   String? get type; // DEBIT/CREDIT
   @override
   String? get remarks;
   @override
+  @JsonKey(name: 'date')
   DateTime? get createdAt;
+  @override
+  String? get transactionId;
+  @override
+  String? get particulars;
+  @override
+  String? get counterpartyAccountNumber;
+  @override
+  String? get counterpartyName;
 
   /// Create a copy of JournalResponse
   /// with the given fields replaced by the non-null parameter values.

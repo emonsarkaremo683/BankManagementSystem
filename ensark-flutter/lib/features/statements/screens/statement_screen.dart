@@ -142,7 +142,7 @@ class _StatementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCredit = journal.type == 'CREDIT';
+    final isCredit = journal.type?.toUpperCase() == 'CREDIT';
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),

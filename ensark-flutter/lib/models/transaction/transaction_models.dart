@@ -1,3 +1,4 @@
+// ignore_for_file: invalid_annotation_target
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../enums.dart';
 
@@ -39,9 +40,13 @@ class JournalResponse with _$JournalResponse {
     int? id,
     String? accountNumber,
     double? amount,
-    String? type, // DEBIT/CREDIT
+    @JsonKey(name: 'entryType') String? type, // DEBIT/CREDIT
     String? remarks,
-    DateTime? createdAt,
+    @JsonKey(name: 'date') DateTime? createdAt,
+    String? transactionId,
+    String? particulars,
+    String? counterpartyAccountNumber,
+    String? counterpartyName,
   }) = _JournalResponse;
 
   factory JournalResponse.fromJson(Map<String, dynamic> json) => _$JournalResponseFromJson(json);

@@ -147,7 +147,7 @@ class _CurrenciesProviderElement
   String get base => (origin as CurrenciesProvider).base;
 }
 
-String _$currencyConverterHash() => r'cd113e6935bd4dc97e4f374d75a669662299905f';
+String _$currencyConverterHash() => r'6a70fd7f42b2996a704c9fdfcd608992abebf484';
 
 /// See also [CurrencyConverter].
 @ProviderFor(CurrencyConverter)

@@ -33,15 +33,9 @@ Map<String, dynamic> _$$CardRequestImplToJson(_$CardRequestImpl instance) =>
 const _$CardNetworkEnumMap = {
   CardNetwork.VISA: 'VISA',
   CardNetwork.MASTERCARD: 'MASTERCARD',
-  CardNetwork.AMEX: 'AMEX',
-  CardNetwork.DISCOVER: 'DISCOVER',
 };
 
-const _$CardTypeEnumMap = {
-  CardType.DEBIT: 'DEBIT',
-  CardType.CREDIT: 'CREDIT',
-  CardType.PREPAID: 'PREPAID',
-};
+const _$CardTypeEnumMap = {CardType.DEBIT: 'DEBIT', CardType.CREDIT: 'CREDIT'};
 
 _$CardResponseImpl _$$CardResponseImplFromJson(Map<String, dynamic> json) =>
     _$CardResponseImpl(
@@ -87,10 +81,11 @@ Map<String, dynamic> _$$CardResponseImplToJson(_$CardResponseImpl instance) =>
 
 const _$CardStatusEnumMap = {
   CardStatus.ACTIVE: 'ACTIVE',
-  CardStatus.INACTIVE: 'INACTIVE',
   CardStatus.BLOCKED: 'BLOCKED',
   CardStatus.EXPIRED: 'EXPIRED',
+  CardStatus.DISABLED: 'DISABLED',
   CardStatus.PENDING: 'PENDING',
+  CardStatus.CLOSED: 'CLOSED',
 };
 
 _$PinChangeRequestImpl _$$PinChangeRequestImplFromJson(
@@ -199,14 +194,13 @@ Map<String, dynamic> _$$ATMTransactionRequestImplToJson(
   'cardNumber': instance.cardNumber,
   'transactionType': _$ATMTransactionTypeEnumMap[instance.transactionType],
   'pin': instance.pin,
-  'transactionRequest': instance.transactionRequest,
+  'transactionRequest': instance.transactionRequest?.toJson(),
 };
 
 const _$ATMTransactionTypeEnumMap = {
-  ATMTransactionType.WITHDRAWAL: 'WITHDRAWAL',
-  ATMTransactionType.DEPOSIT: 'DEPOSIT',
-  ATMTransactionType.BALANCE_INQUIRY: 'BALANCE_INQUIRY',
-  ATMTransactionType.PIN_CHANGE: 'PIN_CHANGE',
+  ATMTransactionType.CASH_WITHDRAW: 'CASH_WITHDRAW',
+  ATMTransactionType.CASH_DEPOSIT: 'CASH_DEPOSIT',
+  ATMTransactionType.REFILL: 'REFILL',
 };
 
 _$ATMTransactionResponseImpl _$$ATMTransactionResponseImplFromJson(
@@ -233,5 +227,5 @@ Map<String, dynamic> _$$ATMTransactionResponseImplToJson(
   'transactionType': _$ATMTransactionTypeEnumMap[instance.transactionType],
   'cardNumber': instance.cardNumber,
   'address': instance.address,
-  'transactionResponse': instance.transactionResponse,
+  'transactionResponse': instance.transactionResponse?.toJson(),
 };

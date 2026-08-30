@@ -34,12 +34,32 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
         otpCode: _codeController.text,
       );
       
-      final response = await ref.read(transferProvider.notifier).verify(request);
-      if (response != null && mounted) {
-        messenger.showSnackBar(const SnackBar(content: Text('Transaction Successful!')));
-        router.pop(); // Back to transfer or dashboard
-        router.pop(); 
+      try {
+        final response = await ref.read(transferProvider.notifier).verify(request);
+        if (response != null && mounted) {
+          messenger.showSnackBar(const SnackBar(
+            content: Text('Transaction Successful!'),
+            backgroundColor: Colors.green,
+          ));
+          router.pop(); // Back to transfer or dashboard
+          router.pop(); 
+        } else if (mounted) {
+          final error = ref.read(transferProvider).error;
+          messenger.showSnackBar(SnackBar(
+            content: Text('Verification failed: ${error?.toString() ?? 'Invalid code'}'),
+            backgroundColor: Colors.redAccent,
+          ));
+        }
+      } catch (e) {
+        if (mounted) {
+          messenger.showSnackBar(SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.redAccent,
+          ));
+        }
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter 6-digit OTP')));
     }
   }
 

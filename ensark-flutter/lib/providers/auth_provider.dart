@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:ensarkbank_flutter/providers/dashboard_provider.dart';
 import 'package:ensarkbank_flutter/providers/notification_provider.dart';
 import 'package:ensarkbank_flutter/providers/transfer_provider.dart';
@@ -23,7 +24,7 @@ class AuthState with _$AuthState {
   }) = _AuthState;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Auth extends _$Auth {
   @override
   FutureOr<AuthState> build() async {
@@ -34,6 +35,10 @@ class Auth extends _$Auth {
       try {
         final validation = await ref.read(authRepositoryProvider).validateToken();
         if (validation.valid && validation.email != null) {
+          if (validation.role != 'CUSTOMER') {
+             await vault.clearAll();
+             return const AuthState();
+          }
           final user = await ref.read(customerRepositoryProvider).findByEmail(validation.email!);
           return AuthState(user: user);
         }
@@ -57,22 +62,33 @@ class Auth extends _$Auth {
       }
 
       if (response.token != null) {
+        if (response.user?.role != Role.CUSTOMER) {
+          throw Exception('Unauthorized: Only customers can log in to this app.');
+        }
+
         final vault = ref.read(secureVaultProvider);
         await vault.saveToken(response.token!);
         if (response.refreshToken != null) {
           await vault.saveRefreshToken(response.refreshToken!);
         }
         
+        state = AsyncValue.data(AuthState(user: response.user));
+
         // Invalidate providers to force a refetch with the new token
         ref.invalidate(dashboardProvider);
         ref.invalidate(notificationsProvider);
         ref.invalidate(unreadCountProvider);
         ref.invalidate(beneficiariesProvider);
-        
-        state = AsyncValue.data(AuthState(user: response.user));
       }
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      String errorMessage = e.toString();
+      if (e is DioException && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map && data.containsKey('message')) {
+          errorMessage = data['message'];
+        }
+      }
+      state = AsyncValue.error(errorMessage, StackTrace.current);
     }
   }
 
@@ -83,22 +99,33 @@ class Auth extends _$Auth {
       final response = await repository.verifyMfa(email, totpCode);
       
       if (response.token != null) {
+        if (response.user?.role != Role.CUSTOMER) {
+          throw Exception('Unauthorized: Only customers can log in to this app.');
+        }
+
         final vault = ref.read(secureVaultProvider);
         await vault.saveToken(response.token!);
         if (response.refreshToken != null) {
           await vault.saveRefreshToken(response.refreshToken!);
         }
         
+        state = AsyncValue.data(AuthState(user: response.user));
+
         // Invalidate providers to force a refetch with the new token
         ref.invalidate(dashboardProvider);
         ref.invalidate(notificationsProvider);
         ref.invalidate(unreadCountProvider);
         ref.invalidate(beneficiariesProvider);
-        
-        state = AsyncValue.data(AuthState(user: response.user));
       }
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      String errorMessage = e.toString();
+      if (e is DioException && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map && data.containsKey('message')) {
+          errorMessage = data['message'];
+        }
+      }
+      state = AsyncValue.error(errorMessage, StackTrace.current);
     }
   }
 
@@ -117,7 +144,14 @@ class Auth extends _$Auth {
       // After registration, usually login or redirect to verification
       state = const AsyncValue.data(AuthState());
     } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      String errorMessage = e.toString();
+      if (e is DioException && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map && data.containsKey('message')) {
+          errorMessage = data['message'];
+        }
+      }
+      state = AsyncValue.error(errorMessage, StackTrace.current);
     }
   }
 

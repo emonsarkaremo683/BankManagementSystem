@@ -149,26 +149,54 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
         return;
       }
 
+      if (_receiverAccController.text.isEmpty) {
+        messenger.showSnackBar(const SnackBar(content: Text('Please enter receiver account number')));
+        return;
+      }
+
+      final amount = double.tryParse(_amountController.text);
+      if (amount == null || amount <= 0) {
+        messenger.showSnackBar(const SnackBar(content: Text('Please enter a valid positive amount')));
+        return;
+      }
+
       final request = AccountTransactionRequest(
         senderAccountId: _selectedSource!.id,
         receiverAccountNumber: _receiverAccController.text,
         receiverName: _receiverNameController.text,
         beneficiaryId: _selectedBeneficiary?.id,
+        bankName: _selectedBeneficiary?.provider, // Map bank name from beneficiary
+        routingNumber: _selectedBeneficiary?.routingNumber, // Map routing number
         request: TransactionRequest(
-          amount: double.tryParse(_amountController.text),
+          amount: amount,
           remarks: _remarksController.text,
         ),
       );
 
-      final response = await ref.read(transferProvider.notifier).initiate(request);
-      
-      if (!mounted) return;
+      try {
+        final response = await ref.read(transferProvider.notifier).initiate(request);
+        
+        if (!mounted) return;
 
-      if (response != null) {
-        router.push(AppRoutes.otpVerify, extra: {
-          'otpReferenceId': response.otpReferenceId,
-          'maskedEmail': response.maskedEmail,
-        });
+        if (response != null) {
+          router.push(AppRoutes.otpVerify, extra: {
+            'otpReferenceId': response.otpReferenceId,
+            'maskedEmail': response.maskedEmail,
+          });
+        } else {
+          final error = ref.read(transferProvider).error;
+          messenger.showSnackBar(SnackBar(
+            content: Text('Transfer failed: ${error?.toString() ?? 'Unknown error'}'),
+            backgroundColor: Colors.redAccent,
+          ));
+        }
+      } catch (e) {
+        if (mounted) {
+          messenger.showSnackBar(SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.redAccent,
+          ));
+        }
       }
     }
   }

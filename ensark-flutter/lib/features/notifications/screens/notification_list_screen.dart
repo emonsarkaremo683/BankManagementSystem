@@ -118,26 +118,48 @@ class _TypeIcon extends StatelessWidget {
     Color color;
 
     switch (type) {
-      case NotificationType.TRANSACTION:
+      case NotificationType.TRANSACTION_SUCCESS:
+      case NotificationType.DEPOSIT:
+      case NotificationType.WITHDRAW:
+      case NotificationType.TRANSFER:
+      case NotificationType.INTEREST_CREDITED:
         icon = Icons.swap_horiz;
         color = AppColors.neonGreen;
         break;
-      case NotificationType.SECURITY:
-        icon = Icons.security;
+      case NotificationType.TRANSACTION_FAILED:
+        icon = Icons.error_outline;
         color = AppColors.neonPink;
         break;
-      case NotificationType.KYC_VERIFIED:
-      case NotificationType.KYC_REJECTED:
-      case NotificationType.KYC_PENDING:
-        icon = Icons.verified_user_outlined;
+      case NotificationType.ACCOUNT_CREATED:
+      case NotificationType.ACCOUNT_SUSPENDED:
+      case NotificationType.ACCOUNT_STATUS_CHANGED:
+      case NotificationType.CUSTOMER_REGISTERED:
+        icon = Icons.account_balance;
         color = AppColors.neonCyan;
         break;
+      case NotificationType.CARD_APPLICATION:
+      case NotificationType.CARD_STATUS_CHANGED:
+        icon = Icons.credit_card;
+        color = AppColors.neonCyan;
+        break;
+      case NotificationType.LOAN_APPLICATION:
       case NotificationType.LOAN_APPROVED:
       case NotificationType.LOAN_REJECTED:
         icon = Icons.receipt_long;
         color = AppColors.neonPink;
         break;
-      case NotificationType.CHEQUE_BOOK_READY:
+      case NotificationType.KYC_SUBMITTED:
+      case NotificationType.KYC_VERIFIED:
+      case NotificationType.KYC_REJECTED:
+        icon = Icons.verified_user_outlined;
+        color = AppColors.neonCyan;
+        break;
+      case NotificationType.CHEQUE_BOOK_REQUEST:
+      case NotificationType.CHEQUE_BOOK_APPROVED:
+      case NotificationType.CHEQUE_BOOK_REJECTED:
+      case NotificationType.CHEQUE_BOOK_DELIVERED:
+      case NotificationType.CHEQUE_BOOK_ACTIVATED:
+      case NotificationType.CHEQUE_BOOK_BLOCKED:
         icon = Icons.menu_book;
         color = AppColors.neonCyan;
         break;

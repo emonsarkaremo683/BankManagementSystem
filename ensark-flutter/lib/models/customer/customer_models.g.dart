@@ -116,8 +116,8 @@ Map<String, dynamic> _$$CustomerRequestImplToJson(
   'occupation': _$CustomerOccupationEnumMap[instance.occupation],
   'dob': const IsoDateConverter().toJson(instance.dob),
   'profile': instance.profile,
-  'addresses': instance.addresses,
-  'kycRequests': instance.kycRequests,
+  'addresses': instance.addresses.map((e) => e.toJson()).toList(),
+  'kycRequests': instance.kycRequests?.map((e) => e.toJson()).toList(),
 };
 
 const _$GenderEnumMap = {
@@ -207,13 +207,24 @@ Map<String, dynamic> _$$CustomerResponseImplToJson(
   'occupation': _$CustomerOccupationEnumMap[instance.occupation],
   'dob': const IsoDateConverter().toJson(instance.dob),
   'profile': instance.profile,
-  'addresses': instance.addresses,
-  'documents': instance.documents,
+  'addresses': instance.addresses.map((e) => e.toJson()).toList(),
+  'documents': instance.documents?.map((e) => e.toJson()).toList(),
   'kycStatus': _$KYCStatusEnumMap[instance.kycStatus],
   'status': _$CustomerStatusEnumMap[instance.status],
 };
 
-const _$RoleEnumMap = {Role.CUSTOMER: 'CUSTOMER', Role.ADMIN: 'ADMIN'};
+const _$RoleEnumMap = {
+  Role.SUPER_ADMIN: 'SUPER_ADMIN',
+  Role.ADMIN: 'ADMIN',
+  Role.BRANCH_MANAGER: 'BRANCH_MANAGER',
+  Role.ACCOUNTANT: 'ACCOUNTANT',
+  Role.CASHIER: 'CASHIER',
+  Role.LOAN_OFFICER: 'LOAN_OFFICER',
+  Role.CUSTOMER_SERVICE: 'CUSTOMER_SERVICE',
+  Role.ATM_MANAGER: 'ATM_MANAGER',
+  Role.AUDITOR: 'AUDITOR',
+  Role.CUSTOMER: 'CUSTOMER',
+};
 
 const _$KYCStatusEnumMap = {
   KYCStatus.PENDING: 'PENDING',

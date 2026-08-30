@@ -111,7 +111,7 @@ class _AddBeneficiarySheetState extends ConsumerState<_AddBeneficiarySheet> {
   final _nameController = TextEditingController();
   final _accController = TextEditingController();
   final _providerController = TextEditingController();
-  BeneficiaryType _type = BeneficiaryType.INTERNAL;
+  BeneficiaryType _type = BeneficiaryType.BANK;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class _AddBeneficiarySheetState extends ConsumerState<_AddBeneficiarySheet> {
           NeonTextField(label: 'Bank/Provider Name', controller: _providerController),
           const SizedBox(height: 16),
           DropdownButtonFormField<BeneficiaryType>(
-            initialValue: _type,
+            value: _type,
             items: BeneficiaryType.values.map((t) => DropdownMenuItem(value: t, child: Text(t.name))).toList(),
             onChanged: (v) => setState(() => _type = v!),
             decoration: const InputDecoration(labelText: 'Beneficiary Type'),

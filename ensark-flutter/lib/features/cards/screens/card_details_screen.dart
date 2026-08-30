@@ -7,6 +7,7 @@ import '../../../models/card/card_models.dart';
 import '../../../providers/card_provider.dart';
 import '../../auth/widgets/neon_button.dart';
 import '../../auth/widgets/neon_text_field.dart';
+import '../../../models/enums.dart';
 
 class CardDetailsScreen extends ConsumerStatefulWidget {
   final CardResponse card;
@@ -19,27 +20,12 @@ class CardDetailsScreen extends ConsumerStatefulWidget {
 class _CardDetailsScreenState extends ConsumerState<CardDetailsScreen> {
   late double _dailyLimit;
   late double _monthlyLimit;
-  bool _isSavingLimits = false;
 
   @override
   void initState() {
     super.initState();
     _dailyLimit = widget.card.dailyLimit ?? 1000;
     _monthlyLimit = widget.card.monthlyLimit ?? 5000;
-  }
-
-  void _updateLimits() async {
-    setState(() => _isSavingLimits = true);
-    try {
-      await ref.read(cardsProvider.notifier).updateLimits(widget.card.cardId!, _dailyLimit, _monthlyLimit);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Limits updated successfully!')));
-      }
-    } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-    } finally {
-      if (mounted) setState(() => _isSavingLimits = false);
-    }
   }
 
   @override
@@ -52,29 +38,35 @@ class _CardDetailsScreenState extends ConsumerState<CardDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _InfoSection(
-              title: 'Limits Management',
+              title: 'Card Limits',
               children: [
-                _LimitSlider(
+                _LimitDisplay(
                   label: 'Daily Limit',
                   value: _dailyLimit,
                   max: 5000,
-                  onChanged: (v) => setState(() => _dailyLimit = v),
                 ),
                 const SizedBox(height: 24),
-                _LimitSlider(
+                _LimitDisplay(
                   label: 'Monthly Limit',
                   value: _monthlyLimit,
                   max: 20000,
-                  onChanged: (v) => setState(() => _monthlyLimit = v),
                 ),
-                const SizedBox(height: 32),
-                NeonButton(text: 'SAVE LIMITS', isLoading: _isSavingLimits, onPressed: _updateLimits),
+                const SizedBox(height: 16),
+                const Text(
+                  '* Limits are set by the bank. Please contact support to request a limit change.',
+                  style: TextStyle(fontSize: 10, color: AppColors.textSecondary, fontStyle: FontStyle.italic),
+                ),
               ],
             ),
             const SizedBox(height: 32),
             _InfoSection(
-              title: 'Security',
+              title: 'Card Actions',
               children: [
+                _SecurityTile(
+                  icon: Icons.upgrade,
+                  title: 'Request Card Upgrade',
+                  onTap: () => _showUpgradeDialog(context),
+                ),
                 _SecurityTile(
                   icon: Icons.lock_reset,
                   title: 'Change PIN',
@@ -97,6 +89,13 @@ class _CardDetailsScreenState extends ConsumerState<CardDetailsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showUpgradeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => _UpgradeCardDialog(cardId: widget.card.cardId!, currentType: widget.card.cardType ?? CardType.DEBIT),
     );
   }
 
@@ -135,6 +134,7 @@ class _CardDetailsScreenState extends ConsumerState<CardDetailsScreen> {
 class _InfoSection extends StatelessWidget {
   final String title;
   final List<Widget> children;
+
   const _InfoSection({required this.title, required this.children});
 
   @override
@@ -142,14 +142,21 @@ class _InfoSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.neonCyan)),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.neonCyan,
+          ),
+        ),
         const SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: AppColors.darkSurface,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: AppShadows.embossed,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.neonCyan.withOpacity(0.1)),
           ),
           child: Column(children: children),
         ),
@@ -158,13 +165,12 @@ class _InfoSection extends StatelessWidget {
   }
 }
 
-class _LimitSlider extends StatelessWidget {
+class _LimitDisplay extends StatelessWidget {
   final String label;
   final double value;
   final double max;
-  final ValueChanged<double> onChanged;
 
-  const _LimitSlider({required this.label, required this.value, required this.max, required this.onChanged});
+  const _LimitDisplay({required this.label, required this.value, required this.max});
 
   @override
   Widget build(BuildContext context) {
@@ -178,13 +184,77 @@ class _LimitSlider extends StatelessWidget {
             Text(NumberFormat.currency(symbol: '\$').format(value), style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.neonCyan)),
           ],
         ),
-        Slider(
-          value: value,
-          max: max,
-          divisions: 20,
-          onChanged: onChanged,
-          activeColor: AppColors.neonCyan,
-          inactiveColor: AppColors.darkBackground,
+        const SizedBox(height: 8),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: value / max,
+            backgroundColor: AppColors.darkBackground,
+            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.neonCyan),
+            minHeight: 8,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UpgradeCardDialog extends ConsumerStatefulWidget {
+  final int cardId;
+  final CardType currentType;
+  const _UpgradeCardDialog({required this.cardId, required this.currentType});
+
+  @override
+  ConsumerState<_UpgradeCardDialog> createState() => _UpgradeCardDialogState();
+}
+
+class _UpgradeCardDialogState extends ConsumerState<_UpgradeCardDialog> {
+  late CardType _selectedType;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedType = widget.currentType;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: AppColors.darkSurface,
+      title: const Text('Request Card Upgrade'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Select the card type you wish to apply for:', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+          const SizedBox(height: 16),
+          ...CardType.values.map((type) => RadioListTile<CardType>(
+                title: Text(type.name, style: const TextStyle(color: Colors.white)),
+                value: type,
+                groupValue: _selectedType,
+                activeColor: AppColors.neonCyan,
+                onChanged: (v) => setState(() => _selectedType = v!),
+              )),
+        ],
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCEL')),
+        TextButton(
+          onPressed: _isLoading ? null : () async {
+            setState(() => _isLoading = true);
+            try {
+              await ref.read(cardsProvider.notifier).requestCardTypeChange(widget.cardId, _selectedType);
+              if (context.mounted) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Request submitted successfully!')));
+              }
+            } catch (e) {
+              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+            } finally {
+              if (mounted) setState(() => _isLoading = false);
+            }
+          },
+          child: const Text('SUBMIT', style: TextStyle(color: AppColors.neonCyan)),
         ),
       ],
     );

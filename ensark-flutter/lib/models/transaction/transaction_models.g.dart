@@ -55,28 +55,57 @@ Map<String, dynamic> _$$TransactionResponseImplToJson(
   'vatAmount': instance.vatAmount,
   'remarks': instance.remarks,
   'createdAt': instance.createdAt?.toIso8601String(),
-  'journals': instance.journals,
+  'journals': instance.journals.map((e) => e.toJson()).toList(),
 };
 
 const _$TransactionTypeEnumMap = {
   TransactionType.DEPOSIT: 'DEPOSIT',
-  TransactionType.WITHDRAWAL: 'WITHDRAWAL',
+  TransactionType.WITHDRAW: 'WITHDRAW',
   TransactionType.TRANSFER: 'TRANSFER',
   TransactionType.PAYMENT: 'PAYMENT',
+  TransactionType.REFUND: 'REFUND',
+  TransactionType.REVERSE: 'REVERSE',
+  TransactionType.ATM_WITHDRAW: 'ATM_WITHDRAW',
+  TransactionType.ATM_DEPOSIT: 'ATM_DEPOSIT',
+  TransactionType.LOAN_DISBURSEMENT: 'LOAN_DISBURSEMENT',
+  TransactionType.LOAN_REPAYMENT: 'LOAN_REPAYMENT',
+  TransactionType.LOAN_FORECLOSURE: 'LOAN_FORECLOSURE',
+  TransactionType.CARD_PURCHASE: 'CARD_PURCHASE',
+  TransactionType.CARD_REVERSAL: 'CARD_REVERSAL',
+  TransactionType.BRANCH_OPENING: 'BRANCH_OPENING',
+  TransactionType.INTEREST_POSTING: 'INTEREST_POSTING',
+  TransactionType.CHEQUE_ISSUE_CHARGE: 'CHEQUE_ISSUE_CHARGE',
+  TransactionType.CARD_ISSUE_CHARGE: 'CARD_ISSUE_CHARGE',
+  TransactionType.ATM_REFILL: 'ATM_REFILL',
+  TransactionType.CREDIT_BILLING: 'CREDIT_BILLING',
+  TransactionType.CREDIT_PAYMENT: 'CREDIT_PAYMENT',
+  TransactionType.STANDING_ORDER_EXECUTION: 'STANDING_ORDER_EXECUTION',
 };
 
 const _$TransactionChannelEnumMap = {
-  TransactionChannel.WEB: 'WEB',
-  TransactionChannel.MOBILE: 'MOBILE',
-  TransactionChannel.ATM: 'ATM',
   TransactionChannel.BRANCH: 'BRANCH',
+  TransactionChannel.ATM: 'ATM',
+  TransactionChannel.INTERNET_BANKING: 'INTERNET_BANKING',
+  TransactionChannel.MOBILE_BANKING: 'MOBILE_BANKING',
+  TransactionChannel.POS: 'POS',
+  TransactionChannel.E_COMMERCE: 'E_COMMERCE',
+  TransactionChannel.QR_PAYMENT: 'QR_PAYMENT',
+  TransactionChannel.CARD: 'CARD',
+  TransactionChannel.BEFTN: 'BEFTN',
+  TransactionChannel.NPSB: 'NPSB',
+  TransactionChannel.RTGS: 'RTGS',
+  TransactionChannel.SWIFT: 'SWIFT',
+  TransactionChannel.AGENT_BANKING: 'AGENT_BANKING',
+  TransactionChannel.API: 'API',
+  TransactionChannel.SYSTEM: 'SYSTEM',
 };
 
 const _$TransactionStatusEnumMap = {
-  TransactionStatus.PENDING: 'PENDING',
-  TransactionStatus.COMPLETED: 'COMPLETED',
+  TransactionStatus.SUCCESS: 'SUCCESS',
   TransactionStatus.FAILED: 'FAILED',
+  TransactionStatus.PENDING: 'PENDING',
   TransactionStatus.CANCELLED: 'CANCELLED',
+  TransactionStatus.REVERSED: 'REVERSED',
 };
 
 _$JournalResponseImpl _$$JournalResponseImplFromJson(
@@ -85,11 +114,15 @@ _$JournalResponseImpl _$$JournalResponseImplFromJson(
   id: (json['id'] as num?)?.toInt(),
   accountNumber: json['accountNumber'] as String?,
   amount: (json['amount'] as num?)?.toDouble(),
-  type: json['type'] as String?,
+  type: json['entryType'] as String?,
   remarks: json['remarks'] as String?,
-  createdAt: json['createdAt'] == null
+  createdAt: json['date'] == null
       ? null
-      : DateTime.parse(json['createdAt'] as String),
+      : DateTime.parse(json['date'] as String),
+  transactionId: json['transactionId'] as String?,
+  particulars: json['particulars'] as String?,
+  counterpartyAccountNumber: json['counterpartyAccountNumber'] as String?,
+  counterpartyName: json['counterpartyName'] as String?,
 );
 
 Map<String, dynamic> _$$JournalResponseImplToJson(
@@ -98,9 +131,13 @@ Map<String, dynamic> _$$JournalResponseImplToJson(
   'id': instance.id,
   'accountNumber': instance.accountNumber,
   'amount': instance.amount,
-  'type': instance.type,
+  'entryType': instance.type,
   'remarks': instance.remarks,
-  'createdAt': instance.createdAt?.toIso8601String(),
+  'date': instance.createdAt?.toIso8601String(),
+  'transactionId': instance.transactionId,
+  'particulars': instance.particulars,
+  'counterpartyAccountNumber': instance.counterpartyAccountNumber,
+  'counterpartyName': instance.counterpartyName,
 };
 
 _$AccountTransactionRequestImpl _$$AccountTransactionRequestImplFromJson(
@@ -128,7 +165,7 @@ Map<String, dynamic> _$$AccountTransactionRequestImplToJson(
   'bankName': instance.bankName,
   'routingNumber': instance.routingNumber,
   'beneficiaryId': instance.beneficiaryId,
-  'request': instance.request,
+  'request': instance.request?.toJson(),
 };
 
 _$AccountTransactionResponseImpl _$$AccountTransactionResponseImplFromJson(
@@ -158,7 +195,7 @@ Map<String, dynamic> _$$AccountTransactionResponseImplToJson(
   'receiverName': instance.receiverName,
   'bankName': instance.bankName,
   'direction': instance.direction,
-  'response': instance.response,
+  'response': instance.response?.toJson(),
 };
 
 _$OtpInitiateResponseImpl _$$OtpInitiateResponseImplFromJson(

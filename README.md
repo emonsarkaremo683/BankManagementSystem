@@ -10,6 +10,8 @@
 [![Android](https://img.shields.io/badge/Android-SDK%2037-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](docker-compose.yml)
+[![Railway](https://img.shields.io/badge/Railway-Ready-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)](RAILWAY_DEPLOYMENT.md)
 [![License](https://img.shields.io/badge/License-Private-red?style=for-the-badge)](LICENSE)
 
 ---
@@ -28,6 +30,7 @@
 - [Feature Modules](#-feature-modules)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
+- [🐳 Docker & Railway Deployment](#-docker--railway-deployment)
 - [Environment Configuration](#-environment-configuration)
 - [API Reference](#-api-reference)
 - [Project Status](#-project-status)
@@ -415,6 +418,32 @@ cd ensarkbank-android
 > - **Emulator**: `http://10.0.2.2:8085/`
 > - **Physical device**: Use your dev machine's LAN IP (e.g., `http://192.168.0.102:8085/`)
 > - Requires `android.permission.INTERNET` and `usesCleartextTraffic="true"` (already configured in manifest)
+
+---
+
+## 🐳 Docker & Railway Deployment
+
+### 1️⃣ Run Locally with Docker Compose
+
+Run the complete stack (MySQL 8.0 + Spring Boot Backend + Angular Frontend) using a single command:
+
+```bash
+docker-compose up --build
+```
+
+- 🌐 **Frontend**: `http://localhost`
+- ⚙️ **Backend REST API**: `http://localhost:8085/api/`
+- 📖 **Swagger UI**: `http://localhost:8085/swagger-ui.html`
+- 🗄️ **MySQL Database**: `localhost:3306`
+
+### 2️⃣ Deploy to Railway.app
+
+For detailed step-by-step instructions on deploying the MySQL database, Spring Boot backend, and Angular frontend to **Railway**, see the [Railway Deployment Guide](RAILWAY_DEPLOYMENT.md).
+
+Quick setup summary:
+1. **Database**: Provision MySQL in Railway console.
+2. **Backend**: Deploy `ensark` service using `ensark/Dockerfile`. Set `SPRING_DATASOURCE_URL` to `${{MySQL.MYSQLURL}}`.
+3. **Frontend**: Deploy `ensark-frontend` service using `ensark-frontend/Dockerfile` with Nginx handling HTML5 routing and Railway dynamic `$PORT`.
 
 ---
 
