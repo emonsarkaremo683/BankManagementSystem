@@ -6,7 +6,7 @@ part of 'core_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$baseUrlHash() => r'e08568d281800c1584628a58096c181151938362';
+String _$baseUrlHash() => r'3bb9bac84250f4a33b1d74d51e4c7b8e953b5f65';
 
 /// See also [baseUrl].
 @ProviderFor(baseUrl)
@@ -74,5 +74,20 @@ final dioProvider = AutoDisposeProvider<Dio>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DioRef = AutoDisposeProviderRef<Dio>;
+String _$serverIpHash() => r'0ef921b5943b65d611faff1486a21aa7cab591c7';
+
+/// See also [ServerIp].
+@ProviderFor(ServerIp)
+final serverIpProvider = AsyncNotifierProvider<ServerIp, String>.internal(
+  ServerIp.new,
+  name: r'serverIpProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$serverIpHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ServerIp = AsyncNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

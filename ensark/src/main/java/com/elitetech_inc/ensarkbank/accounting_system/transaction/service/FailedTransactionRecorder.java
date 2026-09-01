@@ -29,6 +29,9 @@ public class FailedTransactionRecorder {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void recordFailure(Transaction transaction) {
-        transactionRepository.save(transaction);
+        if (transaction != null) {
+            transaction.setJournals(null);
+            transactionRepository.save(transaction);
+        }
     }
 }

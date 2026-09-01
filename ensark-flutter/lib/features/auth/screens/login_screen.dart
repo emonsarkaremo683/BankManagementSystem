@@ -20,6 +20,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _ipController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -31,7 +32,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _ipController.dispose();
     super.dispose();
+  }
+
+  void _saveServerIp() async {
+    final newIp = _ipController.text.trim();
+    if (newIp.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid IP address or Host')),
+      );
+      return;
+    }
+
+    await ref.read(serverIpProvider.notifier).setIp(newIp);
+    final currentBaseUrl = ref.read(baseUrlProvider);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Server URL set to: $currentBaseUrl'),
+          backgroundColor: AppColors.neonCyan,
+        ),
+      );
+    }
   }
 
   void _handleLogin() async {
@@ -117,7 +141,70 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   'Sign in to your EnsarkBank account',
                   style: TextStyle(color: AppColors.textSecondary),
                 ),
-                const SizedBox(height: 48),
+                const SizedBox(height: 24),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final serverIpAsync = ref.watch(serverIpProvider);
+                    final currentBaseUrl = ref.watch(baseUrlProvider);
+
+                    serverIpAsync.whenData((ip) {
+                      if (_ipController.text.isEmpty) {
+                        _ipController.text = ip;
+                      }
+                    });
+
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkBackground,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: AppShadows.debossed,
+                        border: Border.all(color: AppColors.neonCyan.withValues(alpha: 0.3)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.lan, color: AppColors.neonCyan, size: 20),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextField(
+                                  controller: _ipController,
+                                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                                  keyboardType: TextInputType.url,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Server IP / Host (e.g. 192.168.0.104)',
+                                    hintStyle: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.save, color: AppColors.neonCyan),
+                                tooltip: 'Save Server IP',
+                                onPressed: _saveServerIp,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 28, bottom: 4),
+                            child: Text(
+                              'Base URL: $currentBaseUrl',
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 11,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 32),
                 NeonTextField(
                   label: 'Email',
                   controller: _emailController,

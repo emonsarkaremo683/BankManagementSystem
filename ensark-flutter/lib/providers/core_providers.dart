@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../core/api/dio_client.dart';
@@ -10,17 +8,59 @@ import '../core/storage/biometric_vault.dart';
 
 part 'core_providers.g.dart';
 
+@Riverpod(keepAlive: true)
+class ServerIp extends _$ServerIp {
+  static const String defaultIp = '192.168.0.104';
+
+  @override
+  FutureOr<String> build() async {
+    final vault = ref.watch(secureVaultProvider);
+    final savedIp = await vault.getServerIp();
+    if (savedIp != null && savedIp.trim().isNotEmpty) {
+      return savedIp.trim();
+    }
+    return defaultIp;
+  }
+
+  Future<void> setIp(String newIp) async {
+    final trimmed = newIp.trim();
+    final vault = ref.read(secureVaultProvider);
+    await vault.saveServerIp(trimmed);
+    state = AsyncValue.data(trimmed.isEmpty ? defaultIp : trimmed);
+  }
+}
+
+String formatBaseUrl(String raw) {
+  var input = raw.trim();
+  if (input.isEmpty) return 'http://192.168.0.102:8085/';
+
+  if (!input.startsWith('http://') && !input.startsWith('https://')) {
+    input = 'http://$input';
+  }
+
+  final uri = Uri.tryParse(input);
+  if (uri != null) {
+    if (!uri.hasPort && !input.contains(':', input.indexOf('://') + 3)) {
+      input = '$input:8085';
+    }
+  }
+
+  if (!input.endsWith('/')) {
+    input = '$input/';
+  }
+
+  return input;
+}
+
 @riverpod
 String baseUrl(Ref ref) {
   const String envUrl = String.fromEnvironment('BASE_URL');
   if (envUrl.isNotEmpty) return envUrl;
 
-  if (kIsWeb) return 'http://localhost:8085/';
-  try {
-    if (Platform.isAndroid) return 'http://192.168.0.104:8085/';
-  } catch (_) {}
-  
-  return 'http://localhost:8085/';
+  final ipAsync = ref.watch(serverIpProvider);
+  final rawIp = ipAsync.value ?? ServerIp.defaultIp;
+
+  return formatBaseUrl(rawIp);
 }
 
 @riverpod

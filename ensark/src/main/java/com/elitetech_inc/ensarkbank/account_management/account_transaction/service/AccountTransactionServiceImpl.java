@@ -17,9 +17,7 @@ import com.elitetech_inc.ensarkbank.accounting_system.journal.repository.Journal
 import com.elitetech_inc.ensarkbank.accounting_system.transaction.dto.mapper.TransactionMapper;
 import com.elitetech_inc.ensarkbank.branch_management.branch.entity.Branch;
 import com.elitetech_inc.ensarkbank.branch_management.branch.repository.BranchRepository;
-import com.elitetech_inc.ensarkbank.common.enums.HolderType;
-import com.elitetech_inc.ensarkbank.common.enums.NotificationType;
-import com.elitetech_inc.ensarkbank.common.enums.OtpStatus;
+import com.elitetech_inc.ensarkbank.common.enums.*;
 import com.elitetech_inc.ensarkbank.common.notification.websocket.WebSocketNotificationService;
 import com.elitetech_inc.ensarkbank.customer_management.beneficiary.entity.Beneficiary;
 import com.elitetech_inc.ensarkbank.customer_management.beneficiary.repository.BeneficiaryRepository;
@@ -51,9 +49,6 @@ import com.elitetech_inc.ensarkbank.account_management.account_transaction.repos
 import com.elitetech_inc.ensarkbank.accounting_system.transaction.entity.Transaction;
 import com.elitetech_inc.ensarkbank.accounting_system.transaction.dto.request.TransactionRequest;
 import com.elitetech_inc.ensarkbank.accounting_system.transaction.service.TransactionService;
-import com.elitetech_inc.ensarkbank.common.enums.TransactionChannel;
-import com.elitetech_inc.ensarkbank.common.enums.TransactionStatus;
-import com.elitetech_inc.ensarkbank.common.enums.TransactionType;
 import com.elitetech_inc.ensarkbank.util.RequestValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -98,7 +93,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public AccountTransactionResponse save(AccountTransactionRequest atr) {
         requestValidator.validateAccountTransaction(atr);
         if (atr == null || atr.getRequest() == null) {
@@ -135,6 +130,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
         transaction.setRemarks(atr.getRequest().getRemarks());
         transaction.setChargeAmount(BigDecimal.ZERO);
         transaction.setVatAmount(BigDecimal.ZERO);
+        transaction.setCurrency(sender.getCurrency() != null ? sender.getCurrency() : Currency.BDT);
 
         transactionService.createTransaction(atr.getRequest(), transaction, sender.getAccountNumber(),
                 receiver != null ? receiver.getAccountNumber() : atr.getReceiverAccountNumber()
@@ -378,7 +374,6 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     }
 
     @Override
-    @Transactional
     public AccountTransactionResponse verifyOnlineTransaction(OtpVerifyRequest req) {
         if (req.getOtpReferenceId() == null || req.getOtpCode() == null) {
             throw new IllegalArgumentException("OTP reference ID and code are required");
@@ -442,10 +437,10 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     @Override
     @Transactional
     public void markOtpVerified(Long otpId) {
-        TransactionOtp otp = transactionOtpRepository.findById(otpId)
-                .orElseThrow(() -> new IllegalArgumentException("OTP record not found"));
-        otp.setStatus(OtpStatus.VERIFIED);
-        transactionOtpRepository.save(otp);
+        int updated = transactionOtpRepository.updateStatusIf(otpId, OtpStatus.PENDING, OtpStatus.VERIFIED);
+        if (updated == 0) {
+            throw new IllegalArgumentException("Invalid or expired verification code");
+        }
     }
 
     @Override

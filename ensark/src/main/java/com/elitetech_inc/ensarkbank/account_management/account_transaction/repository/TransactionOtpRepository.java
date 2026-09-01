@@ -15,6 +15,10 @@ public interface TransactionOtpRepository extends JpaRepository<TransactionOtp, 
 
     Optional<TransactionOtp> findByIdAndStatus(Long id, OtpStatus status);
 
+    @org.springframework.data.jpa.repository.Modifying
+    @Query("UPDATE TransactionOtp o SET o.status = :newStatus WHERE o.id = :otpId AND o.status = :oldStatus")
+    int updateStatusIf(@Param("otpId") Long otpId, @Param("oldStatus") OtpStatus oldStatus, @Param("newStatus") OtpStatus newStatus);
+
     @Query("""
         SELECT t FROM TransactionOtp t
         WHERE t.accountNumber = :accountNumber
