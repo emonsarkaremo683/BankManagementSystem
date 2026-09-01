@@ -49,6 +49,7 @@ public class Transaction extends BaseEntity {
     @Column(precision = 19, scale = 4)
     private BigDecimal vatAmount;
 
+    @Column(columnDefinition = "TEXT")
     private String remarks;
 
     private Long loanRepaymentId;

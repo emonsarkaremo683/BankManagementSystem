@@ -68,11 +68,7 @@ public class CorsConfig {
         return source;
     }
 
-    /**
-     * Serves uploaded files from the configured upload directory. CORS for these
-     * URLs comes from {@link #corsConfigurationSource()}, not from a separate
-     * WebMvc CORS mapping.
-     */
+
     @Bean
     public WebMvcConfigurer uploadResourceConfigurer() {
         return new WebMvcConfigurer() {

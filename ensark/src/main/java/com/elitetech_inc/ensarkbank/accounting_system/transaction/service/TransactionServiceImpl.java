@@ -107,7 +107,7 @@ public class TransactionServiceImpl implements TransactionService {
         return selfProvider.getObject().createTransactionInternal(tr, t, sender, receiverAccount);
     }
 
-    @Transactional(propagation = org.springframework.transaction.annotation.Propagation.REQUIRES_NEW)
+    @Transactional
     public TransactionResponse createTransactionInternal(TransactionRequest tr, Transaction t,
                                                  String sender,
                                                  String receiverAccount) {
@@ -140,7 +140,7 @@ public class TransactionServiceImpl implements TransactionService {
         return selfProvider.getObject().reverseTransactionInternal(transactionId);
     }
 
-    @Transactional(propagation = org.springframework.transaction.annotation.Propagation.REQUIRES_NEW)
+    @Transactional
     public TransactionResponse reverseTransactionInternal(Long transactionId){
         Transaction original = transactionRepository.findById(transactionId).orElseThrow(
                 ()-> new ResourceNotFoundException("Not found " + transactionId)
@@ -312,8 +312,12 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.setStatus(TransactionStatus.SUCCESS);
         } catch (RuntimeException ex) {
             transaction.setStatus(TransactionStatus.FAILED);
+            String errMsg = ex.getMessage();
+            if (errMsg != null && errMsg.length() > 500) {
+                errMsg = errMsg.substring(0, 500);
+            }
             transaction.setRemarks(
-                    (transaction.getRemarks() == null ? "" : transaction.getRemarks() + " | ") + ex.getMessage()
+                    (transaction.getRemarks() == null ? "" : transaction.getRemarks() + " | ") + errMsg
             );
             // The enclosing @Transactional is about to roll back because of this
             // exception, which would also undo a plain save() here. Persist the

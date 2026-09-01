@@ -72,8 +72,12 @@ public class TransactionPostingService {
             throw new IllegalArgumentException("Transaction and account are required");
         }
         BigDecimal normalizedAmount = normalizeAmount(amount);
-        Account account = validationService.validateAccount(acc);
-        ledgerPostingService.applyEntry(account, EntryType.CREDIT, normalizedAmount);
+        if (accountRepository.existsByAccountNumber(acc)){
+            Account account = validationService.validateAccount(acc);
+            ledgerPostingService.applyEntry(account, EntryType.CREDIT, normalizedAmount);
+            addEntry(transaction, acc, EntryType.CREDIT, normalizedAmount);
+            return;
+        }
         addEntry(transaction, acc, EntryType.CREDIT, normalizedAmount);
     }
 

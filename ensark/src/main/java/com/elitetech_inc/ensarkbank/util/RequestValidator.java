@@ -170,10 +170,7 @@ public class RequestValidator {
             throw new IllegalArgumentException(
                     "A receiver must be specified (receiverAccountNumber, receiverAccountId or beneficiaryId)");
         }
-        if (hasReceiverAccount && !isExternalTransfer &&
-                !accountRepository.existsByAccountNumber(req.getReceiverAccountNumber())) {
-            throw new IllegalArgumentException("Receiver account not found: " + req.getReceiverAccountNumber());
-        }
+
         if (req.getSenderAccountId() != null &&
                 !accountRepository.existsById(req.getSenderAccountId())) {
             throw new IllegalArgumentException("Sender account not found: " + req.getSenderAccountId());
