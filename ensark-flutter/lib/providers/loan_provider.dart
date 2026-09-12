@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/loan/loan_models.dart';
 import '../repositories/loan_repository.dart';
 import 'auth_provider.dart';
+import 'dashboard_provider.dart';
 
 part 'loan_provider.g.dart';
 
@@ -27,6 +28,7 @@ class Loans extends _$Loans {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(loanRepositoryProvider).apply(request, files);
+      ref.invalidate(dashboardProvider);
       final user = ref.read(authProvider).value?.user;
       return ref.read(loanRepositoryProvider).findByCustomerEmail(user!.email);
     });
@@ -36,6 +38,7 @@ class Loans extends _$Loans {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(loanRepositoryProvider).payInstallment(repaymentId);
+      ref.invalidate(dashboardProvider);
       final user = ref.read(authProvider).value?.user;
       return ref.read(loanRepositoryProvider).findByCustomerEmail(user!.email);
     });

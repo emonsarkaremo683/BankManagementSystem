@@ -4,6 +4,9 @@ import '../models/other/other_models.dart';
 import '../repositories/transaction_repository.dart';
 import '../repositories/beneficiary_repository.dart';
 import 'auth_provider.dart';
+import 'dashboard_provider.dart';
+import 'statement_provider.dart';
+import 'notification_provider.dart';
 
 part 'transfer_provider.g.dart';
 
@@ -29,6 +32,13 @@ class Transfer extends _$Transfer {
     try {
       final response = await ref.read(transactionRepositoryProvider).verifyOnlineTransaction(request);
       state = const AsyncValue.data(null);
+
+      // Invalidate relevant providers to force refetching latest balances and activity
+      ref.invalidate(dashboardProvider);
+      ref.invalidate(statementProvider);
+      ref.invalidate(notificationsProvider);
+      ref.invalidate(unreadCountProvider);
+
       return response;
     } catch (e, s) {
       state = AsyncValue.error(e, s);

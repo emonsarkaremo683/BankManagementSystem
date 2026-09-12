@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/card/card_models.dart';
 import '../repositories/card_repository.dart';
 import 'auth_provider.dart';
+import 'dashboard_provider.dart';
 import '../models/enums.dart';
 
 part 'card_provider.g.dart';
@@ -27,6 +28,7 @@ class Cards extends _$Cards {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(cardRepositoryProvider).apply(request);
+      ref.invalidate(dashboardProvider);
       final user = ref.read(authProvider).value?.user;
       return ref.read(cardRepositoryProvider).findByCustomerEmail(user!.email);
     });

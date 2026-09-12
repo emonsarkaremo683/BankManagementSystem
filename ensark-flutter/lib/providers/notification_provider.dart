@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/other/other_models.dart';
 import '../repositories/notification_repository.dart';
+import 'auth_provider.dart';
 
 part 'notification_provider.g.dart';
 
@@ -9,6 +10,8 @@ part 'notification_provider.g.dart';
 class Notifications extends _$Notifications {
   @override
   FutureOr<List<NotificationResponse>> build() async {
+    final user = ref.watch(authProvider).value?.user;
+    if (user == null) return [];
     return ref.watch(notificationRepositoryProvider).getNotifications();
   }
 
@@ -33,7 +36,7 @@ class Notifications extends _$Notifications {
 
 @riverpod
 Future<int> unreadCount(Ref ref) async {
-  // Use a timer or listen to a stream for real-time in a real app
-  // For now, simple fetch
+  final user = ref.watch(authProvider).value?.user;
+  if (user == null) return 0;
   return ref.watch(notificationRepositoryProvider).getUnreadCount();
 }

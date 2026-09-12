@@ -1,7 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:ensarkbank_flutter/providers/dashboard_provider.dart';
-import 'package:ensarkbank_flutter/providers/notification_provider.dart';
-import 'package:ensarkbank_flutter/providers/transfer_provider.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/auth/auth_models.dart';
@@ -72,13 +69,16 @@ class Auth extends _$Auth {
           await vault.saveRefreshToken(response.refreshToken!);
         }
         
-        state = AsyncValue.data(AuthState(user: response.user));
+        // Fetch fresh user profile directly from customer repository
+        CustomerResponse? freshUser;
+        try {
+          freshUser = await ref.read(customerRepositoryProvider).findByEmail(email);
+        } catch (_) {
+          freshUser = response.user;
+        }
 
-        // Invalidate providers to force a refetch with the new token
-        ref.invalidate(dashboardProvider);
-        ref.invalidate(notificationsProvider);
-        ref.invalidate(unreadCountProvider);
-        ref.invalidate(beneficiariesProvider);
+        // Setting new auth state reactively triggers a fresh rebuild on all dependent providers
+        state = AsyncValue.data(AuthState(user: freshUser ?? response.user));
       }
     } catch (e) {
       String errorMessage = e.toString();
@@ -109,13 +109,14 @@ class Auth extends _$Auth {
           await vault.saveRefreshToken(response.refreshToken!);
         }
         
-        state = AsyncValue.data(AuthState(user: response.user));
+        CustomerResponse? freshUser;
+        try {
+          freshUser = await ref.read(customerRepositoryProvider).findByEmail(email);
+        } catch (_) {
+          freshUser = response.user;
+        }
 
-        // Invalidate providers to force a refetch with the new token
-        ref.invalidate(dashboardProvider);
-        ref.invalidate(notificationsProvider);
-        ref.invalidate(unreadCountProvider);
-        ref.invalidate(beneficiariesProvider);
+        state = AsyncValue.data(AuthState(user: freshUser ?? response.user));
       }
     } catch (e) {
       String errorMessage = e.toString();
@@ -141,7 +142,6 @@ class Auth extends _$Auth {
     state = const AsyncValue.loading();
     try {
       await ref.read(authRepositoryProvider).register(request, files);
-      // After registration, usually login or redirect to verification
       state = const AsyncValue.data(AuthState());
     } catch (e) {
       String errorMessage = e.toString();

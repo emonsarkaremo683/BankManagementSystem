@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/other/other_models.dart';
 import '../repositories/cheque_repository.dart';
 import 'auth_provider.dart';
+import 'dashboard_provider.dart';
 
 part 'cheque_provider.g.dart';
 
@@ -27,6 +28,7 @@ class ChequeBooks extends _$ChequeBooks {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(chequeRepositoryProvider).apply(request);
+      ref.invalidate(dashboardProvider);
       final user = ref.read(authProvider).value?.user;
       return ref.read(chequeRepositoryProvider).findByCustomerEmail(user!.email);
     });
